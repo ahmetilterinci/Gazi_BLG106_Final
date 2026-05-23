@@ -44,6 +44,11 @@ def create_app(config_name: str = "development") -> Flask:
     csrf.init_app(app)
 
     # ---------------------------------------------------------------------------
+    # Model kayıtları — Alembic autogenerate için metadata'nın dolu olması gerekir
+    # ---------------------------------------------------------------------------
+    from app import models  # noqa: F401
+
+    # ---------------------------------------------------------------------------
     # Blueprint kayıtları
     # ---------------------------------------------------------------------------
     from app.main import main as main_blueprint
