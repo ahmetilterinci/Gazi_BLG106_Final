@@ -1,8 +1,8 @@
-## Oturum 1 — 23.05.2026 — 18:30-21:30
+## Oturum 1 — 23.05.2026 — 18:30-22:25
 
 ### Hedef
 Proje iskeletini kurmak, README yazmak, veritabanı modellerini tanımlamak,
-migration'ı çalıştırmak ve tabloları SQLite'a yazmak.
+migration'ı çalıştırmak, tabloları SQLite'a yazmak ve auth akışını kurmak.
 
 ### Kullandığım Mod ve Model
 - Mod: Plan
@@ -17,6 +17,9 @@ migration'ı çalıştırmak ve tabloları SQLite'a yazmak.
    modellerinin SQLAlchemy 2.x stiliyle yazılması
 4. Prompt 4 — Migration: flask db init → migrate → upgrade adım adım,
    her komut öncesi onay istenerek
+5. Prompt 5 — Auth akışı: RegisterForm + LoginForm, /register /login /logout
+   rotaları, Bootstrap 5 şablonları, Flask-Login yapılandırması,
+   404/500 hata sayfaları
 
 ### Ajanın Önerdiği Plan (Prompt 3)
 - 4 model için alan listeleri ve ilişkiler tablo halinde sunuldu
@@ -29,24 +32,31 @@ migration'ı çalıştırmak ve tabloları SQLite'a yazmak.
 - FLASK_APP=run.py kontrolü notu ekledi
 - Antigravity terminali C:\ sürücüsüne erişemediği için komutları manuel girdirdim
 
+### Ajanın Önerdiği Plan (Prompt 5)
+- login_manager sıfırdan oluşturulmadı, mevcut nesne güncellendi — doğru yaklaşım
+- user_loader: create_app içi, login_manager.init_app() sonrası
+- email-validator paketi requirements.txt'e eklendi + pip install çalıştırıldı
+- Hata handler'ları @main.app_errorhandler ile app/main/routes.py içine konuldu
+- 404/500 sayfaları auth adımıyla birlikte geldi — ayrı prompt gerekmedi
+
 ### Plan'da Sorguladıklarım
 - `datetime.utcnow` kullanımına itiraz ettim: Flask 3.x + SQLAlchemy 2.x'te
   deprecation uyarısı veriyor. `datetime.now(timezone.utc)` kullanılmasını
-  talep ettim. Ajan planı revize etti, `lambda` ile doğru şekilde uyguladı.
-- `User.progresses` yerine `User.progress_entries` adlandırmasını tercih ettim:
-  daha açıklayıcı ve ilişkinin ne olduğunu isimden anlamak kolaylaşıyor.
-- `UniqueConstraint(user_id, lesson_id)` eklenmesini onayladım: aynı kullanıcının
-  aynı derse iki kez kayıt oluşturmasını engellemek veri bütünlüğü açısından
-  zorunlu.
-- `flask db migrate` "Target database is not up to date" hatası verdi.
-  `flask db stamp head` ile çözdüm — ajan sonradan bunun yanlış sıra olduğunu
-  belirtti. Doğru sıranın önce `flask db upgrade`, sonra `flask db migrate`
-  olduğunu öğrendim.
+  talep ettim. Ajan planı revize etti.
+- `User.progresses` yerine `User.progress_entries` adlandırmasını tercih ettim.
+- `UniqueConstraint(user_id, lesson_id)` eklenmesini onayladım.
+- Prompt 5 planında `user_loader` konumu, `email-validator` paketi ve
+  hata handler'larının yeri belirsiz bırakılmıştı — üçünü de ayrı ayrı
+  sorguladım, net cevap aldıktan sonra onayladım.
+- 404/500 sayfalarının Prompt 5'e dahil edilmesini değerlendirdim:
+  base.html ve main blueprint zaten bu adımda kurulduğu için mantıklıydı,
+  onayladım.
 
 ### Üretilen Kodda Düzelttiklerim
-- Ajan 3 değişikliği doğru uyguladı, ek müdahale gerekmedi.
-- `__table_args__` içinde UniqueConstraint `name="uq_user_lesson"` ile
-  tanımlandı — migration sırasında anlamlı constraint ismi olması için iyi.
+- Prompt 3-4: Ajan 3 değişikliği doğru uyguladı, ek müdahale gerekmedi.
+- Prompt 5: Tüm dosyalar walkthrough'da eksiksiz görüldü. Flash mesajının
+  kapatma butonu çalışmıyor — base.html'de alert-dismissible eksik.
+  HTML/CSS tamamen yenileneceği için şimdilik bırakıldı.
 
 ### ⚠️ Ajanın Yanlış Önerisi — Yakaladım
 Prompt 4 sırasında ajan migration tamamlandıktan sonra şu komutları önerdi:
@@ -63,38 +73,35 @@ eksiksiz ve doğruydu. Silme önerisini reddettim, direkt `flask db upgrade`
 **Bu, planı sorgulamadan onaylamanın ne kadar tehlikeli olduğunun somut kanıtı.**
 
 ### Karşılaştığım Hatalar ve Çözümler
-- Antigravity terminali PowerShell sandbox'ta `C:\` sürücüsüne erişemedi,
-  otomatik doğrulama çalıştıramadı. Çözüm: komutları kendi terminalimde
-  manuel çalıştırdım.
+- Antigravity terminali PowerShell sandbox'ta `C:\` sürücüsüne erişemedi.
+  Çözüm: komutları kendi terminalimde manuel çalıştırdım.
 - Hata: `ERROR: Target database is not up to date`
-  Çözüm: `flask db stamp head` ile mevcut durumu işaretledim, ardından
-  migrate tekrar çalıştı. (Not: doğru sıra önce upgrade, sonra migrate)
-- Import testi:
-```powershell
-.venv\Scripts\python.exe -c "
-from app import create_app; app = create_app('development')
-with app.app_context():
-    from app.models import User, Topic, Lesson, UserProgress
-    print('Import OK')
-"
-```
-  Çıktı: `Import OK` — modeller hatasız yüklendi.
+  Çözüm: `flask db stamp head` ile mevcut durumu işaretledim.
+  (Not: doğru sıra önce upgrade, sonra migrate)
+- Import testi başarılı: `Import OK` çıktısı alındı.
+- `email-validator` paketi requirements.txt'te yoktu, Prompt 5 planı
+  sorgulanınca fark edildi ve eklendi — yoksa ImportError alınacaktı.
 
 ### Bu Oturumdan Öğrendiğim
 `datetime.utcnow` gibi görünürde zararsız bir default, Flask 3.x ve
-SQLAlchemy 2.x kombinasyonunda deprecation uyarısına yol açıyor. Ajan bunu
-kendiliğinden düzeltmedi; planı okuyup sorgulamasaydım bu uyarı migration
-aşamasına kadar fark edilmeyecekti.
+SQLAlchemy 2.x kombinasyonunda deprecation uyarısına yol açıyor.
 
 `flask db stamp head` Alembic'e "veritabanı güncel" dedirtir ama tabloları
-gerçekte oluşturmaz. Doğru sıra: önce `flask db upgrade` ile tabloları yaz,
-sonra yeni değişiklik varsa `flask db migrate`.
+gerçekte oluşturmaz. Doğru sıra: önce `flask db upgrade`, sonra `flask db migrate`.
 
-Ajanın "Açık Sorular" bölümü değerliydi: UniqueConstraint gibi veri
-bütünlüğü kararlarını kullanıcıya bırakması doğru bir yaklaşım.
+Plan modu belirsizlikleri onaylamadan önce sorgulamak kritik: Prompt 5'te
+üç belirsizliği (user_loader konumu, email-validator, hata handler'ları)
+ayrı ayrı sorgulamasaydım uygulama çalışmayabilirdi.
 
 ### Sonraki Oturum İçin Notlar
-- Prompt 5: auth akışı (kayıt, giriş, çıkış), Flask-Login kurulumu,
-  Bootstrap 5 formları
-- Gün 1 hedefi 3 commit — 2 commit atıldı, Prompt 5 sonrası 3. commit atılacak
-- Commits: "Proje iskeleti kuruldu - Prompt 1-2" + "Modeller ve migration eklendi - Prompt 3-4"
+- Prompt 6: CRUD rotaları, Topic/Lesson listeleme, pagination
+- HTML/CSS tamamen yenilenecek (Bootstrap 5 düzeni kurulacak)
+- Flash mesajı kapatma butonu HTML yenilenince düzelecek
+- Gün 1 tamamlandı: 3 commit atıldı ✅
+
+### Commit Geçmişi (Gün 1)
+| # | Mesaj |
+|---|-------|
+| 1 | Proje iskeleti kuruldu - Prompt 1-2 |
+| 2 | Modeller ve migration eklendi - Prompt 3-4 |
+| 3 | Auth akışı eklendi - Prompt 5 |

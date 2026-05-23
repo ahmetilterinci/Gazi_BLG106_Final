@@ -1,6 +1,6 @@
 # Proje Geliştirme Geçmişi
 
-## Oturum 1 — 23 Mayıs 2026
+## Oturum 1 — 23 Mayıs 2026 ✅ TAMAMLANDI
 
 ### Tamamlanan Adımlar
 
@@ -40,34 +40,43 @@ python -c "from app import create_app; app = create_app(); print('✅ OK')"
 - Import testi başarılı: "Import OK" çıktısı alındı
 
 **Prompt 4 — Migration (Antigravity + manuel terminal)**
-- flask db init: migrations/ klasörü kuruldu (alembic.ini, env.py, versions/)
+- flask db init: migrations/ klasörü kuruldu
 - flask db stamp head: "Target database is not up to date" hatasını aşmak için
 - flask db migrate: 4 tablo algılandı (topic, user, lesson, user_progress)
-  - email ve username için unique index'ler
-  - UniqueConstraint uq_user_lesson
-  - Tüm FK ilişkileri
 - ⚠️ Ajan migration dosyasını silmeyi önerdi — dosya incelendi, sağlıklıydı, öneri reddedildi
 - flask db upgrade: tablolar SQLite'a yazıldı
-- 2. commit: "Modeller ve migration eklendi - Prompt 3-4" (61f183a)
+
+**Prompt 5 — Auth akışı (Antigravity)**
+- email-validator paketi requirements.txt'e eklendi
+- app/__init__.py: login_view, login_message, user_loader eklendi
+- app/auth/forms.py: RegisterForm + LoginForm (Flask-WTF, CSRF korumalı)
+- app/auth/routes.py: /register, /login, /logout rotaları (Türkçe flash mesajları)
+- app/main/routes.py: index rotası + 404/500 hata handler'ları (@main.app_errorhandler)
+- templates/base.html: Bootstrap 5 navbar, koşullu login/logout linkleri
+- templates/auth/register.html + login.html
+- templates/main/index.html
+- templates/errors/404.html + 500.html
+- ⚠️ Flash mesajı kapatma butonu çalışmıyor — HTML/CSS yenilenince düzelecek
+- Test sonuçları: index ✅, 404 sayfası ✅, kayıt ✅, giriş ✅, yönlendirmeler ✅
 
 ### Mevcut Durum
-- 2 commit atıldı, GitHub güncel
-- Veritabanı tabloları oluşturuldu: user, topic, lesson, user_progress
-- Prompt 5 bekliyor: auth akışı (kayıt/giriş/çıkış)
+- 3 commit atıldı, GitHub güncel
+- Veritabanı tabloları: user, topic, lesson, user_progress
+- Auth akışı çalışıyor: kayıt, giriş, çıkış, yönlendirmeler
+- Hata sayfaları: 404, 500
+- HTML/CSS henüz ham — tamamen yenilenecek (Prompt 6'da)
+- docs/ai-gunlugu.md Oturum 1 ile güncellendi
 
-### Sonraki Adım
-- Yeni sohbet açılacak
-- Prompt 5 ile auth akışı kurulacak:
-  - app/auth/forms.py: RegisterForm + LoginForm (Flask-WTF)
-  - app/auth/routes.py: /register, /login, /logout
-  - templates/auth/register.html + login.html (Bootstrap 5)
-  - Flask-Login yapılandırması (login_manager, user_loader)
-  - base.html: koşullu login/logout linkleri
-- Gün 1 hedefi: 3 commit (şu an 2 commit var)
-- Önerilen commit mesajı: "Auth akışı eklendi - Prompt 5"
+### Sonraki Adım — Gün 2 (Prompt 6)
+- CRUD rotaları + şablonlar + pagination
+- Topic listesi, Lesson detayı sayfaları
+- HTML/CSS tamamen yenilenecek (Bootstrap 5 düzeni)
+- Flash mesajı kapatma butonu düzelecek
+- Önerilen commit mesajı: "CRUD rotaları ve şablonlar eklendi - Prompt 6"
 
 ### Commit Geçmişi
 | # | Hash | Mesaj |
 |---|------|-------|
 | 1 | 5e62f8d | Proje iskeleti kuruldu - Prompt 1-2 |
 | 2 | 61f183a | Modeller ve migration eklendi - Prompt 3-4 |
+| 3 | — | Auth akışı eklendi - Prompt 5 |
