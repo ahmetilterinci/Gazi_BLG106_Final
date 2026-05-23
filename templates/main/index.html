@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Ana Sayfa{% endblock %}
+{% block meta_description %}CyberLearn AI ile siber güvenliği Duolingo tarzı öğren. Ağ güvenliği, kriptografi, etik hacking ve daha fazlası.{% endblock %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+  <!-- Giriş Yapılmış Hoşgeldin Bölümü -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-12 col-lg-10 text-center">
+      <div class="welcome-banner p-5">
+        <div class="welcome-avatar mx-auto mb-3">
+          <i class="bi bi-person-check-fill fs-1 text-white"></i>
+        </div>
+        <h1 class="display-6 fw-bold text-white mb-2">
+          Hoş geldin, <span class="gradient-text">{{ current_user.username }}</span>! 👋
+        </h1>
+        <p class="text-muted">Öğrenmeye kaldığın yerden devam et.</p>
+        <a href="#" class="btn btn-hero mt-2">
+          <i class="bi bi-play-circle me-2"></i>Derse Devam Et
+        </a>
+      </div>
+    </div>
+  </div>
+
+{% else %}
+  <!-- Anonim Kullanıcı — Hero Bölümü -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-12 col-lg-9 text-center">
+      <div class="hero-badge mb-3">
+        <i class="bi bi-shield-check me-1"></i> Yapay Zeka Destekli Öğrenme
+      </div>
+      <h1 class="hero-title mb-3">
+        Siber Güvenliği<br>
+        <span class="gradient-text">Oyun Gibi</span> Öğren
+      </h1>
+      <p class="hero-subtitle text-muted mb-4">
+        Duolingo'nun eğlenceli öğrenme modelini siber güvenlikle birleştiren
+        interaktif platform. Ağ güvenliği, kriptografi, etik hacking ve daha fazlası.
+      </p>
+      <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a id="hero-register-btn" href="{{ url_for('auth.register') }}" class="btn btn-hero">
+          <i class="bi bi-rocket-takeoff me-2"></i>Ücretsiz Başla
+        </a>
+        <a id="hero-login-btn" href="{{ url_for('auth.login') }}" class="btn btn-hero-outline">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Özellikler -->
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #6c63ff, #8b5cf6);">
+          <i class="bi bi-trophy-fill"></i>
+        </div>
+        <h3 class="h5 fw-bold text-white mt-3 mb-2">Gamification</h3>
+        <p class="text-muted small mb-0">
+          Ders tamamla, puan kazan, rozet topla. Öğrenmek hiç bu kadar eğlenceli olmamıştı.
+        </p>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #00d4aa, #0891b2);">
+          <i class="bi bi-cpu-fill"></i>
+        </div>
+        <h3 class="h5 fw-bold text-white mt-3 mb-2">Yapay Zeka</h3>
+        <p class="text-muted small mb-0">
+          Kişiselleştirilmiş öğrenme yolu. Yapay zeka seviyeni analiz ederek en uygun dersi sunar.
+        </p>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+          <i class="bi bi-shield-exclamation"></i>
+        </div>
+        <h3 class="h5 fw-bold text-white mt-3 mb-2">Gerçek Senaryolar</h3>
+        <p class="text-muted small mb-0">
+          CTF tarzı pratik sorular ve gerçek dünya saldırı/savunma senaryolarıyla öğren.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Hero */
+  .hero-badge {
+    display: inline-block;
+    background: rgba(108, 99, 255, 0.15);
+    border: 1px solid rgba(108, 99, 255, 0.35);
+    color: #a78bfa;
+    border-radius: 20px;
+    padding: 0.35rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #6c63ff, #00d4aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-hero {
+    background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.75rem 1.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .btn-hero:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    color: #fff;
+  }
+
+  .btn-hero-outline {
+    background: transparent;
+    border: 1px solid rgba(108, 99, 255, 0.4);
+    color: #a0aec0;
+    border-radius: 10px;
+    padding: 0.75rem 1.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .btn-hero-outline:hover {
+    border-color: #6c63ff;
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* Welcome Banner */
+  .welcome-banner {
+    background: rgba(26, 26, 46, 0.7);
+    border: 1px solid rgba(108, 99, 255, 0.25);
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+  }
+
+  .welcome-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #6c63ff, #00d4aa);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Feature Cards */
+  .feature-card {
+    background: rgba(26, 26, 46, 0.7);
+    border: 1px solid rgba(108, 99, 255, 0.2);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    transition: border-color 0.25s, transform 0.2s;
+    height: 100%;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(108, 99, 255, 0.5);
+    transform: translateY(-4px);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: #fff;
+  }
+</style>
+{% endblock %}

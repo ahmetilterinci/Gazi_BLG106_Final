@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Kayıt Ol{% endblock %}
+{% block meta_description %}CyberLearn AI'ya kayıt olun ve siber güvenliği öğrenmeye başlayın.{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+    <!-- Kart -->
+    <div class="auth-card">
+
+      <!-- Başlık -->
+      <div class="text-center mb-4">
+        <div class="auth-icon-wrapper mx-auto mb-3">
+          <i class="bi bi-person-plus-fill fs-2 text-white"></i>
+        </div>
+        <h1 class="h3 fw-bold text-white mb-1">Hesap Oluştur</h1>
+        <p class="text-muted small">Siber güvenlik yolculuğuna başla</p>
+      </div>
+
+      <!-- Kayıt Formu -->
+      <form
+        id="register-form"
+        method="POST"
+        action="{{ url_for('auth.register') }}"
+        novalidate
+      >
+        {{ form.hidden_tag() }}
+
+        <!-- Kullanıcı Adı -->
+        <div class="mb-3">
+          <label for="username" class="form-label text-light fw-semibold">
+            <i class="bi bi-person me-1"></i>{{ form.username.label.text }}
+          </label>
+          {{ form.username(
+              id="username",
+              class="form-control auth-input" + (" is-invalid" if form.username.errors else ""),
+              placeholder="kullanici_adi",
+              autocomplete="username"
+          ) }}
+          {% for error in form.username.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- E-posta -->
+        <div class="mb-3">
+          <label for="email" class="form-label text-light fw-semibold">
+            <i class="bi bi-envelope me-1"></i>{{ form.email.label.text }}
+          </label>
+          {{ form.email(
+              id="email",
+              class="form-control auth-input" + (" is-invalid" if form.email.errors else ""),
+              placeholder="ornek@eposta.com",
+              autocomplete="email"
+          ) }}
+          {% for error in form.email.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- Şifre -->
+        <div class="mb-3">
+          <label for="password" class="form-label text-light fw-semibold">
+            <i class="bi bi-lock me-1"></i>{{ form.password.label.text }}
+          </label>
+          <div class="input-group">
+            {{ form.password(
+                id="password",
+                class="form-control auth-input" + (" is-invalid" if form.password.errors else ""),
+                placeholder="En az 8 karakter",
+                autocomplete="new-password"
+            ) }}
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="toggle-password"
+              title="Şifreyi göster/gizle"
+            >
+              <i class="bi bi-eye" id="toggle-password-icon"></i>
+            </button>
+            {% for error in form.password.errors %}
+              <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Şifre Tekrar -->
+        <div class="mb-4">
+          <label for="confirm" class="form-label text-light fw-semibold">
+            <i class="bi bi-lock-fill me-1"></i>{{ form.confirm.label.text }}
+          </label>
+          {{ form.confirm(
+              id="confirm",
+              class="form-control auth-input" + (" is-invalid" if form.confirm.errors else ""),
+              placeholder="Şifreyi tekrar girin",
+              autocomplete="new-password"
+          ) }}
+          {% for error in form.confirm.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <!-- Gönder Butonu -->
+        {{ form.submit(
+            id="register-submit",
+            class="btn btn-auth-primary w-100"
+        ) }}
+      </form>
+
+      <!-- Giriş Linki -->
+      <p class="text-center mt-4 mb-0 text-muted small">
+        Zaten hesabın var mı?
+        <a href="{{ url_for('auth.login') }}" class="auth-link">Giriş Yap</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .auth-card {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid rgba(108, 99, 255, 0.25);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  }
+
+  .auth-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #6c63ff, #00d4aa);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(108, 99, 255, 0.3);
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .auth-input:focus {
+    background: rgba(255,255,255,0.08);
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+    color: #fff;
+    outline: none;
+  }
+
+  .auth-input::placeholder { color: #4a5568; }
+
+  .auth-input.is-invalid {
+    border-color: #fc8181;
+  }
+
+  .invalid-feedback {
+    color: #fc8181;
+    font-size: 0.8rem;
+  }
+
+  .btn-auth-primary {
+    background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .btn-auth-primary:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    color: #fff;
+  }
+
+  .auth-link {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .auth-link:hover {
+    color: #00d4aa;
+    text-decoration: underline;
+  }
+
+  /* Şifre göster/gizle butonu uyumu */
+  .input-group .btn-outline-secondary {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(108, 99, 255, 0.3);
+    color: #a0aec0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .input-group .btn-outline-secondary:hover {
+    background: rgba(108, 99, 255, 0.15);
+    color: #fff;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Şifre göster/gizle
+  const toggleBtn  = document.getElementById('toggle-password');
+  const pwdField   = document.getElementById('password');
+  const toggleIcon = document.getElementById('toggle-password-icon');
+
+  if (toggleBtn && pwdField) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = pwdField.type === 'password';
+      pwdField.type  = isHidden ? 'text' : 'password';
+      toggleIcon.className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+    });
+  }
+</script>
+{% endblock %}

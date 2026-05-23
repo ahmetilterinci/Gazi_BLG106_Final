@@ -7,5 +7,4 @@ from flask import Blueprint
 
 main = Blueprint("main", __name__)
 
-# Route'lar ileride buraya import edilecek:
-# from app.main import routes  # noqa: F401
+from app.main import routes  # noqa: F401  # pylint: disable=wrong-import-position

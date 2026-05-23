@@ -44,6 +44,20 @@ def create_app(config_name: str = "development") -> Flask:
     csrf.init_app(app)
 
     # ---------------------------------------------------------------------------
+    # Flask-Login yapılandırması
+    # ---------------------------------------------------------------------------
+    login_manager.login_view = "auth.login"
+    login_manager.login_message = "Bu sayfayı görüntülemek için giriş yapmalısınız."
+    login_manager.login_message_category = "warning"
+
+    from app.models import User  # noqa: F401 — user_loader için gerekli
+
+    @login_manager.user_loader
+    def load_user(user_id: str):
+        """Flask-Login'in oturum yönetimi için kullanıcıyı ID'ye göre yükler."""
+        return db.session.get(User, int(user_id))
+
+    # ---------------------------------------------------------------------------
     # Model kayıtları — Alembic autogenerate için metadata'nın dolu olması gerekir
     # ---------------------------------------------------------------------------
     from app import models  # noqa: F401

@@ -7,5 +7,4 @@ from flask import Blueprint
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 
-# Route'lar ileride buraya import edilecek:
-# from app.auth import routes  # noqa: F401
+from app.auth import routes  # noqa: F401  # pylint: disable=wrong-import-position

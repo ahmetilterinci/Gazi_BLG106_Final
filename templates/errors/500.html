@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Sunucu Hatası{% endblock %}
+{% block meta_description %}Beklenmedik bir sunucu hatası oluştu — CyberLearn AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6 text-center py-5">
+
+    <div class="error-icon-wrapper mx-auto mb-4">
+      <span class="error-code">500</span>
+    </div>
+
+    <h1 class="h2 fw-bold text-white mb-2">Sunucu Hatası</h1>
+    <p class="text-muted mb-4">
+      Beklenmedik bir hata oluştu. Ekibimiz bu konuda bilgilendirildi.<br>
+      Birkaç dakika sonra tekrar deneyin.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a id="back-home-500" href="{{ url_for('main.index') }}" class="btn btn-error-primary">
+        <i class="bi bi-house-door me-2"></i>Ana Sayfaya Dön
+      </a>
+      <a href="javascript:location.reload()" class="btn btn-error-outline">
+        <i class="bi bi-arrow-clockwise me-2"></i>Yeniden Dene
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .error-icon-wrapper {
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.1));
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error-code {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ef4444, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .btn-error-primary {
+    background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+
+  .btn-error-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    color: #fff;
+  }
+
+  .btn-error-outline {
+    background: transparent;
+    border: 1px solid rgba(239,68,68,0.35);
+    color: #a0aec0;
+    border-radius: 10px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-error-outline:hover {
+    border-color: #ef4444;
+    color: #fff;
+  }
+</style>
+{% endblock %}
