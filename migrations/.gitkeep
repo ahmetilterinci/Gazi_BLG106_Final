@@ -1,0 +1,2 @@
+# Bu dosya migrations/ klasörünü Git'te izletmek için bulunur.
+# flask db init komutu çalıştırıldığında bu klasör Flask-Migrate tarafından doldurulacak.

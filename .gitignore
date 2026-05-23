@@ -1,0 +1,45 @@
+# =============================================================================
+# CyberLearn AI — .gitignore
+# =============================================================================
+
+# Gizli ortam değişkenleri — ASLA commit'lenmesin
+.env
+
+# Python derleme dosyaları
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Sanal ortam
+.venv/
+venv/
+ENV/
+env/
+
+# Flask instance klasörü (SQLite DB ve geçici dosyalar)
+instance/
+
+# Flask-Migrate (yönetilen, ama instance verisi değil)
+# migrations/  ← Bu satırı AÇMAYIN; migrations commit'lenmeli
+
+# Test & Coverage çıktıları
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# IDE dosyaları
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# İşletim sistemi dosyaları
+.DS_Store
+Thumbs.db
+
+# Dağıtım
+dist/
+build/
+*.egg-info/
