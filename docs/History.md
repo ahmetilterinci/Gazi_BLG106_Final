@@ -80,3 +80,44 @@ python -c "from app import create_app; app = create_app(); print('✅ OK')"
 | 1 | 5e62f8d | Proje iskeleti kuruldu - Prompt 1-2 |
 | 2 | 61f183a | Modeller ve migration eklendi - Prompt 3-4 |
 | 3 | — | Auth akışı eklendi - Prompt 5 |
+
+
+
+
+## Oturum 2 — 24.05.2026 ⏳ DEVAM EDİYOR
+
+### Tamamlanan Adımlar
+
+**UI Yenileme — base.html**
+- Google Stitch denendi, yetersiz bulundu
+- Danışman Claude tasarımı devraldı
+- Parçacık ağı canvas (mouse tepkili, touch destekli)
+- Cursor glow, noise texture, scanline overlay
+- Navbar: scroll efekti, tema toggle, dil butonu (Babel'e hazır)
+- Flash mesajları: progress bar + 5sn auto-close
+- cl-reveal sistemi: scroll devamlılığı için IntersectionObserver
+- Tam responsive (mobil hamburger menü)
+- CSS variable sistemi: dark/light tema
+
+**UI Yenileme — index.html**
+- 6 section: Hero → Özellikler → Nasıl Çalışır →
+  Dersler Preview → Stats → CTA
+- Scroll progress bar
+- Parallax orbs (scroll bağlı)
+- Section divider'lar (animasyonlu nokta)
+- Terminal animasyonu (hero-terminal, 10sn'de bir tekrar)
+- Count-up sayaçlar (ekrana girince)
+- Topic bar animasyonları
+- Authenticated / anonymous koşullu görünüm
+
+### Mevcut Durum
+- base.html ✅ tamamlandı
+- index.html ✅ tamamlandı
+- login.html / register.html → yapılacak
+- 404.html / 500.html → yapılacak
+- Prompt 6 (CRUD rotaları) → henüz başlanmadı
+
+### Sonraki Adım
+- login.html + register.html + 404/500 tasarımı
+- Prompt 6: Topic/Lesson CRUD rotaları + şablonlar
+- Önerilen commit mesajı: "UI yenileme - base ve index şablonları"

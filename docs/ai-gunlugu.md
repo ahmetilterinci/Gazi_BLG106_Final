@@ -105,3 +105,85 @@ ayrı ayrı sorgulamasaydım uygulama çalışmayabilirdi.
 | 1 | Proje iskeleti kuruldu - Prompt 1-2 |
 | 2 | Modeller ve migration eklendi - Prompt 3-4 |
 | 3 | Auth akışı eklendi - Prompt 5 |
+
+
+
+
+## Oturum 2 — 24.05.2026 — 17:10-18:45
+
+### Hedef
+Mevcut ham HTML şablonlarını tamamen yenilemek: base.html ve index.html
+dosyalarını modern, animasyonlu, scroll-driven bir tasarıma kavuşturmak.
+
+### Kullandığım Mod ve Model
+- Mod: Plan
+- Model: Claude Sonnet 4.6
+- Görünüm: Manager View
+
+### Verdiğim Promptlar
+1. Google Stitch ile tasarım denemesi — sonuç yetersiz bulundu,
+   Bootstrap tabanlı klasik çıktı verdi.
+2. Danışman Claude'a base.html ve index.html tasarımını devrettim.
+   Önce base önizlemesi widget olarak üretildi, onaylandı.
+3. base.html tam Flask uyumlu üretildi.
+4. index.html scroll-driven animasyonlarla üretildi.
+
+### Ajanın Önerdiği Plan
+- Parçacık ağı canvas (tüm sayfalarda kalıcı, mouse tepkili)
+- Cursor glow efekti
+- Noise texture overlay
+- Navbar scroll efekti
+- cl-reveal / cl-reveal-left / cl-reveal-right sistemi
+  (IntersectionObserver ile scroll devamlılığı)
+- Tema toggle (dark/light) — CSS variable sistemi
+- Dil butonu — Flask-Babel Gün 5'e hazır
+- 6 section: Hero → Özellikler → Nasıl Çalışır →
+  Dersler Preview → Stats → CTA
+
+### Plan'da Sorguladıklarım
+- Google Stitch'in çıktısı yetersiz bulundu: "fazla klasik,
+  kısa, havalı efektler yok" — Stitch yerine danışman Claude
+  işi devraldı.
+- "Makul UI" önerisi reddedildi: "yak makullüğü, efsane
+  sayfalar istiyorum" kararı alındı. Sunum puanı 5 olsa da
+  kullanıcı deneyimi kalitesi önceliklendi.
+- Base.html önizlemesi widget olarak gösterildi, onaylandıktan
+  sonra dosya üretildi — plan modu disiplini uygulandı.
+
+### Üretilen Kodda Düzelttiklerim
+- Scroll devamlılığı eksik bulundu: "aşağı indikçe animasyon
+  devam ediyor hissi yok" itirazı yapıldı.
+  Yanıt: cl-reveal sistemi + parallax orbs + section divider'lar
+  ile devamlılık sağlandı, index'te uygulandı.
+- Eski index.html'deki Flask yapıları (url_for, current_user,
+  block'lar) yeni kodda korundu — kontrol edildi ✅
+
+### Karşılaştığım Hatalar ve Çözümler
+- base.html tarayıcıda doğrudan açılınca Jinja2 tag'leri
+  ham metin olarak göründü: {% block content %},
+  {% if current_user... %} vb.
+  Çözüm: Bu beklenen davranış. Flask üzerinden çalıştırınca
+  kaybolacak — sorun değil.
+
+### Bu Oturumdan Öğrendiğim
+Stitch gibi araçlar statik HTML için iyi ama Flask + Jinja2
+uyumlu, animasyonlu, scroll-driven bir tasarım için yetersiz
+kalıyor. Doğru araç seçimi önemli — Stitch'e uzun zaman
+harcamak yerine danışman Claude'a devretmek daha verimli oldu.
+
+base.html'in "iskelet" olduğunu anlamak önemliydi: içerik
+yokken parçacıklar ve navbar dışında hiçbir şey görünmüyor.
+Asıl animasyonlar index.html'in section'larından geliyor.
+
+### Sonraki Oturum İçin Notlar
+- login.html ve register.html tasarımı yapılacak
+- 404.html ve 500.html tasarımı yapılacak
+- Prompt 6: CRUD rotaları + Topic/Lesson şablonları
+- Commit: "UI yenileme - base ve index şablonları"
+
+### Commit Geçmişi (Gün 2 — şimdiye kadar)
+| # | Mesaj |
+|---|-------|
+| 4 | UI yenileme - base ve index şablonları |
+| 5 | — |
+| 6 | — |
