@@ -71,4 +71,10 @@ def create_app(config_name: str = "development") -> Flask:
     from app.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
+    # ---------------------------------------------------------------------------
+    # CLI komutları
+    # ---------------------------------------------------------------------------
+    from app import commands as _commands  # noqa: F401
+    app.cli.add_command(_commands.seed_db)
+
     return app

@@ -53,6 +53,9 @@ class User(UserMixin, db.Model):
     progress_entries: Mapped[list[UserProgress]] = relationship(
         "UserProgress", back_populates="user"
     )
+    topics_created: Mapped[list[Topic]] = relationship(
+        "Topic", back_populates="creator"
+    )
 
     # ------------------------------------------------------------------
     # Şifre yönetimi
@@ -84,14 +87,21 @@ class Topic(db.Model):
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     icon: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
     order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    # Konuyu oluşturan kullanıcı (nullable — eski kayıtlar veya seed verisi için)
+    user_id: Mapped[Optional[int]] = mapped_column(
+        Integer, ForeignKey("user.id"), nullable=True
+    )
 
     # İlişkiler
     lessons: Mapped[list[Lesson]] = relationship(
         "Lesson", back_populates="topic"
     )
+    creator: Mapped[Optional[User]] = relationship(
+        "User", back_populates="topics_created"
+    )
 
     def __repr__(self) -> str:
-        return f"<Topic {self.title}>"
+        return f"<Topic {self.title} (owner={self.user_id})>"
 
 
 # ---------------------------------------------------------------------------

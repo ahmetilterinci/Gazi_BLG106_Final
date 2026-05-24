@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block title %}Konular — CyberLearn.io{% endblock %}
+{% block meta_description %}Siber güvenlik konularını keşfedin: Ağ Güvenliği, Şifreleme, Web Güvenliği ve daha fazlası.{% endblock %}
+
+{% block extra_css %}
+<style>
+  .page-hero {
+    padding: 4rem 2.5rem 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .page-hero-label {
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--a);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    margin-bottom: .6rem;
+  }
+  .page-hero h1 {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: .75rem;
+  }
+  .page-hero p {
+    color: var(--txt2);
+    font-size: .95rem;
+    max-width: 520px;
+    margin-bottom: 1.5rem;
+  }
+  .topics-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .topics-count {
+    font-family: var(--mono);
+    font-size: .78rem;
+    color: var(--txt3);
+  }
+
+  /* ── GRID ── */
+  .topics-section {
+    padding: 0 2.5rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.25rem;
+  }
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 16px;
+    padding: 1.6rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    transition: border-color .25s, box-shadow .25s, transform .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .topic-card:hover::before { opacity: 1; }
+  .topic-card:hover {
+    border-color: var(--edge-h);
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    transform: translateY(-5px);
+    color: inherit;
+  }
+  .topic-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--pg), var(--ag));
+    border: 1px solid var(--edge);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .topic-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: .9rem;
+  }
+  .topic-meta { flex: 1; }
+  .topic-title {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: .25rem;
+  }
+  .topic-lesson-count {
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--p);
+  }
+  .topic-desc {
+    font-size: .83rem;
+    color: var(--txt2);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .topic-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: .8rem;
+    border-top: 1px solid var(--edge);
+  }
+  .topic-order-badge {
+    font-family: var(--mono);
+    font-size: .68rem;
+    color: var(--txt3);
+  }
+  .topic-arrow {
+    width: 28px; height: 28px;
+    background: rgba(110,91,255,.1);
+    border: 1px solid var(--edge);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--p);
+    font-size: .85rem;
+    transition: all .2s;
+  }
+  .topic-card:hover .topic-arrow {
+    background: var(--p);
+    border-color: var(--p);
+    color: #fff;
+  }
+
+  /* Empty state */
+  .topics-empty {
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+  .topics-empty-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
+  .topics-empty h2 {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: .5rem;
+  }
+  .topics-empty p { color: var(--txt2); font-size: .9rem; margin-bottom: 1.5rem; }
+
+  /* ── PAGINATION ── */
+  .pagination-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .4rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .pg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px; height: 36px;
+    padding: 0 .5rem;
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 8px;
+    color: var(--txt2);
+    font-size: .82rem;
+    font-family: var(--mono);
+    text-decoration: none;
+    transition: all .2s;
+  }
+  .pg-btn:hover { border-color: var(--p); color: #fff; }
+  .pg-btn.active {
+    background: var(--p);
+    border-color: var(--p);
+    color: #fff;
+    font-weight: 700;
+  }
+  .pg-btn.disabled {
+    opacity: .35;
+    pointer-events: none;
+  }
+  .pg-ellipsis {
+    color: var(--txt3);
+    font-size: .82rem;
+    padding: 0 .3rem;
+  }
+
+  @media(max-width:768px) {
+    .page-hero, .topics-section { padding-left: 1rem; padding-right: 1rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Hero -->
+<div class="page-hero cl-reveal">
+  <div class="page-hero-label"><i class="bi bi-shield-lock"></i> Öğrenme Yolu</div>
+  <h1>Siber Güvenlik <span class="cl-glow-text">Konuları</span></h1>
+  <p>Temel ağ güvenliğinden ileri seviye saldırı tekniklerine kadar yapılandırılmış öğrenme yolculuğunuz burada başlıyor.</p>
+  <div class="topics-actions">
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('main.topic_new') }}" class="cl-btn-primary" id="btn-new-topic">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Yeni Konu Ekle
+    </a>
+    {% endif %}
+    <span class="topics-count">
+      Toplam {{ pagination.total }} konu
+    </span>
+  </div>
+</div>
+
+<!-- Topics Grid -->
+<section class="topics-section" aria-label="Konu listesi">
+  {% if topics %}
+  <div class="topics-grid">
+    {% for topic in topics %}
+    <a href="{{ url_for('main.topic_detail', id=topic.id) }}"
+       class="topic-card cl-reveal"
+       style="animation-delay: {{ loop.index0 * 0.05 }}s"
+       aria-label="{{ topic.title }} konusuna git">
+      <div class="topic-card-header">
+        <div class="topic-icon" aria-hidden="true">{{ topic.icon or '📘' }}</div>
+        <div class="topic-meta">
+          <div class="topic-title">{{ topic.title }}</div>
+          <div class="topic-lesson-count">
+            <i class="bi bi-collection" aria-hidden="true"></i>
+            {{ topic.lessons | length }} ders
+          </div>
+        </div>
+      </div>
+      {% if topic.description %}
+      <p class="topic-desc">{{ topic.description | truncate(120) }}</p>
+      {% endif %}
+      <div class="topic-footer">
+        <span class="topic-order-badge">Sıra #{{ topic.order }}</span>
+        <span class="topic-arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if pagination.pages > 1 %}
+  <nav class="pagination-wrap" aria-label="Sayfalama">
+    <!-- Önceki -->
+    {% if pagination.has_prev %}
+    <a class="pg-btn" href="{{ url_for('main.topics', page=pagination.prev_num) }}" aria-label="Önceki sayfa">
+      <i class="bi bi-chevron-left"></i>
+    </a>
+    {% else %}
+    <span class="pg-btn disabled" aria-disabled="true"><i class="bi bi-chevron-left"></i></span>
+    {% endif %}
+
+    <!-- Sayfa numaraları -->
+    {% for p in pagination.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+      {% if p %}
+        <a class="pg-btn {{ 'active' if p == pagination.page else '' }}"
+           href="{{ url_for('main.topics', page=p) }}"
+           aria-label="Sayfa {{ p }}"
+           {% if p == pagination.page %}aria-current="page"{% endif %}>{{ p }}</a>
+      {% else %}
+        <span class="pg-ellipsis">…</span>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Sonraki -->
+    {% if pagination.has_next %}
+    <a class="pg-btn" href="{{ url_for('main.topics', page=pagination.next_num) }}" aria-label="Sonraki sayfa">
+      <i class="bi bi-chevron-right"></i>
+    </a>
+    {% else %}
+    <span class="pg-btn disabled" aria-disabled="true"><i class="bi bi-chevron-right"></i></span>
+    {% endif %}
+  </nav>
+  {% endif %}
+
+  {% else %}
+  <!-- Empty State -->
+  <div class="topics-empty cl-reveal">
+    <div class="topics-empty-icon">📭</div>
+    <h2>Henüz konu eklenmemiş</h2>
+    <p>İlk konuyu ekleyerek öğrenme yolculuğunu başlat.</p>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('main.topic_new') }}" class="cl-btn-primary">
+      <i class="bi bi-plus-lg"></i> İlk Konuyu Ekle
+    </a>
+    {% else %}
+    <a href="{{ url_for('auth.login') }}" class="cl-btn-ghost">
+      <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

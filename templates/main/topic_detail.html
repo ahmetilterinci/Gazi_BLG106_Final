@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic.title }} — CyberLearn.io{% endblock %}
+{% block meta_description %}{{ topic.description or (topic.title + ' konusuna ait dersler ve öğrenme içerikleri.') }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .detail-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 5rem;
+  }
+  /* Breadcrumb */
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .78rem;
+    color: var(--txt3);
+    margin-bottom: 2rem;
+    font-family: var(--mono);
+  }
+  .breadcrumb-nav a { color: var(--txt2); text-decoration: none; transition: color .2s; }
+  .breadcrumb-nav a:hover { color: var(--p); }
+  .breadcrumb-sep { font-size: .65rem; }
+
+  /* Topic header */
+  .topic-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  .topic-header-icon {
+    width: 68px; height: 68px;
+    background: linear-gradient(135deg, var(--pg), var(--ag));
+    border: 1px solid var(--edge);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  .topic-header-text h1 {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: .4rem;
+  }
+  .topic-header-desc {
+    color: var(--txt2);
+    font-size: .9rem;
+    line-height: 1.65;
+    margin-bottom: .75rem;
+  }
+  .topic-header-meta {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+  }
+  .meta-badge {
+    font-family: var(--mono);
+    font-size: .7rem;
+    padding: .25rem .65rem;
+    border-radius: 6px;
+    border: 1px solid var(--edge);
+    color: var(--txt2);
+  }
+  .meta-badge.green { border-color: rgba(0,245,196,.25); color: var(--a); }
+
+  /* Owner actions */
+  .owner-actions {
+    display: flex;
+    gap: .6rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: .35rem;
+    padding: .4rem .9rem;
+    border-radius: 8px;
+    font-size: .78rem;
+    font-weight: 600;
+    font-family: var(--sans);
+    text-decoration: none;
+    transition: all .2s;
+    cursor: pointer;
+    border: 1px solid;
+  }
+  .btn-sm-edit { background: rgba(110,91,255,.1); border-color: var(--edge); color: var(--txt2); }
+  .btn-sm-edit:hover { border-color: var(--p); color: #fff; }
+  .btn-sm-add { background: rgba(0,245,196,.08); border-color: rgba(0,245,196,.2); color: var(--a); }
+  .btn-sm-add:hover { background: rgba(0,245,196,.15); }
+  .btn-sm-delete { background: rgba(255,61,107,.08); border-color: rgba(255,61,107,.2); color: var(--r); }
+  .btn-sm-delete:hover { background: rgba(255,61,107,.15); }
+
+  /* Lessons list */
+  .lessons-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .lessons-header h2 {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
+  .lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .lesson-item:hover {
+    border-color: var(--edge-h);
+    box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    transform: translateX(4px);
+    color: inherit;
+  }
+  .lesson-status-dot {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .9rem;
+    flex-shrink: 0;
+  }
+  .status-done { background: rgba(0,245,196,.12); border: 1px solid rgba(0,245,196,.25); color: var(--a); }
+  .status-todo { background: rgba(110,91,255,.1); border: 1px solid var(--edge); color: var(--txt3); }
+  .lesson-item-body { flex: 1; min-width: 0; }
+  .lesson-item-title {
+    font-weight: 600;
+    font-size: .9rem;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .lesson-item-meta {
+    display: flex;
+    gap: .6rem;
+    align-items: center;
+    margin-top: .2rem;
+  }
+  .diff-badge {
+    font-family: var(--mono);
+    font-size: .65rem;
+    padding: .15rem .45rem;
+    border-radius: 4px;
+  }
+  .diff-beginner { background: rgba(0,245,196,.1); color: var(--a); }
+  .diff-intermediate { background: rgba(255,184,77,.1); color: var(--w); }
+  .diff-advanced { background: rgba(255,61,107,.1); color: var(--r); }
+  .lesson-score {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--a);
+  }
+  .lesson-item-arrow { color: var(--txt3); font-size: .8rem; transition: color .2s; }
+  .lesson-item:hover .lesson-item-arrow { color: var(--p); }
+
+  /* Empty lessons */
+  .lessons-empty {
+    text-align: center;
+    padding: 3rem;
+    background: var(--surface);
+    border: 1px dashed var(--edge);
+    border-radius: 14px;
+    color: var(--txt2);
+    font-size: .88rem;
+  }
+
+  @media(max-width:640px) {
+    .detail-wrap { padding: 2rem 1rem 4rem; }
+    .topic-header { flex-direction: column; }
+    .topic-header-icon { width: 52px; height: 52px; font-size: 1.4rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="detail-wrap">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb-nav cl-reveal" aria-label="Konum">
+    <a href="{{ url_for('main.index') }}"><i class="bi bi-house-door"></i></a>
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="{{ url_for('main.topics') }}">Konular</a>
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <span>{{ topic.title }}</span>
+  </nav>
+
+  <!-- Topic header -->
+  <header class="topic-header cl-reveal">
+    <div class="topic-header-icon" aria-hidden="true">{{ topic.icon or '📘' }}</div>
+    <div class="topic-header-text">
+      <h1>{{ topic.title }}</h1>
+      {% if topic.description %}
+      <p class="topic-header-desc">{{ topic.description }}</p>
+      {% endif %}
+      <div class="topic-header-meta">
+        <span class="meta-badge"><i class="bi bi-collection" aria-hidden="true"></i> {{ lessons | length }} ders</span>
+        {% if current_user.is_authenticated %}
+          {% set completed = progress_map.values() | selectattr('is_completed') | list | length %}
+          <span class="meta-badge green">
+            <i class="bi bi-check2-circle" aria-hidden="true"></i>
+            {{ completed }} / {{ lessons | length }} tamamlandı
+          </span>
+        {% endif %}
+        <span class="meta-badge">Sıra #{{ topic.order }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Owner actions -->
+  {% if current_user.is_authenticated and (topic.user_id == current_user.id or topic.user_id is none) %}
+  <div class="owner-actions cl-reveal">
+    <a href="{{ url_for('main.topic_edit', id=topic.id) }}" class="btn-sm btn-sm-edit" id="btn-edit-topic">
+      <i class="bi bi-pencil" aria-hidden="true"></i> Düzenle
+    </a>
+    <a href="{{ url_for('main.lesson_new', id=topic.id) }}" class="btn-sm btn-sm-add" id="btn-add-lesson">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Ders Ekle
+    </a>
+    <a href="{{ url_for('main.topic_delete_confirm', id=topic.id) }}" class="btn-sm btn-sm-delete" id="btn-delete-topic">
+      <i class="bi bi-trash" aria-hidden="true"></i> Konuyu Sil
+    </a>
+  </div>
+  {% endif %}
+
+  <!-- Lessons list -->
+  <div class="lessons-header cl-reveal">
+    <h2><i class="bi bi-list-ul" aria-hidden="true"></i> Dersler</h2>
+  </div>
+
+  {% if lessons %}
+  <ul class="lessons-list" role="list">
+    {% for lesson in lessons %}
+    {% set prog = progress_map.get(lesson.id) %}
+    {% set is_done = prog and prog.is_completed %}
+    <li>
+      <a href="{{ url_for('main.lesson_detail', id=lesson.id) }}"
+         class="lesson-item cl-reveal"
+         style="animation-delay: {{ loop.index0 * 0.04 }}s"
+         aria-label="{{ lesson.title }}{% if is_done %} — Tamamlandı{% endif %}">
+        <span class="lesson-status-dot {{ 'status-done' if is_done else 'status-todo' }}" aria-hidden="true">
+          <i class="bi {{ 'bi-check-lg' if is_done else 'bi-play-circle' }}"></i>
+        </span>
+        <span class="lesson-item-body">
+          <span class="lesson-item-title">{{ lesson.title }}</span>
+          <span class="lesson-item-meta">
+            {% if lesson.difficulty == 'beginner' %}
+            <span class="diff-badge diff-beginner">🟢 Kolay</span>
+            {% elif lesson.difficulty == 'intermediate' %}
+            <span class="diff-badge diff-intermediate">🟡 Orta</span>
+            {% else %}
+            <span class="diff-badge diff-advanced">🔴 Zor</span>
+            {% endif %}
+            {% if is_done and prog.score is not none %}
+            <span class="lesson-score">Puan: {{ prog.score }}/100</span>
+            {% endif %}
+          </span>
+        </span>
+        <i class="bi bi-chevron-right lesson-item-arrow" aria-hidden="true"></i>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="lessons-empty cl-reveal">
+    <i class="bi bi-inbox" style="font-size:2rem;color:var(--txt3);display:block;margin-bottom:.75rem;" aria-hidden="true"></i>
+    Bu konuya henüz ders eklenmemiş.
+    {% if current_user.is_authenticated %}
+    <br><a href="{{ url_for('main.lesson_new', id=topic.id) }}" style="color:var(--a);text-decoration:none;font-weight:600;">+ İlk dersi ekle</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

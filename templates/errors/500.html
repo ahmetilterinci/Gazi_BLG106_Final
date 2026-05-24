@@ -1,86 +1,592 @@
 {% extends "base.html" %}
 
-{% block title %}Sunucu Hatası{% endblock %}
+{% block title %}500 — Sunucu Hatası{% endblock %}
 {% block meta_description %}Beklenmedik bir sunucu hatası oluştu — CyberLearn AI{% endblock %}
-
-{% block content %}
-<div class="row justify-content-center">
-  <div class="col-12 col-md-8 col-lg-6 text-center py-5">
-
-    <div class="error-icon-wrapper mx-auto mb-4">
-      <span class="error-code">500</span>
-    </div>
-
-    <h1 class="h2 fw-bold text-white mb-2">Sunucu Hatası</h1>
-    <p class="text-muted mb-4">
-      Beklenmedik bir hata oluştu. Ekibimiz bu konuda bilgilendirildi.<br>
-      Birkaç dakika sonra tekrar deneyin.
-    </p>
-
-    <div class="d-flex justify-content-center gap-3 flex-wrap">
-      <a id="back-home-500" href="{{ url_for('main.index') }}" class="btn btn-error-primary">
-        <i class="bi bi-house-door me-2"></i>Ana Sayfaya Dön
-      </a>
-      <a href="javascript:location.reload()" class="btn btn-error-outline">
-        <i class="bi bi-arrow-clockwise me-2"></i>Yeniden Dene
-      </a>
-    </div>
-  </div>
-</div>
-{% endblock %}
 
 {% block extra_css %}
 <style>
-  .error-icon-wrapper {
-    width: 140px;
-    height: 140px;
-    background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.1));
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 24px;
+  /* ── ERROR PAGE LAYOUT ── */
+  .error-page {
+    min-height: calc(100vh - var(--nav-h));
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 4rem 1.25rem;
+    position: relative;
+    overflow: hidden;
   }
 
-  .error-code {
-    font-size: 3.5rem;
+  /* 500 için kırmızı/turuncu orb'lar */
+  .error-page::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(239, 68, 68, .08) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    animation: orbPulse500 5s ease-in-out infinite;
+  }
+
+  .error-page::after {
+    content: '';
+    position: absolute;
+    bottom: 20%;
+    left: 8%;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, .06) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    animation: orbPulse500 7s ease-in-out infinite reverse;
+  }
+
+  @keyframes orbPulse500 {
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+      opacity: .6;
+      transform: translateX(-50%) scale(1.06);
+    }
+  }
+
+  /* ── CONTENT WRAPPER ── */
+  .error-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 520px;
+    width: 100%;
+    animation: errorReveal .7s cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  @keyframes errorReveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── 500 NUMBER — kırmızı/turuncu gradient ── */
+  .error-number-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+    animation: numberShake .9s cubic-bezier(.34, 1.56, .64, 1) both;
+  }
+
+  @keyframes numberShake {
+    from {
+      opacity: 0;
+      transform: scale(.7) rotate(-3deg);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  .error-number {
+    font-family: var(--display);
+    font-size: clamp(6rem, 18vw, 10rem);
     font-weight: 900;
-    background: linear-gradient(135deg, #ef4444, #f59e0b);
+    line-height: .9;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #f59e0b 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    line-height: 1;
+    position: relative;
+    letter-spacing: -0.04em;
+    animation: heatShimmer 5s ease-in-out infinite;
+    background-size: 200% 200%;
   }
 
-  .btn-error-primary {
-    background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+  @keyframes heatShimmer {
+
+    0%,
+    100% {
+      background-position: 0% 50%;
+      filter: brightness(1);
+    }
+
+    50% {
+      background-position: 100% 50%;
+      filter: brightness(1.1);
+    }
+  }
+
+  /* Glitch efektleri — kırmızı tonları */
+  .error-number::before,
+  .error-number::after {
+    content: '500';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #f59e0b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .error-number::before {
+    animation: glitchRed 4s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+  }
+
+  .error-number::after {
+    animation: glitchOrange 4s infinite;
+    clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+  }
+
+  @keyframes glitchRed {
+
+    0%,
+    85%,
+    100% {
+      transform: translate(0);
+      opacity: 0;
+    }
+
+    88% {
+      transform: translate(-4px, -2px);
+      opacity: .55;
+      filter: hue-rotate(-20deg);
+    }
+
+    91% {
+      transform: translate(2px, 0);
+      opacity: .3;
+    }
+
+    93% {
+      transform: translate(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes glitchOrange {
+
+    0%,
+    82%,
+    100% {
+      transform: translate(0);
+      opacity: 0;
+    }
+
+    85% {
+      transform: translate(4px, 2px);
+      opacity: .45;
+      filter: hue-rotate(20deg);
+    }
+
+    89% {
+      transform: translate(-2px, 0);
+      opacity: .25;
+    }
+
+    91% {
+      transform: translate(0);
+      opacity: 0;
+    }
+  }
+
+  /* Dekoratif ayırıcı — kırmızı renk */
+  .error-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    margin: .5rem 0 1.75rem;
+  }
+
+  .error-divider-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ef4444);
+  }
+
+  .error-divider-line.right {
+    background: linear-gradient(90deg, #f59e0b, transparent);
+  }
+
+  .error-divider-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ef4444, #f59e0b);
+    animation: dotPulseRed 1.5s ease-in-out infinite;
+  }
+
+  @keyframes dotPulseRed {
+
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, .4);
+    }
+
+    50% {
+      transform: scale(1.4);
+      box-shadow: 0 0 0 7px rgba(239, 68, 68, 0);
+    }
+  }
+
+  /* ── TERMINAL BADGE ── */
+  .error-terminal {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(0, 0, 0, .35);
+    border: 1px solid rgba(239, 68, 68, .3);
+    border-radius: 8px;
+    padding: .35rem .85rem;
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: #fca5a5;
+    margin-bottom: 1.5rem;
+    letter-spacing: .05em;
+  }
+
+  .error-terminal-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: redBlink 1s step-end infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes redBlink {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* ── TEXT ── */
+  .error-title {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: .75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .error-desc {
+    font-size: .925rem;
+    color: var(--txt2);
+    line-height: 1.7;
+    margin-bottom: 2.25rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── CARD ── */
+  .error-card {
+    background: rgba(13, 13, 34, .6);
+    border: 1px solid rgba(239, 68, 68, .15);
+    border-radius: 18px;
+    padding: 2.25rem 2rem;
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    box-shadow:
+      0 0 0 1px rgba(239, 68, 68, .05),
+      0 24px 64px rgba(0, 0, 0, .5),
+      0 0 60px rgba(239, 68, 68, .04);
+    position: relative;
+    overflow: hidden;
+    animation: cardSlide .65s .15s cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  @keyframes cardSlide {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Üst şerit — kırmızı/turuncu gradient */
+  .error-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ef4444, #f59e0b, transparent);
+    opacity: .65;
+  }
+
+  /* Scan lines */
+  .error-scanlines {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg,
+        transparent,
+        transparent 2px,
+        rgba(239, 68, 68, .012) 2px,
+        rgba(239, 68, 68, .012) 4px);
+    pointer-events: none;
+    border-radius: 18px;
+    z-index: 0;
+  }
+
+  .error-card>*:not(.error-scanlines) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── STATUS INDICATOR ── */
+  .error-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-bottom: 1.25rem;
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--txt3);
+  }
+
+  .error-status-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    animation: statusPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes statusPulse {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, .4);
+    }
+
+    50% {
+      box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    }
+  }
+
+  /* ── BUTTONS ── */
+  .error-actions {
+    display: flex;
+    justify-content: center;
+    gap: .875rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-err-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .65rem 1.5rem;
+    background: linear-gradient(135deg, var(--p), var(--p2, #8b5cf6));
     border: none;
-    color: #fff;
     border-radius: 10px;
-    padding: 0.65rem 1.5rem;
-    font-weight: 600;
-    transition: opacity 0.2s, transform 0.15s;
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 700;
+    font-family: var(--sans, 'Inter', sans-serif);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s, opacity .2s;
+    box-shadow: 0 0 24px rgba(110, 91, 255, .3);
+    position: relative;
+    overflow: hidden;
   }
 
-  .btn-error-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+  .btn-err-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .1), transparent);
+    transition: left .4s;
+  }
+
+  .btn-err-primary:hover::before {
+    left: 100%;
+  }
+
+  .btn-err-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 36px rgba(110, 91, 255, .5);
     color: #fff;
   }
 
-  .btn-error-outline {
+  .btn-err-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .65rem 1.5rem;
     background: transparent;
-    border: 1px solid rgba(239,68,68,0.35);
-    color: #a0aec0;
+    border: 1px solid rgba(239, 68, 68, .3);
     border-radius: 10px;
-    padding: 0.65rem 1.5rem;
+    color: var(--txt2);
+    font-size: .85rem;
     font-weight: 600;
-    transition: all 0.2s;
+    font-family: var(--sans, 'Inter', sans-serif);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all .2s;
   }
 
-  .btn-error-outline:hover {
-    border-color: #ef4444;
-    color: #fff;
+  .btn-err-ghost:hover {
+    border-color: rgba(239, 68, 68, .6);
+    color: #fca5a5;
+    background: rgba(239, 68, 68, .06);
+  }
+
+  /* ── INFO BOX ── */
+  .error-info {
+    margin-top: 1.75rem;
+    padding: .85rem 1rem;
+    background: rgba(239, 68, 68, .06);
+    border: 1px solid rgba(239, 68, 68, .15);
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    text-align: left;
+  }
+
+  .error-info-icon {
+    font-size: .9rem;
+    color: #fca5a5;
+    margin-top: .1rem;
+    flex-shrink: 0;
+  }
+
+  .error-info-text {
+    font-size: .78rem;
+    color: var(--txt2);
+    line-height: 1.6;
+    font-family: var(--mono);
+  }
+
+  .error-info-text strong {
+    color: #fca5a5;
+    display: block;
+    margin-bottom: .2rem;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 480px) {
+    .error-card {
+      padding: 1.75rem 1.25rem;
+    }
+
+    .error-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn-err-primary,
+    .btn-err-ghost {
+      justify-content: center;
+    }
   }
 </style>
+{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <div class="error-content">
+
+    <!-- Büyük 500 numarası -->
+    <div class="error-number-wrap">
+      <span class="error-number">500</span>
+    </div>
+
+    <!-- Dekoratif ayırıcı -->
+    <div class="error-divider">
+      <span class="error-divider-line"></span>
+      <span class="error-divider-dot"></span>
+      <span class="error-divider-line right"></span>
+    </div>
+
+    <!-- Kart -->
+    <div class="error-card">
+      <div class="error-scanlines"></div>
+
+      <!-- Terminal badge -->
+      <div class="error-terminal">
+        <span class="error-terminal-dot"></span>
+        <span>error_code: INTERNAL_SERVER_ERROR</span>
+      </div>
+
+      <!-- Canlı durum göstergesi -->
+      <div class="error-status">
+        <span class="error-status-pulse"></span>
+        <span>sistem ekibimiz bilgilendirildi</span>
+      </div>
+
+      <h1 class="error-title">Sunucu Hatası</h1>
+
+      <p class="error-desc">
+        Beklenmedik bir hata oluştu. Endişelenmeyin, ekibimiz konu hakkında bilgilendirildi.
+        Birkaç dakika sonra tekrar deneyin.
+      </p>
+
+      <div class="error-actions">
+        <a href="{{ url_for('main.index') }}" class="btn-err-primary">
+          <i class="bi bi-house-door"></i>
+          Ana Sayfaya Dön
+        </a>
+        <a href="javascript:location.reload()" class="btn-err-ghost">
+          <i class="bi bi-arrow-clockwise"></i>
+          Yeniden Dene
+        </a>
+      </div>
+
+      <!-- Bilgi kutusu -->
+      <div class="error-info">
+        <i class="bi bi-info-circle error-info-icon"></i>
+        <div class="error-info-text">
+          <strong>Ne yapmalıyım?</strong>
+          Sayfayı yenilemeyi deneyin. Sorun devam ederse birkaç dakika bekleyip tekrar gelin. Sorun devam ederse bize
+          bildirin.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 {% endblock %}

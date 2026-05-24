@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% if action == 'edit' %}
+{% block title %}{{ topic.title }} — Düzenle · CyberLearn.io{% endblock %}
+{% else %}
+{% block title %}Yeni Konu — CyberLearn.io{% endblock %}
+{% endif %}
+
+{% block extra_css %}
+<style>
+  .form-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 5rem;
+  }
+  /* Breadcrumb */
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .78rem;
+    color: var(--txt3);
+    margin-bottom: 2rem;
+    font-family: var(--mono);
+    flex-wrap: wrap;
+  }
+  .breadcrumb-nav a { color: var(--txt2); text-decoration: none; transition: color .2s; }
+  .breadcrumb-nav a:hover { color: var(--p); }
+  .breadcrumb-sep { font-size: .65rem; }
+
+  /* Form header */
+  .form-page-header { margin-bottom: 2rem; }
+  .form-page-label {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--p);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: .4rem;
+  }
+  .form-page-header h1 {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  /* Card */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  /* Fields */
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: 1.4rem;
+  }
+  .field-group:last-of-type { margin-bottom: 0; }
+  .field-label {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--txt2);
+    font-family: var(--mono);
+    letter-spacing: .03em;
+  }
+  .field-label .req { color: var(--r); margin-left: 2px; }
+  .field-input,
+  .field-textarea,
+  .field-select {
+    width: 100%;
+    padding: .65rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--edge);
+    border-radius: 10px;
+    color: var(--txt);
+    font-family: var(--sans);
+    font-size: .88rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .field-input:focus,
+  .field-textarea:focus,
+  .field-select:focus {
+    border-color: var(--p);
+    box-shadow: 0 0 0 3px rgba(110,91,255,.12);
+  }
+  .field-textarea { resize: vertical; min-height: 110px; }
+  .field-select { cursor: pointer; }
+  .field-input.is-invalid,
+  .field-textarea.is-invalid,
+  .field-select.is-invalid {
+    border-color: rgba(255,61,107,.5);
+  }
+  .field-error {
+    font-size: .75rem;
+    color: var(--r);
+    font-family: var(--mono);
+  }
+  .field-hint {
+    font-size: .73rem;
+    color: var(--txt3);
+  }
+
+  /* Two-col row */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: .9rem;
+    margin-bottom: 1.4rem;
+  }
+  .field-row .field-group { margin-bottom: 0; }
+
+  /* Actions */
+  .form-actions {
+    display: flex;
+    gap: .75rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  @media(max-width:600px) {
+    .form-wrap { padding: 2rem 1rem 4rem; }
+    .form-card { padding: 1.25rem; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-wrap">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb-nav cl-reveal" aria-label="Konum">
+    <a href="{{ url_for('main.index') }}"><i class="bi bi-house-door"></i></a>
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="{{ url_for('main.topics') }}">Konular</a>
+    {% if action == 'edit' and topic %}
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <a href="{{ url_for('main.topic_detail', id=topic.id) }}">{{ topic.title }}</a>
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <span>Düzenle</span>
+    {% else %}
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <span>Yeni Konu</span>
+    {% endif %}
+  </nav>
+
+  <!-- Header -->
+  <header class="form-page-header cl-reveal">
+    <div class="form-page-label">
+      {% if action == 'edit' %}<i class="bi bi-pencil"></i> Düzenle{% else %}<i class="bi bi-plus-circle"></i> Oluştur{% endif %}
+    </div>
+    <h1>
+      {% if action == 'edit' %}"{{ topic.title }}" Konusunu Düzenle{% else %}Yeni Konu Ekle{% endif %}
+    </h1>
+  </header>
+
+  <!-- Form Card -->
+  <div class="form-card cl-reveal">
+    <form method="POST" novalidate id="topic-form"
+          action="{% if action == 'edit' %}{{ url_for('main.topic_edit', id=topic.id) }}{% else %}{{ url_for('main.topic_new') }}{% endif %}">
+      {{ form.hidden_tag() }}
+
+      <!-- Title + Icon row -->
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="{{ form.title.id }}">
+            Başlık <span class="req" aria-hidden="true">*</span>
+          </label>
+          {{ form.title(class="field-input" + (" is-invalid" if form.title.errors else ""),
+                        id="field-topic-title") }}
+          {% for err in form.title.errors %}
+          <span class="field-error" role="alert">{{ err }}</span>
+          {% endfor %}
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="{{ form.icon.id }}">Simge</label>
+          {{ form.icon(class="field-input" + (" is-invalid" if form.icon.errors else ""),
+                       id="field-topic-icon") }}
+          <span class="field-hint">Emoji giriniz</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="field-group">
+        <label class="field-label" for="{{ form.description.id }}">Açıklama</label>
+        {{ form.description(class="field-textarea" + (" is-invalid" if form.description.errors else ""),
+                            id="field-topic-description") }}
+      </div>
+
+      <!-- Order -->
+      <div class="field-group">
+        <label class="field-label" for="{{ form.order.id }}">Sıra Numarası</label>
+        {{ form.order(class="field-input" + (" is-invalid" if form.order.errors else ""),
+                      id="field-topic-order", style="max-width:120px") }}
+        <span class="field-hint">Konunun listede görünme sırası (0 = en başta)</span>
+        {% for err in form.order.errors %}
+        <span class="field-error" role="alert">{{ err }}</span>
+        {% endfor %}
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="submit" class="cl-btn-primary" id="btn-topic-submit">
+          <i class="bi {{ 'bi-check-lg' if action == 'edit' else 'bi-plus-lg' }}" aria-hidden="true"></i>
+          {% if action == 'edit' %}Değişiklikleri Kaydet{% else %}Konu Oluştur{% endif %}
+        </button>
+        <a href="{{ url_for('main.topic_detail', id=topic.id) if action == 'edit' else url_for('main.topics') }}"
+           class="cl-btn-ghost">
+          <i class="bi bi-x-lg" aria-hidden="true"></i> İptal
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

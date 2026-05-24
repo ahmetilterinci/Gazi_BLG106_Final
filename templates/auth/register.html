@@ -1,229 +1,534 @@
 {% extends "base.html" %}
 
-{% block title %}Kayıt Ol{% endblock %}
-{% block meta_description %}CyberLearn AI'ya kayıt olun ve siber güvenliği öğrenmeye başlayın.{% endblock %}
+{% block title %}Kayıt Ol — CyberLearn.io{% endblock %}
+{% block meta_description %}CyberLearn.io'ya kayıt ol, AI destekli siber güvenlik eğitimine ücretsiz başla.{% endblock
+%}
 
-{% block content %}
-<div class="row justify-content-center">
-  <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-
-    <!-- Kart -->
-    <div class="auth-card">
-
-      <!-- Başlık -->
-      <div class="text-center mb-4">
-        <div class="auth-icon-wrapper mx-auto mb-3">
-          <i class="bi bi-person-plus-fill fs-2 text-white"></i>
-        </div>
-        <h1 class="h3 fw-bold text-white mb-1">Hesap Oluştur</h1>
-        <p class="text-muted small">Siber güvenlik yolculuğuna başla</p>
-      </div>
-
-      <!-- Kayıt Formu -->
-      <form
-        id="register-form"
-        method="POST"
-        action="{{ url_for('auth.register') }}"
-        novalidate
-      >
-        {{ form.hidden_tag() }}
-
-        <!-- Kullanıcı Adı -->
-        <div class="mb-3">
-          <label for="username" class="form-label text-light fw-semibold">
-            <i class="bi bi-person me-1"></i>{{ form.username.label.text }}
-          </label>
-          {{ form.username(
-              id="username",
-              class="form-control auth-input" + (" is-invalid" if form.username.errors else ""),
-              placeholder="kullanici_adi",
-              autocomplete="username"
-          ) }}
-          {% for error in form.username.errors %}
-            <div class="invalid-feedback">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- E-posta -->
-        <div class="mb-3">
-          <label for="email" class="form-label text-light fw-semibold">
-            <i class="bi bi-envelope me-1"></i>{{ form.email.label.text }}
-          </label>
-          {{ form.email(
-              id="email",
-              class="form-control auth-input" + (" is-invalid" if form.email.errors else ""),
-              placeholder="ornek@eposta.com",
-              autocomplete="email"
-          ) }}
-          {% for error in form.email.errors %}
-            <div class="invalid-feedback">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Şifre -->
-        <div class="mb-3">
-          <label for="password" class="form-label text-light fw-semibold">
-            <i class="bi bi-lock me-1"></i>{{ form.password.label.text }}
-          </label>
-          <div class="input-group">
-            {{ form.password(
-                id="password",
-                class="form-control auth-input" + (" is-invalid" if form.password.errors else ""),
-                placeholder="En az 8 karakter",
-                autocomplete="new-password"
-            ) }}
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              id="toggle-password"
-              title="Şifreyi göster/gizle"
-            >
-              <i class="bi bi-eye" id="toggle-password-icon"></i>
-            </button>
-            {% for error in form.password.errors %}
-              <div class="invalid-feedback">{{ error }}</div>
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- Şifre Tekrar -->
-        <div class="mb-4">
-          <label for="confirm" class="form-label text-light fw-semibold">
-            <i class="bi bi-lock-fill me-1"></i>{{ form.confirm.label.text }}
-          </label>
-          {{ form.confirm(
-              id="confirm",
-              class="form-control auth-input" + (" is-invalid" if form.confirm.errors else ""),
-              placeholder="Şifreyi tekrar girin",
-              autocomplete="new-password"
-          ) }}
-          {% for error in form.confirm.errors %}
-            <div class="invalid-feedback">{{ error }}</div>
-          {% endfor %}
-        </div>
-
-        <!-- Gönder Butonu -->
-        {{ form.submit(
-            id="register-submit",
-            class="btn btn-auth-primary w-100"
-        ) }}
-      </form>
-
-      <!-- Giriş Linki -->
-      <p class="text-center mt-4 mb-0 text-muted small">
-        Zaten hesabın var mı?
-        <a href="{{ url_for('auth.login') }}" class="auth-link">Giriş Yap</a>
-      </p>
-    </div>
-  </div>
-</div>
-{% endblock %}
-
+{# ═══════════════════════════════════════════
+EXTRA CSS — login.html ile tamamen ortak dil
+(Aynı auth-* class'ları kullanılıyor)
+═══════════════════════════════════════════ #}
 {% block extra_css %}
 <style>
-  .auth-card {
-    background: rgba(26, 26, 46, 0.8);
-    border: 1px solid rgba(108, 99, 255, 0.25);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    backdrop-filter: blur(16px);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-  }
-
-  .auth-icon-wrapper {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, #6c63ff, #00d4aa);
-    border-radius: 16px;
+  /* ── AUTH PAGE LAYOUT ── */
+  .auth-page {
+    min-height: calc(100vh - var(--nav-h));
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 3rem 1.25rem 4rem;
+    position: relative;
+  }
+
+  .auth-page::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 245, 196, .05) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── AUTH CARD ── */
+  .auth-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 460px;
+    background: rgba(13, 13, 34, .75);
+    border: 1px solid var(--edge);
+    border-radius: 20px;
+    padding: 2.75rem 2.25rem;
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow: 0 0 0 1px rgba(0, 245, 196, .04),
+      0 24px 64px rgba(0, 0, 0, .55),
+      0 0 80px rgba(0, 245, 196, .04);
+    overflow: hidden;
+  }
+
+  /* Kayıt kartı için accent rengi — yeşil üst şerit */
+  .auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--a), var(--p), transparent);
+    opacity: .7;
+  }
+
+  /* ── HEADER ── */
+  .auth-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--a), var(--p));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin: 0 auto 1.25rem;
+    box-shadow: 0 0 28px rgba(0, 245, 196, .25);
+    animation: logoPulse 4s ease-in-out infinite;
+  }
+
+  .auth-title {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -.03em;
+    text-align: center;
+    margin-bottom: .3rem;
+    line-height: 1.2;
+  }
+
+  .auth-sub {
+    text-align: center;
+    font-size: .8rem;
+    color: var(--txt2);
+    margin-bottom: 2rem;
+  }
+
+  /* ── FORM ELEMENTS ── */
+  .auth-label {
+    display: block;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--txt);
+    letter-spacing: .03em;
+    margin-bottom: .4rem;
+  }
+
+  .auth-label i {
+    color: var(--a);
+    margin-right: .3rem;
   }
 
   .auth-input {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(108, 99, 255, 0.3);
-    color: #e2e8f0;
-    border-radius: 8px;
-    padding: 0.65rem 0.9rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .auth-input:focus {
-    background: rgba(255,255,255,0.08);
-    border-color: #6c63ff;
-    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
-    color: #fff;
+    width: 100%;
+    background: rgba(0, 245, 196, .03);
+    border: 1px solid var(--edge);
+    border-radius: 9px;
+    color: var(--txt);
+    font-family: var(--sans);
+    font-size: .875rem;
+    padding: .65rem .9rem;
+    transition: border-color .2s, box-shadow .2s, background .2s;
     outline: none;
   }
 
-  .auth-input::placeholder { color: #4a5568; }
+  .auth-input:focus {
+    background: rgba(0, 245, 196, .05);
+    border-color: var(--a);
+    box-shadow: 0 0 0 3px rgba(0, 245, 196, .1);
+    color: #fff;
+  }
+
+  .auth-input::placeholder {
+    color: var(--txt3);
+    font-size: .82rem;
+  }
 
   .auth-input.is-invalid {
-    border-color: #fc8181;
+    border-color: var(--r);
+    box-shadow: 0 0 0 2px rgba(255, 61, 107, .1);
   }
 
-  .invalid-feedback {
-    color: #fc8181;
-    font-size: 0.8rem;
+  .auth-error {
+    color: var(--r);
+    font-size: .76rem;
+    margin-top: .3rem;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
   }
 
-  .btn-auth-primary {
-    background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+  /* ── INPUT GROUP ── */
+  .auth-input-group {
+    position: relative;
+  }
+
+  .auth-input-group .auth-input {
+    padding-right: 2.8rem;
+  }
+
+  .auth-eye-btn {
+    position: absolute;
+    right: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
     border: none;
-    color: #fff;
-    border-radius: 8px;
-    padding: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    transition: opacity 0.2s, transform 0.15s;
+    color: var(--txt2);
+    cursor: pointer;
+    padding: 0;
+    font-size: .95rem;
+    line-height: 1;
+    transition: color .2s;
   }
 
-  .btn-auth-primary:hover {
-    opacity: 0.92;
-    transform: translateY(-1px);
+  .auth-eye-btn:hover {
+    color: var(--txt);
+  }
+
+  /* ── ŞİFRE GÜÇ GÖSTERGESİ ── */
+  .pw-strength {
+    margin-top: .45rem;
+    display: flex;
+    gap: .3rem;
+    align-items: center;
+  }
+
+  .pw-bar {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--edge);
+    transition: background .3s;
+  }
+
+  .pw-bar.active-weak {
+    background: var(--r);
+  }
+
+  .pw-bar.active-medium {
+    background: var(--w);
+  }
+
+  .pw-bar.active-strong {
+    background: var(--a);
+  }
+
+  .pw-label {
+    font-size: .68rem;
+    font-family: var(--mono);
+    color: var(--txt3);
+    min-width: 36px;
+    text-align: right;
+    transition: color .3s;
+  }
+
+  /* ── SUBMIT BUTTON ── */
+  .auth-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: 100%;
+    padding: .75rem 1rem;
+    background: linear-gradient(135deg, var(--a), var(--p));
+    border: none;
+    border-radius: 10px;
     color: #fff;
+    font-family: var(--display);
+    font-size: .925rem;
+    font-weight: 700;
+    letter-spacing: .01em;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s, opacity .2s;
+    box-shadow: 0 0 28px rgba(0, 245, 196, .2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .auth-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .1), transparent);
+    transition: left .45s;
+  }
+
+  .auth-submit:hover::before {
+    left: 100%;
+  }
+
+  .auth-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 44px rgba(0, 245, 196, .3);
+  }
+
+  .auth-submit:active {
+    transform: translateY(0);
+  }
+
+  /* ── FOOTER LINK ── */
+  .auth-footer-text {
+    text-align: center;
+    font-size: .78rem;
+    color: var(--txt2);
+    margin-top: 1.5rem;
+    margin-bottom: 0;
   }
 
   .auth-link {
-    color: #6c63ff;
-    text-decoration: none;
+    color: var(--a);
     font-weight: 600;
+    text-decoration: none;
+    transition: color .2s;
   }
 
   .auth-link:hover {
-    color: #00d4aa;
-    text-decoration: underline;
+    color: var(--p);
   }
 
-  /* Şifre göster/gizle butonu uyumu */
-  .input-group .btn-outline-secondary {
-    background: rgba(255,255,255,0.05);
-    border-color: rgba(108, 99, 255, 0.3);
-    color: #a0aec0;
-    border-radius: 0 8px 8px 0;
+  /* ── GÜVENLİK ROZET ── */
+  .auth-security-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    margin-top: 1.5rem;
+    font-size: .7rem;
+    color: var(--txt3);
+    font-family: var(--mono);
   }
 
-  .input-group .btn-outline-secondary:hover {
-    background: rgba(108, 99, 255, 0.15);
-    color: #fff;
+  .auth-security-badge i {
+    color: var(--a);
+    font-size: .75rem;
+  }
+
+  /* ── SPACING ── */
+  .auth-field {
+    margin-bottom: 1.1rem;
+  }
+
+  .auth-field:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 480px) {
+    .auth-card {
+      padding: 2rem 1.25rem;
+    }
+
+    .auth-title {
+      font-size: 1.35rem;
+    }
   }
 </style>
 {% endblock %}
 
+
+{# ═══════════════════════════════════════════
+CONTENT
+═══════════════════════════════════════════ #}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card cl-reveal">
+
+    {# — İkon + Başlık — #}
+    <div class="auth-icon-wrap" aria-hidden="true">🚀</div>
+    <h1 class="auth-title">Hesap Oluştur</h1>
+    <p class="auth-sub">Siber güvenlik yolculuğuna <span class="cl-glow-text">ücretsiz</span> başla.</p>
+
+    {# — Form — #}
+    <form id="register-form" method="POST" action="{{ url_for('auth.register') }}" novalidate aria-label="Kayıt formu">
+      {{ form.hidden_tag() }}
+
+      {# Kullanıcı Adı #}
+      <div class="auth-field">
+        <label for="username" class="auth-label">
+          <i class="bi bi-person" aria-hidden="true"></i>{{ form.username.label.text }}
+        </label>
+        {{ form.username(
+        id="username",
+        class="auth-input" + (" is-invalid" if form.username.errors else ""),
+        placeholder="kullanici_adi",
+        autocomplete="username",
+        spellcheck="false"
+        ) }}
+        {% for error in form.username.errors %}
+        <div class="auth-error" role="alert">
+          <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
+        </div>
+        {% endfor %}
+      </div>
+
+      {# E-posta #}
+      <div class="auth-field">
+        <label for="email" class="auth-label">
+          <i class="bi bi-envelope" aria-hidden="true"></i>{{ form.email.label.text }}
+        </label>
+        {{ form.email(
+        id="email",
+        class="auth-input" + (" is-invalid" if form.email.errors else ""),
+        placeholder="ornek@eposta.com",
+        autocomplete="email",
+        inputmode="email"
+        ) }}
+        {% for error in form.email.errors %}
+        <div class="auth-error" role="alert">
+          <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
+        </div>
+        {% endfor %}
+      </div>
+
+      {# Şifre #}
+      <div class="auth-field">
+        <label for="password" class="auth-label">
+          <i class="bi bi-lock" aria-hidden="true"></i>{{ form.password.label.text }}
+        </label>
+        <div class="auth-input-group">
+          {{ form.password(
+          id="password",
+          class="auth-input" + (" is-invalid" if form.password.errors else ""),
+          placeholder="En az 8 karakter",
+          autocomplete="new-password"
+          ) }}
+          <button class="auth-eye-btn" type="button" id="toggle-password" aria-label="Şifreyi göster ya da gizle"
+            aria-pressed="false">
+            <i class="bi bi-eye" id="toggle-icon" aria-hidden="true"></i>
+          </button>
+        </div>
+        {# Şifre güç göstergesi #}
+        <div class="pw-strength" aria-hidden="true">
+          <div class="pw-bar" id="pw-bar1"></div>
+          <div class="pw-bar" id="pw-bar2"></div>
+          <div class="pw-bar" id="pw-bar3"></div>
+          <span class="pw-label" id="pw-label"></span>
+        </div>
+        {% for error in form.password.errors %}
+        <div class="auth-error" role="alert">
+          <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
+        </div>
+        {% endfor %}
+      </div>
+
+      {# Şifre Tekrar #}
+      <div class="auth-field">
+        <label for="confirm" class="auth-label">
+          <i class="bi bi-lock-fill" aria-hidden="true"></i>{{ form.confirm.label.text }}
+        </label>
+        {{ form.confirm(
+        id="confirm",
+        class="auth-input" + (" is-invalid" if form.confirm.errors else ""),
+        placeholder="Şifreyi tekrar girin",
+        autocomplete="new-password"
+        ) }}
+        {% for error in form.confirm.errors %}
+        <div class="auth-error" role="alert">
+          <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
+        </div>
+        {% endfor %}
+      </div>
+
+      {# Gönder #}
+      <button type="submit" id="register-submit" class="auth-submit" style="margin-top: 1.1rem;" aria-label="Kayıt ol">
+        <i class="bi bi-person-plus" aria-hidden="true"></i>
+        Kayıt Ol
+      </button>
+    </form>
+
+    {# Giriş linki #}
+    <p class="auth-footer-text">
+      Zaten hesabın var mı?
+      <a href="{{ url_for('auth.login') }}" class="auth-link">Giriş Yap</a>
+    </p>
+
+    {# Güvenlik rozeti #}
+    <div class="auth-security-badge" aria-label="Güvenlik bilgisi">
+      <i class="bi bi-shield-check" aria-hidden="true"></i>
+      CSRF korumalı &bull; Ücretsiz &bull; Kredi kartı yok
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
 {% block extra_js %}
 <script>
-  // Şifre göster/gizle
-  const toggleBtn  = document.getElementById('toggle-password');
-  const pwdField   = document.getElementById('password');
-  const toggleIcon = document.getElementById('toggle-password-icon');
+  (function () {
+    /* ── Şifre göster / gizle ── */
+    const btn = document.getElementById('toggle-password');
+    const fld = document.getElementById('password');
+    const ico = document.getElementById('toggle-icon');
 
-  if (toggleBtn && pwdField) {
-    toggleBtn.addEventListener('click', () => {
-      const isHidden = pwdField.type === 'password';
-      pwdField.type  = isHidden ? 'text' : 'password';
-      toggleIcon.className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
-    });
-  }
+    if (btn && fld) {
+      btn.addEventListener('click', function () {
+        const hidden = fld.type === 'password';
+        fld.type = hidden ? 'text' : 'password';
+        ico.className = hidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+        btn.setAttribute('aria-pressed', String(hidden));
+      });
+    }
+
+    /* ── Şifre güç göstergesi ── */
+    const pwInput = document.getElementById('password');
+    const bars = [
+      document.getElementById('pw-bar1'),
+      document.getElementById('pw-bar2'),
+      document.getElementById('pw-bar3'),
+    ];
+    const label = document.getElementById('pw-label');
+
+    function pwStrength(val) {
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (val.length >= 12) score++;
+      if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+      if (score <= 1) return 0;
+      if (score <= 2) return 1;
+      return 2;
+    }
+
+    const levels = [
+      { cls: 'active-weak', lbl: 'Zayıf', color: 'var(--r)' },
+      { cls: 'active-medium', lbl: 'Orta', color: 'var(--w)' },
+      { cls: 'active-strong', lbl: 'Güçlü', color: 'var(--a)' },
+    ];
+
+    if (pwInput && bars[0]) {
+      pwInput.addEventListener('input', function () {
+        const val = pwInput.value;
+        const level = val ? pwStrength(val) : -1;
+
+        bars.forEach((b, i) => {
+          b.className = 'pw-bar';
+          if (level >= 0 && i <= level) b.classList.add(levels[level].cls);
+        });
+
+        label.textContent = level >= 0 ? levels[level].lbl : '';
+        label.style.color = level >= 0 ? levels[level].color : '';
+      });
+    }
+
+    /* ── Submit yükleniyor ── */
+    const form = document.getElementById('register-form');
+    const submit = document.getElementById('register-submit');
+    if (form && submit) {
+      form.addEventListener('submit', function () {
+        submit.innerHTML = '<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Kayıt yapılıyor…';
+        submit.disabled = true;
+      });
+    }
+  })();
 </script>
+<style>
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spin {
+    display: inline-block;
+    animation: spin .7s linear infinite;
+  }
+</style>
 {% endblock %}

@@ -109,17 +109,17 @@ ayrı ayrı sorgulamasaydım uygulama çalışmayabilirdi.
 
 
 
-## Oturum 2 — 24.05.2026 — 17:10-18:45
-
+## Oturum 2 — 24.05.2026 — 17:10-?
+ 
 ### Hedef
-Mevcut ham HTML şablonlarını tamamen yenilemek: base.html ve index.html
-dosyalarını modern, animasyonlu, scroll-driven bir tasarıma kavuşturmak.
-
+Mevcut ham HTML şablonlarını tamamen yenilemek: base.html, index.html,
+login.html ve register.html dosyalarını tutarlı bir design system'e
+kavuşturmak.
+ 
 ### Kullandığım Mod ve Model
-- Mod: Plan
+- Mod: Plan (base/index) + Danışman Claude (login/register)
 - Model: Claude Sonnet 4.6
 - Görünüm: Manager View
-
 ### Verdiğim Promptlar
 1. Google Stitch ile tasarım denemesi — sonuç yetersiz bulundu,
    Bootstrap tabanlı klasik çıktı verdi.
@@ -127,8 +127,12 @@ dosyalarını modern, animasyonlu, scroll-driven bir tasarıma kavuşturmak.
    Önce base önizlemesi widget olarak üretildi, onaylandı.
 3. base.html tam Flask uyumlu üretildi.
 4. index.html scroll-driven animasyonlarla üretildi.
-
-### Ajanın Önerdiği Plan
+5. Danışman Claude'a mevcut login/register kodları iletildi,
+   design system uyumu ve bug tespiti istendi.
+6. Danışman Claude login.html ve register.html'i sıfırdan yazdı.
+7. Register'da submit butonu üstünde boşluk eksikliği bildirildi,
+   `margin-top: 1.1rem` ile düzeltildi.
+### Ajanın Önerdiği Plan (base + index)
 - Parçacık ağı canvas (tüm sayfalarda kalıcı, mouse tepkili)
 - Cursor glow efekti
 - Noise texture overlay
@@ -139,8 +143,7 @@ dosyalarını modern, animasyonlu, scroll-driven bir tasarıma kavuşturmak.
 - Dil butonu — Flask-Babel Gün 5'e hazır
 - 6 section: Hero → Özellikler → Nasıl Çalışır →
   Dersler Preview → Stats → CTA
-
-### Plan'da Sorguladıklarım
+### Plan'da Sorguladıklarım (base + index)
 - Google Stitch'in çıktısı yetersiz bulundu: "fazla klasik,
   kısa, havalı efektler yok" — Stitch yerine danışman Claude
   işi devraldı.
@@ -149,41 +152,66 @@ dosyalarını modern, animasyonlu, scroll-driven bir tasarıma kavuşturmak.
   kullanıcı deneyimi kalitesi önceliklendi.
 - Base.html önizlemesi widget olarak gösterildi, onaylandıktan
   sonra dosya üretildi — plan modu disiplini uygulandı.
-
+### Plan'da Sorguladıklarım (login + register)
+- Eski dosyalar danışmana gösterildi, onay vermeden önce sorunlar
+  sorgulandı. Tespit edilen 5 sorun:
+  1. Design token uyumsuzluğu: `#6c63ff` → `#6e5bff`, `#00d4aa` → `#00f5c4`
+  2. Bootstrap `input-group` + `is-invalid` bug riski
+  3. `invalid-feedback` div'inin `input-group` içinde yanlış konumu
+  4. CSS tekrarı (her iki dosyada ~80 satır aynı stil)
+  5. Font family explicit tanımsızlığı
+- Antigravity'ye ufak düzeltme yaptırmak yerine sıfırdan
+  yazılması tercih edildi — daha temiz ve kontrollü sonuç.
 ### Üretilen Kodda Düzelttiklerim
-- Scroll devamlılığı eksik bulundu: "aşağı indikçe animasyon
-  devam ediyor hissi yok" itirazı yapıldı.
-  Yanıt: cl-reveal sistemi + parallax orbs + section divider'lar
-  ile devamlılık sağlandı, index'te uygulandı.
-- Eski index.html'deki Flask yapıları (url_for, current_user,
-  block'lar) yeni kodda korundu — kontrol edildi ✅
-
+- Scroll devamlılığı eksik bulundu (base/index): cl-reveal sistemi
+  + parallax orbs + section divider'lar ile giderildi.
+- Register submit butonu boşluğu: `margin-top: 1.1rem` eklendi.
+  Küçük bir gözden kaçma ama test edilince hemen fark edildi.
 ### Karşılaştığım Hatalar ve Çözümler
 - base.html tarayıcıda doğrudan açılınca Jinja2 tag'leri
-  ham metin olarak göründü: {% block content %},
-  {% if current_user... %} vb.
-  Çözüm: Bu beklenen davranış. Flask üzerinden çalıştırınca
-  kaybolacak — sorun değil.
-
+  ham metin olarak göründü: beklenen davranış, Flask üzerinden
+  çalıştırınca düzeliyor.
+- login/register sayfalarındaki Bootstrap `input-group` +
+  `is-invalid` uyumsuzluğu: danışman bağımsız `auth-input-group`
+  wrapper yazarak Bootstrap dependency'sini kaldırdı.
 ### Bu Oturumdan Öğrendiğim
 Stitch gibi araçlar statik HTML için iyi ama Flask + Jinja2
 uyumlu, animasyonlu, scroll-driven bir tasarım için yetersiz
 kalıyor. Doğru araç seçimi önemli — Stitch'e uzun zaman
 harcamak yerine danışman Claude'a devretmek daha verimli oldu.
-
-base.html'in "iskelet" olduğunu anlamak önemliydi: içerik
-yokken parçacıklar ve navbar dışında hiçbir şey görünmüyor.
-Asıl animasyonlar index.html'in section'larından geliyor.
-
+ 
+Mevcut kodu küçük yamalarla düzeltmek yerine sıfırdan yazmak
+bazen daha temiz sonuç veriyor. Token uyumsuzlukları ve framework
+bug'ları biriktiğinde "tamamen yenile" kararı daha güvenli.
+ 
+Design system tutarlılığı kritik: iki sayfada farklı renk kodu
+kullanmak görsel bütünlüğü bozuyor, production'da fark edilir.
+ 
 ### Sonraki Oturum İçin Notlar
-- login.html ve register.html tasarımı yapılacak
-- 404.html ve 500.html tasarımı yapılacak
-- Prompt 6: CRUD rotaları + Topic/Lesson şablonları
-- Commit: "UI yenileme - base ve index şablonları"
-
-### Commit Geçmişi (Gün 2 — şimdiye kadar)
+- 404.html ve 500.html tasarımı (yeni design system ile)
+- Prompt 6: CRUD rotaları + Topic/Lesson şablonları + pagination
+- Gün 2 devam ediyor: 2 commit atıldı, 1 kaldı
+### Commit Geçmişi (Gün 2)
 | # | Mesaj |
 |---|-------|
-| 4 | UI yenileme - base ve index şablonları |
-| 5 | — |
+| 4 | UI yenileme - base ve index şablonları yeniden tasarlandı |
+| 5 | login ve register şablonları yenilendi |
 | 6 | — |
+
+### 404 ve 500 Hata Sayfaları + Bug Düzeltmesi
+
+**Verdiğim Promptlar:**
+1. Eski 404/500 kodları danışmana iletildi, yeni design system ile yeniden yazılması istendi.
+2. 404 sayfasının 500'e düştüğü fark edildi, routes incelenmesi istendi.
+3. Kalıcı çözüm için Antigravity'ye prompt yazılması istendi.
+
+**Karşılaştığım Hatalar ve Çözümler:**
+- 404 sayfası 500'e düşüyordu: url_for('main.topics') henüz olmayan route'u
+  çağırıyordu → Jinja2 BuildError → 500 handler devreye giriyordu.
+  Sorun routes.py'de değildi, şablonun içindeydi. Kalıcı çözüm:
+  stub /topics route + placeholder topics.html eklendi.
+
+**Bu Adımdan Öğrendiğim:**
+Hata sayfaları render edilirken içlerindeki url_for çağrıları da çalıştırılır.
+Henüz olmayan route'a url_for yazmak o sayfayı görüntülenemez hale getirir.
+Hata sayfaları mümkün olduğunca bağımsız tutulmalı.

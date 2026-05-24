@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}"{{ topic.title }}" Silinsin mi? — CyberLearn.io{% endblock %}
+
+{% block extra_css %}
+<style>
+  .confirm-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .confirm-icon {
+    width: 80px; height: 80px;
+    background: rgba(255,61,107,.1);
+    border: 2px solid rgba(255,61,107,.25);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    margin-bottom: 1.75rem;
+    animation: dangerPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes dangerPulse {
+    0%, 100% { box-shadow: 0 0 0 0 transparent; }
+    50% { box-shadow: 0 0 0 10px rgba(255,61,107,.07); }
+  }
+  .confirm-label {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--r);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    margin-bottom: .6rem;
+  }
+  .confirm-wrap h1 {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: .75rem;
+  }
+  .confirm-wrap h1 .topic-name {
+    background: linear-gradient(135deg, var(--r), #ff8c4b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .confirm-body {
+    color: var(--txt2);
+    font-size: .9rem;
+    line-height: 1.65;
+    max-width: 400px;
+    margin-bottom: 2rem;
+  }
+  .confirm-body strong { color: var(--txt); }
+
+  /* Warning box */
+  .warn-box {
+    width: 100%;
+    background: rgba(255,61,107,.06);
+    border: 1px solid rgba(255,61,107,.2);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+  }
+  .warn-box-icon { color: var(--r); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+  .warn-box p { font-size: .82rem; color: var(--txt2); line-height: 1.6; margin: 0; }
+  .warn-box p strong { color: var(--r); }
+
+  /* Actions */
+  .confirm-actions {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-danger {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .7rem 1.6rem;
+    background: linear-gradient(135deg, var(--r), #e0002e);
+    border: none; border-radius: 10px;
+    color: #fff; font-size: .875rem; font-weight: 700;
+    font-family: var(--sans); cursor: pointer;
+    text-decoration: none; transition: all .25s;
+    box-shadow: 0 0 24px rgba(255,61,107,.3);
+  }
+  .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(255,61,107,.5);
+    color: #fff;
+  }
+
+  @media(max-width:480px) {
+    .confirm-wrap { padding: 3rem 1rem; }
+    .confirm-actions { flex-direction: column; width: 100%; }
+    .btn-danger, .cl-btn-ghost { justify-content: center; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-wrap cl-reveal" role="main">
+  <!-- Icon -->
+  <div class="confirm-icon" aria-hidden="true">🗑️</div>
+
+  <!-- Label & Title -->
+  <div class="confirm-label"><i class="bi bi-exclamation-triangle-fill"></i> Tehlikeli İşlem</div>
+  <h1>Emin misiniz?<br><span class="topic-name">"{{ topic.title }}"</span></h1>
+
+  <p class="confirm-body">
+    Bu işlem geri alınamaz. <strong>{{ topic.title }}</strong> konusu ve
+    konuya ait <strong>{{ topic.lessons | length }} ders</strong> kalıcı olarak silinecektir.
+  </p>
+
+  <!-- Warning box -->
+  <div class="warn-box" role="alert" aria-live="assertive">
+    <i class="bi bi-exclamation-triangle-fill warn-box-icon" aria-hidden="true"></i>
+    <p>
+      <strong>Bu işlem geri alınamaz!</strong><br>
+      Konuya ait tüm dersler ve kullanıcı ilerleme kayıtları da silinecektir.
+    </p>
+  </div>
+
+  <!-- Actions -->
+  <div class="confirm-actions">
+    <!-- POST formu — CSRF korumalı -->
+    <form method="POST"
+          action="{{ url_for('main.topic_delete', id=topic.id) }}"
+          id="form-delete-topic">
+      {{ form.hidden_tag() }}
+      <button type="submit" class="btn-danger" id="btn-confirm-delete">
+        <i class="bi bi-trash3-fill" aria-hidden="true"></i> Evet, Kalıcı Olarak Sil
+      </button>
+    </form>
+
+    <!-- İptal -->
+    <a href="{{ url_for('main.topic_detail', id=topic.id) }}" class="cl-btn-ghost" id="btn-cancel-delete">
+      <i class="bi bi-x-lg" aria-hidden="true"></i> İptal
+    </a>
+  </div>
+</div>
+{% endblock %}
