@@ -204,81 +204,121 @@ için şimdilik kabul edildi. Teknik doğruluk ≠ iyi UX.
 ## Oturum 3 — 27.05.2026 — (saat aralığını kendin ekle)
 
 ### Hedef
-Projeyi "döküman okuma + kendine puan ver" sisteminden çıkarıp
-Duolingo tarzı AI destekli quiz deneyimine dönüştürmek.
-Bu oturumda backend ayağı (Gemini AI quiz endpoint'i) tamamlandı.
+"Döküman oku + kendine puan ver" sistemini tamamen kaldırıp Duolingo tarzı
+AI destekli öğrenme deneyimine dönüştürmek. Ana sayfa için izometrik öğrenme
+yolu haritası tasarlamak, ders kilit mantığı kurmak ve 4 tipte soru sistemi
+ile öğrenme uyumu altyapısını oluşturmak.
 
 ### Kullandığım Mod ve Model
-- Mod: Plan
-- Model: Claude Sonnet 4.6 (Antigravity içinde) + Danışman Claude (claude.ai)
-- Görünüm: Manager View
+- Mod: Danışman Claude (claude.ai) — tüm kod üretimi burada yapıldı
+- Model: Claude Sonnet 4.6
+- Antigravity: bu oturumda yalnızca uygulama/test için kullanıldı
 
-### Verdiğim Promptlar
-1. Prompt A — Gemini AI Quiz Backend: routes.py'e POST /lessons/<id>/quiz
-   rotası eklenmesi, lesson_complete rotasına ai_score desteği,
-   requirements.txt'e google-generativeai eklenmesi
-2. CSRF muafiyet düzeltmesi: lesson_quiz rotasına @csrf.exempt eklenmesi
+### Verdiğim Promptlar ve Yapılan İşler
 
-### Ajanın Önerdiği Plan (Prompt A)
-- requirements.txt'e google-generativeai satırı eklenir
-- routes.py'e import json, import os, jsonify eklenir
-- Yeni lesson_quiz rotası: @main.route + @login_required
-- genai.GenerativeModel("gemini-2.5-flash") ile soru üretimi
-- response.text JSON parse edilir, 200 döndürülür
-- lesson_complete rotasına ai_score öncelikli parametre eklenir
+**Prompt B — İzometrik Öğrenme Yolu (index.html + routes.py)**
 
-### Plan'da Sorguladıklarım
-- Gemini'nin yanıtı bazen ```json bloğuna sarmasını sorguladım.
-  Ajan bunu handle etmemişti. `removeprefix("```json").removesuffix("```")`
-  ile temizleme adımı eklettirdim — bu olmadan json.loads her seferinde
-  patlayabilirdi.
-- Antigravity'nin terminal çalıştıramadığını bildiğimden pip install
-  adımını plandan çıkarttırdım, manuel kendim yaptım.
+- `index.html` authenticated bölümü tamamen yeniden yazıldı
+- Her Topic = bir "Dünya" bloğu: başlık bandı + progress bar + izometrik ders yolu
+- Dersler 3'lü gruplar halinde zigzag düğümlerle gösteriliyor
+- Düğüm durumları: tamamlandı (mor + check), aktif (parlayan animasyon), kilitli (gri)
+- SVG dönüş konnektörleri ile satırlar birbirine bağlanıyor
+- Kilitli dünya: %38 opacity + üstünde kilit balonu overlay
+- `routes.py` → `index()` fonksiyonu topic/lesson/progress verilerini çekip kilit mantığını hesaplıyor
+- `routes.py` → `lesson_detail()` fonksiyonuna backend kilit kontrolü eklendi:
+  kilitli derse URL ile erişmeye çalışırsa flash("warning") + redirect
 
-### Üretilen Kodda Düzelttiklerim
-- CSRF muafiyeti eksikti: lesson_quiz bir API endpoint'i olduğu için
-  form tabanlı CSRF koruması onu engelliyordu. Tarayıcı konsolundan
-  test ederken 400 Bad Request aldım. @csrf.exempt decorator'ı
-  sonradan ekletmek zorunda kaldım. İlk plana dahil edilmesi gerekirdi.
-- Decorator sırası önemli: @main.route → @csrf.exempt → @login_required
-  sırası Antigravity tarafından doğru uygulandı.
+**Prompt B ek — Duolingo Quiz v1 (lesson_detail.html)**
+
+- "Döküman oku + kendine puan ver" arayüzü tamamen kaldırıldı
+- Başlat → Yükleniyor → Soru → Feedback → Devam akışı kuruldu
+- Yanlış yapılan sorular kuyruğa ekleniyor, tur sonunda tekrar ekrana geliyor
+- Kalp sistemi (3 can) eklendi
+- Tamamlanınca kutlama ekranı + puan istatistikleri gösteriliyor
+
+**Prompt B ek2 — Duolingo Quiz v2 (lesson_detail.html + quiz endpoint)**
+
+- Kullanıcının geri bildirimi üzerine quiz mimarisi yeniden tasarlandı
+- `lesson_quiz` endpoint'i tek soru yerine içerik uzunluğuna göre 5-12 soru üretiyor
+- Her soruya `hint` alanı eklendi (o sorunun öğretici bağlamı)
+- Akış: `📖 Bilgi kartı → ❓ Soru → ✅/❌ → (yanlışsa sona atar) → sonraki`
+- Tüm sorular bitince yanlışlar tekrar önüne gelir, doğru yapana kadar döngü devam eder
+
+**Prompt B ek3 — 4 Tip Soru + Öğrenme Uyumu (lesson_detail.html + quiz endpoint + models.py)**
+
+- `UserProgress` modeline `wrong_count` ve `attempts` alanları eklendi
+- Migration yazıldı: `server_default='0'` ile SQLite uyumlu hale getirildi
+- `lesson_quiz` endpoint'i 4 soru tipini destekler hale getirildi:
+  - `mcq` — çoktan seçmeli (4 şık)
+  - `truefalse` — doğru/yanlış (büyük butonlar)
+  - `fillblank` — boşluk doldurma (`___` cümlede, 4 şık)
+  - `matching` — eşleştirme (sol terim → sağ tanım, tıkla-eşleştir)
+- Her tipten en az 1 soru zorunlu; kalan dağılım kullanıcı performansına göre:
+  - Yeni kullanıcı → mcq ağırlıklı
+  - Az yanlış → dengeli dağılım
+  - Çok yanlış → truefalse + fillblank ağırlıklı (daha kolay tipler)
+- `lesson_complete` endpoint'i `wrong_count` ve `attempts` alanlarını güncelliyor
+- Her soru tipine özgü UI tasarlandı (eşleştirme için tıkla-bağla arayüzü)
+
+### Ajanın Önerdiği Plan'da Sorguladıklarım
+
+- İlk quiz tasarımı "sadece test et" mantığındaydı, hiç bilmeyene öğretmiyordu.
+  Danışman Claude bunu kabul etti, `hint` + bilgi kartı akışına geçildi.
+- Quiz v1'de "Tamamla" butonu yanlış cevap durumunda görünmüyordu —
+  `classList.add('show')` display:none'ı ezmiyordu. CSS'te `display:flex`
+  olarak düzeltildi.
+- Migration'da `server_default='0'` eksikti — mevcut satırlar için SQLite
+  hata verirdi. Dosya elle düzeltilerek `flask db upgrade` başarıyla çalıştırıldı.
+- Soru çeşitliliği ve öğrenme uyumu sisteminin kapsam genişliği tartışıldı;
+  teslim tarihi göz önünde bulundurularak önce temel 4 tip tamamlandı.
+
+### ⚠️ Ajanın Yanlış Önerisi — Yakaladım
+
+Migration dosyasında `server_default='0'` eksikti. Ajan bunu atladı —
+SQLite'ta mevcut satırlar olan bir tabloya `nullable=False` kolon eklerken
+`server_default` zorunlu, yoksa `IntegrityError` alınırdı. Migration dosyası
+`flask db upgrade` çalıştırılmadan önce elle düzeltildi.
 
 ### Karşılaştığım Hatalar ve Çözümler
-- **Hata 1:** fetch('/lessons/1/quiz') → 400 Bad Request
-  **Neden:** CSRF token eksikliği. Flask-WTF tüm POST'ları koruyor.
-  **Çözüm:** @csrf.exempt decorator eklendi.
 
-- **Hata 2:** fetch konsol testinde CSRF token undefined geldi
-  **Neden:** Sayfada meta[name="csrf-token"] yoktu, input da boştu.
-  **Çözüm:** @csrf.exempt ile token gereksiz hale getirildi.
-
-- **Hata 3:** İlk testte Promise rejected — login yapılmamıştı
-  **Neden:** @login_required redirect döndürüyor, HTML geliyor,
-  JSON.parse HTML'i parse edemeyince SyntaxError veriyor.
-  **Çözüm:** Önce /login'e gidip giriş yapıldı, sonra test çalıştı.
-
-### ⚠️ Ajanın Yanlış/Eksik Bıraktığı — Yakaladım
-Prompt A planında Gemini'nin ```json bloğu döndürebileceği
-durumu yoktu. json.loads direkt response.text üzerinde çalışıyordu.
-Danışman Claude bunu fark etti, removeprefix/removesuffix ile
-temizleme adımı plana eklettirdim. Bu olmadan production'da
-rastgele JSON parse hataları alınacaktı.
+- Yanlış cevap sonrası "Tamamla" butonu görünmüyordu →
+  CSS `.quiz-actions.show { display: flex }` eksikti, eklendi.
+- `lesson_detail.html` breadcrumb'ında `url_for('main.topics')` çağrısı vardı,
+  topics sayfası artık kullanılmayacağı için `url_for('main.index')` ile değiştirildi.
+- Gemini bazen `questions` anahtarı yerine direkt liste döndürüyor →
+  `isinstance(data, list)` kontrolü ile sarmalanarak düzeltildi.
+- Migration `server_default` eksikti → dosya elle düzeltildi, upgrade başarılı.
+- `flask shell` ile `UserProgress.query.first().wrong_count` → `0` doğrulandı.
 
 ### Bu Oturumdan Öğrendiğim
-Flask-WTF'nin CSRF koruması sadece form submit'leri değil,
-tüm POST isteklerini etkiliyor. JSON API endpoint'leri için
-@csrf.exempt kullanmak gerekiyor — ama bu güvenlik açığı değil,
-çünkü bu endpoint zaten @login_required ile korunuyor.
 
-Gemini gibi LLM'ler her zaman saf JSON döndürmüyor. Response'u
-kullanmadan önce markdown işaretlerini temizlemek kritik.
-"AI çıktısına güven ama doğrula" prensibi burada da geçerli.
+Sadece "çalışıyor" demek yetmiyor — UX açısından mantıklı mı diye de
+sorgulamak gerekiyor. İlk quiz arayüzü teknik olarak çalışıyordu ama
+kullanıcıya hiçbir şey öğretmiyordu. Danışman Claude ile konsepti
+tartışmak kodu yazmadan önce yönü netleştirdi.
+
+Gemini prompt'unu ne kadar spesifik yazarsan o kadar güvenilir JSON
+dönüyor. Tip bazlı format açıklamaları ve örnek JSON şemaları vermek
+tutarlı çıktı sağlıyor.
+
+Migration'da her zaman `server_default` kontrolü yapmak gerekiyor —
+özellikle mevcut verisi olan tablolara `nullable=False` kolon eklerken.
 
 ### Sonraki Oturum İçin Notlar
-- Prompt B: lesson_detail.html Duolingo tarzına alınacak
-  (quiz kartı, animasyonlu feedback, otomatik puan)
-- Prompt C: Testler (conftest.py, test_models.py, test_auth.py)
-- 3 commit atılacak:
-  1. "Gemini AI quiz backend eklendi - Prompt A"
-  2. "lesson_detail Duolingo tarzına dönüştürüldü - Prompt B"
-  3. "Testler eklendi - Prompt C"
+
+- Deploy (Docker veya Render) — zorunlu gereksinim ❌
+- Testler — zorunlu gereksinim ❌
+- API endpoint /api/v1/ — bonus (+5) ❌
+- E-posta şifre sıfırlama — bonus (+5) ❌
+- Tam metin arama — bonus (+3) ❌
+- Flask-Babel TR/EN — bonus (+3) ❌
+- Kullanıcı profili + avatar — bonus (+4) ❌
+
+### Commit Geçmişi (Oturum 3)
+
+| #  | Mesaj |
+|----|-------|
+| 9  | İzometrik öğrenme yolu eklendi - Prompt B |
+| 10 | Duolingo quiz v1 eklendi - lesson_detail yenilendi |
+| 11 | Quiz çoklu soru + hint sistemi - Prompt B ek2 |
+| 12 | 4 tip soru + öğrenme uyumu altyapısı - Prompt B ek3 |

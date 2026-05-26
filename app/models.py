@@ -139,18 +139,14 @@ class Lesson(db.Model):
 # ---------------------------------------------------------------------------
 
 class UserProgress(db.Model):
-    """Bir kullanıcının belirli bir dersteki ilerlemesini kaydeder.
-
-    (user_id, lesson_id) çifti unique kısıtı ile korunur;
-    aynı kullanıcı aynı derse yalnızca bir kayıt oluşturabilir.
-    """
-
+    """Bir kullanıcının belirli bir dersteki ilerlemesini kaydeder."""
+ 
     __tablename__ = "user_progress"
-
+ 
     __table_args__ = (
         UniqueConstraint("user_id", "lesson_id", name="uq_user_lesson"),
     )
-
+ 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("user.id"), nullable=False
@@ -165,16 +161,24 @@ class UserProgress(db.Model):
     completed_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime, nullable=True
     )
-
+    # Öğrenme uyumu için yeni alanlar
+    wrong_count: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0
+    )
+    attempts: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0
+    )
+ 
     # İlişkiler
     user: Mapped[User] = relationship("User", back_populates="progress_entries")
     lesson: Mapped[Lesson] = relationship(
         "Lesson", back_populates="progress_entries"
     )
-
+ 
     def __repr__(self) -> str:
         return (
             f"<UserProgress user={self.user_id} "
             f"lesson={self.lesson_id} "
-            f"completed={self.is_completed}>"
+            f"completed={self.is_completed} "
+            f"attempts={self.attempts}>"
         )

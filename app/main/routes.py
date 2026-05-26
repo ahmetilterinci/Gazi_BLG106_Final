@@ -32,8 +32,68 @@ from app.models import Lesson, Topic, UserProgress
 
 @main.route("/")
 def index():
-    """Ana sayfa rotası."""
-    return render_template("main/index.html", title="Ana Sayfa")
+    """Ana sayfa — giriş yapılmışsa öğrenme yolu verilerini hazırla."""
+    topics_with_data = []
+ 
+    if current_user.is_authenticated:
+        # Tüm topic'leri sıraya göre çek
+        all_topics = (
+            Topic.query
+            .order_by(Topic.order, Topic.id)
+            .all()
+        )
+ 
+        # Tüm progress kayıtlarını tek sorguda çek
+        all_lesson_ids = []
+        topic_lessons_map = {}
+        for topic in all_topics:
+            lessons = (
+                Lesson.query
+                .filter_by(topic_id=topic.id)
+                .order_by(Lesson.order, Lesson.id)
+                .all()
+            )
+            topic_lessons_map[topic.id] = lessons
+            all_lesson_ids.extend([l.id for l in lessons])
+ 
+        progress_map: dict[int, "UserProgress"] = {}
+        if all_lesson_ids:
+            rows = UserProgress.query.filter(
+                UserProgress.user_id == current_user.id,
+                UserProgress.lesson_id.in_(all_lesson_ids),
+            ).all()
+            progress_map = {row.lesson_id: row for row in rows}
+ 
+        # Kilit mantığı: topic N açık olmak için topic N-1 tamamen bitmeli
+        prev_world_complete = True  # ilk dünya her zaman açık
+        for topic in all_topics:
+            lessons = topic_lessons_map[topic.id]
+            total = len(lessons)
+ 
+            completed_count = sum(
+                1 for l in lessons
+                if progress_map.get(l.id) and progress_map[l.id].is_completed
+            )
+ 
+            is_locked = not prev_world_complete
+ 
+            # Sonraki topic için: bu topic tamamen bitti mi?
+            prev_world_complete = (total > 0 and completed_count == total)
+ 
+            topics_with_data.append({
+                "topic": topic,
+                "lessons": lessons,
+                "is_locked": is_locked,
+                "completed_count": completed_count,
+                "total_count": total,
+                "progress_map": progress_map,
+            })
+ 
+    return render_template(
+        "main/index.html",
+        title="Ana Sayfa",
+        topics_with_data=topics_with_data,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -98,15 +158,55 @@ def topic_detail(id: int):
 
 @main.route("/lessons/<int:id>")
 def lesson_detail(id: int):
-    """Ders içeriği + giriş yapılmışsa ilerleme durumu."""
+    """Ders içeriği. Giriş yapılmışsa kilitli derse erişimi engelle."""
     lesson = db.get_or_404(Lesson, id)
     progress = None
+ 
     if current_user.is_authenticated:
+        # Kilitli dünya kontrolü: bu dersin topic'i kilitli mi?
+        topic = lesson.topic
+        all_topics = (
+            Topic.query
+            .order_by(Topic.order, Topic.id)
+            .all()
+        )
+        topic_ids_ordered = [t.id for t in all_topics]
+ 
+        try:
+            topic_index = topic_ids_ordered.index(topic.id)
+        except ValueError:
+            topic_index = 0
+ 
+        if topic_index > 0:
+            # Önceki topic'in tüm dersleri tamamlanmış mı?
+            prev_topic = all_topics[topic_index - 1]
+            prev_lessons = (
+                Lesson.query
+                .filter_by(topic_id=prev_topic.id)
+                .all()
+            )
+            prev_lesson_ids = [l.id for l in prev_lessons]
+ 
+            if prev_lesson_ids:
+                prev_completed = UserProgress.query.filter(
+                    UserProgress.user_id == current_user.id,
+                    UserProgress.lesson_id.in_(prev_lesson_ids),
+                    UserProgress.is_completed == True,  # noqa: E712
+                ).count()
+ 
+                if prev_completed < len(prev_lesson_ids):
+                    flash(
+                        f'🔒 Bu derse erişmek için önce '
+                        f'"{prev_topic.title}" dünyasını tamamlamalısın.',
+                        "warning"
+                    )
+                    return redirect(url_for("main.index"))
+ 
         progress = UserProgress.query.filter_by(
             user_id=current_user.id,
             lesson_id=lesson.id,
         ).first()
-
+ 
     return render_template(
         "main/lesson_detail.html",
         title=lesson.title,
@@ -123,35 +223,129 @@ def lesson_detail(id: int):
 @csrf.exempt
 @login_required
 def lesson_quiz(id: int):
-    """Gemini ile ders içeriğine dayalı çoktan seçmeli soru üret."""
+    """Gemini ile 4 tipte soru üret. Kullanıcı performansına göre dağılım ayarla."""
     import google.generativeai as genai  # noqa: PLC0415
-
+ 
     lesson = db.get_or_404(Lesson, id)
-
+ 
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        return jsonify({"error": "GEMINI_API_KEY ortam değişkeni tanımlı değil"}), 500
-
+        return jsonify({"error": "GEMINI_API_KEY tanımlı değil"}), 500
+ 
+    # Kullanıcının bu dersteki geçmiş performansını çek
+    progress = UserProgress.query.filter_by(
+        user_id=current_user.id,
+        lesson_id=lesson.id,
+    ).first()
+ 
+    prev_wrong   = progress.wrong_count if progress else 0
+    prev_attempts = progress.attempts   if progress else 0
+ 
+    # İçerik uzunluğuna göre toplam soru sayısı (min 8 — 4 tipten en az 2'şer)
+    content_len = len(lesson.content or "")
+    if content_len < 500:
+        total_q = 8
+    elif content_len < 1500:
+        total_q = 10
+    elif content_len < 3000:
+        total_q = 12
+    else:
+        total_q = 14
+ 
+    # Performansa göre tip dağılımı
+    # Her tipten en az 1 tane ZORUNLU — kalan sorular dağılıma göre
+    base = 1  # her tipten minimum
+    extra = total_q - 4  # 4 tip * 1 = 4 zorunlu, kalan extra
+ 
+    if prev_attempts == 0:
+        # Yeni kullanıcı: mcq ağırlıklı, kolay tiplerle başla
+        mcq_n       = base + round(extra * 0.5)
+        tf_n        = base + round(extra * 0.2)
+        fill_n      = base + round(extra * 0.2)
+        match_n     = base + round(extra * 0.1)
+    elif prev_wrong <= 2:
+        # Az yanlış: dengeli dağılım
+        mcq_n       = base + round(extra * 0.3)
+        tf_n        = base + round(extra * 0.2)
+        fill_n      = base + round(extra * 0.3)
+        match_n     = base + round(extra * 0.2)
+    else:
+        # Çok yanlış: daha kolay tipler ağırlıklı (truefalse + fillblank)
+        mcq_n       = base + round(extra * 0.2)
+        tf_n        = base + round(extra * 0.35)
+        fill_n      = base + round(extra * 0.35)
+        match_n     = base + round(extra * 0.1)
+ 
+    # Toplam tutarlılığı sağla
+    calculated = mcq_n + tf_n + fill_n + match_n
+    if calculated < total_q:
+        mcq_n += total_q - calculated
+ 
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel(
             model_name="gemini-2.5-flash",
             system_instruction=(
-                "Sen bir siber güvenlik eğitim asistanısın. Verilen ders "
-                "içeriğine dayalı 1 adet çoktan seçmeli soru üret. "
-                'YALNIZCA şu JSON formatında yanıt ver, başka hiçbir şey yazma: '
-                '{"question": "...", "options": ["A) ...", "B) ...", '
-                '"C) ...", "D) ..."], "correct_index": 0, '
-                '"explanation": "..."}'
+                "Sen bir siber güvenlik eğitim asistanısın. "
+                "Duolingo tarzı etkileşimli öğrenme için çeşitli tipte sorular hazırlıyorsun. "
+                "Her soru önce kavramı öğretmeli, sonra test etmeli. "
+                "YALNIZCA geçerli JSON döndür, başka hiçbir şey yazma, markdown bloğu kullanma. "
+                "\n\nSoru tipleri ve JSON formatları:"
+                "\n\n1) mcq (çoktan seçmeli):"
+                '\n{"type":"mcq","hint":"3-4 cümle öğretici açıklama","question":"soru metni",'
+                '"options":["A) ...","B) ...","C) ...","D) ..."],"correct_index":0,'
+                '"explanation":"neden bu doğru"}'
+                "\n\n2) truefalse (doğru/yanlış):"
+                '\n{"type":"truefalse","hint":"3-4 cümle öğretici açıklama","statement":"iddia cümlesi",'
+                '"correct":true,"explanation":"neden doğru/yanlış"}'
+                "\n\n3) fillblank (boşluk doldurma):"
+                '\n{"type":"fillblank","hint":"3-4 cümle öğretici açıklama",'
+                '"sentence":"Cümlede ___ boşluk var","options":["A) ...","B) ...","C) ...","D) ..."],'
+                '"correct_index":0,"explanation":"neden bu kelime doğru"}'
+                "\n\n4) matching (eşleştirme — 4 çift):"
+                '\n{"type":"matching","hint":"3-4 cümle öğretici açıklama","instruction":"Terimleri tanımlarıyla eşleştir",'
+                '"pairs":[{"left":"terim1","right":"tanım1"},{"left":"terim2","right":"tanım2"},'
+                '{"left":"terim3","right":"tanım3"},{"left":"terim4","right":"tanım4"}]}'
+                "\n\nTüm soruları şu JSON içinde döndür:"
+                '\n{"questions":[...sorular...]}'
             ),
         )
-        prompt = f"Ders Başlığı: {lesson.title}\n\nDers İçeriği:\n{lesson.content}"
+ 
+        difficulty_note = ""
+        if prev_attempts > 0:
+            difficulty_note = (
+                f"\nNot: Bu kullanıcı bu dersi daha önce {prev_attempts} kez denedi "
+                f"ve toplam {prev_wrong} yanlış yaptı. "
+                f"{'Sorular biraz daha kolay olsun.' if prev_wrong > 3 else 'Dengeli zorluk seviyesi koru.'}"
+            )
+ 
+        prompt = (
+            f"Ders Başlığı: {lesson.title}\n\n"
+            f"Ders İçeriği:\n{lesson.content}\n\n"
+            f"Aşağıdaki sayılarda soru üret:{difficulty_note}\n"
+            f"- mcq (çoktan seçmeli): {mcq_n} adet\n"
+            f"- truefalse (doğru/yanlış): {tf_n} adet\n"
+            f"- fillblank (boşluk doldurma): {fill_n} adet\n"
+            f"- matching (eşleştirme): {match_n} adet\n\n"
+            f"Toplam {total_q} soru. Her sorunun hint alanı o kavramı gerçekten öğretmeli "
+            f"(sadece ipucu değil, 3-4 cümle açıklama). "
+            f"Soruları karıştırılmış sırada döndür, aynı tipten arka arkaya gelmesin."
+        )
+ 
         response = model.generate_content(prompt)
-        # Gemini bazen yanıtı ```json ... ``` bloğu içinde döndürebilir;
-        # json.loads'tan önce bu işaretleri temizle
-        raw = response.text.strip().removeprefix("```json").removesuffix("```").strip()
-        quiz_data = json.loads(raw)
-        return jsonify(quiz_data), 200
+        raw = (
+            response.text.strip()
+            .removeprefix("```json")
+            .removeprefix("```")
+            .removesuffix("```")
+            .strip()
+        )
+        data = json.loads(raw)
+        if isinstance(data, list):
+            data = {"questions": data}
+ 
+        return jsonify(data), 200
+ 
     except Exception as exc:
         return jsonify({"error": str(exc)}), 500
 
@@ -165,9 +359,7 @@ def lesson_quiz(id: int):
 def lesson_complete(id: int):
     """Dersi tamamla: UserProgress oluştur veya güncelle."""
     lesson = db.get_or_404(Lesson, id)
-
-    # ai_score (AI quiz'den gelen puan) varsa öncelikli kullan;
-    # yoksa form'daki manual score'a bak; her ikisi de 0-100 aralığına kısıtlanır
+ 
     try:
         ai_score_raw = request.form.get("ai_score")
         if ai_score_raw is not None:
@@ -176,26 +368,36 @@ def lesson_complete(id: int):
             score = max(0, min(100, int(request.form.get("score", 0))))
     except (TypeError, ValueError):
         score = 0
-
+ 
+    # wrong_count ve attempts form'dan al
+    try:
+        session_wrong = max(0, int(request.form.get("wrong_count", 0)))
+    except (TypeError, ValueError):
+        session_wrong = 0
+ 
     progress = UserProgress.query.filter_by(
         user_id=current_user.id,
         lesson_id=lesson.id,
     ).first()
-
+ 
     if progress:
-        progress.is_completed = True
-        progress.score = score
-        progress.completed_at = datetime.now(timezone.utc)
+        progress.is_completed  = True
+        progress.score         = score
+        progress.completed_at  = datetime.now(timezone.utc)
+        progress.attempts      = (progress.attempts or 0) + 1
+        progress.wrong_count   = (progress.wrong_count or 0) + session_wrong
     else:
         progress = UserProgress(
-            user_id=current_user.id,
-            lesson_id=lesson.id,
-            is_completed=True,
-            score=score,
-            completed_at=datetime.now(timezone.utc),
+            user_id      = current_user.id,
+            lesson_id    = lesson.id,
+            is_completed = True,
+            score        = score,
+            completed_at = datetime.now(timezone.utc),
+            attempts     = 1,
+            wrong_count  = session_wrong,
         )
         db.session.add(progress)
-
+ 
     db.session.commit()
     flash("🎉 Ders başarıyla tamamlandı!", "success")
     return redirect(url_for("main.lesson_detail", id=lesson.id))

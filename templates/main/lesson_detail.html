@@ -5,323 +5,1545 @@
 
 {% block extra_css %}
 <style>
-  .lesson-wrap {
-    max-width: 820px;
+  /* ── SAYFA ── */
+  .duo-wrap {
+    max-width: 700px;
     margin: 0 auto;
-    padding: 3.5rem 2rem 5rem;
+    padding: 2rem 1.5rem 5rem;
+    min-height: calc(100vh - var(--nav-h));
+    display: flex;
+    flex-direction: column;
   }
-  /* Breadcrumb */
+
+  /* ── BREADCRUMB ── */
   .breadcrumb-nav {
     display: flex;
     align-items: center;
     gap: .4rem;
-    font-size: .78rem;
+    font-size: .75rem;
     color: var(--txt3);
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
     font-family: var(--mono);
     flex-wrap: wrap;
   }
-  .breadcrumb-nav a { color: var(--txt2); text-decoration: none; transition: color .2s; }
-  .breadcrumb-nav a:hover { color: var(--p); }
-  .breadcrumb-sep { font-size: .65rem; }
 
-  /* Header */
-  .lesson-header {
-    margin-bottom: 2rem;
+  .breadcrumb-nav a {
+    color: var(--txt2);
+    text-decoration: none;
+    transition: color .2s;
   }
-  .lesson-header-top {
+
+  .breadcrumb-nav a:hover {
+    color: var(--p);
+  }
+
+  .breadcrumb-sep {
+    font-size: .6rem;
+  }
+
+  /* ── PROGRESS ŞERIDI ── */
+  .duo-progress-wrap {
     display: flex;
     align-items: center;
     gap: .75rem;
-    margin-bottom: .75rem;
-    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
   }
-  .diff-chip {
+
+  .duo-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--edge);
+    color: var(--txt3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .9rem;
+    cursor: pointer;
+    transition: all .2s;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+
+  .duo-close:hover {
+    border-color: var(--r);
+    color: var(--r);
+  }
+
+  .duo-pbar-track {
+    flex: 1;
+    height: 10px;
+    background: rgba(110, 91, 255, .1);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .duo-pbar-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    transition: width .5s cubic-bezier(.22, 1, .36, 1);
+    width: 0%;
+  }
+
+  .duo-pbar-label {
     font-family: var(--mono);
-    font-size: .68rem;
-    padding: .2rem .6rem;
-    border-radius: 6px;
-    font-weight: 600;
+    font-size: .7rem;
+    color: var(--txt3);
+    flex-shrink: 0;
+    min-width: 36px;
+    text-align: right;
   }
-  .diff-beginner { background: rgba(0,245,196,.12); color: var(--a); border: 1px solid rgba(0,245,196,.25); }
-  .diff-intermediate { background: rgba(255,184,77,.1); color: var(--w); border: 1px solid rgba(255,184,77,.25); }
-  .diff-advanced { background: rgba(255,61,107,.1); color: var(--r); border: 1px solid rgba(255,61,107,.25); }
-  .completed-chip {
-    font-family: var(--mono);
-    font-size: .68rem;
-    padding: .2rem .6rem;
-    border-radius: 6px;
-    background: rgba(0,245,196,.12);
-    color: var(--a);
-    border: 1px solid rgba(0,245,196,.25);
+
+  .duo-hearts {
+    display: flex;
+    gap: .3rem;
+    flex-shrink: 0;
   }
-  .lesson-header h1 {
+
+  .heart {
+    font-size: .9rem;
+    transition: all .3s;
+  }
+
+  .heart.lost {
+    filter: grayscale(1);
+    opacity: .28;
+    transform: scale(.85);
+  }
+
+  /* ── EKRANLAR ── */
+  .duo-screen {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    animation: duoIn .35s ease;
+  }
+
+  .duo-screen.active {
+    display: flex;
+  }
+
+  @keyframes duoIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ════ BAŞLAT ════ */
+  .start-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.1rem;
+    padding: 2rem 0;
+  }
+
+  .start-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(110, 91, 255, .2), rgba(0, 245, 196, .1));
+    border: 1px solid rgba(110, 91, 255, .22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    animation: iconFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes iconFloat {
+
+    0%,
+    100% {
+      transform: translateY(0)
+    }
+
+    50% {
+      transform: translateY(-8px)
+    }
+  }
+
+  .start-title {
     font-family: var(--display);
-    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-size: 1.55rem;
     font-weight: 800;
     color: #fff;
-    line-height: 1.2;
-    margin-bottom: .5rem;
+    line-height: 1.15;
   }
-  .lesson-header-meta {
+
+  .start-badges {
     display: flex;
-    gap: 1rem;
-    font-size: .78rem;
-    color: var(--txt2);
-    font-family: var(--mono);
+    gap: .6rem;
+    justify-content: center;
     flex-wrap: wrap;
   }
 
-  /* Progress bar */
-  .progress-panel {
-    background: var(--surface);
-    border: 1px solid rgba(0,245,196,.2);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .progress-icon {
-    width: 40px; height: 40px;
-    background: rgba(0,245,196,.1);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--a);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-  .progress-text { flex: 1; }
-  .progress-text strong { display: block; color: var(--a); font-size: .85rem; margin-bottom: .15rem; }
-  .progress-text span { color: var(--txt2); font-size: .78rem; font-family: var(--mono); }
-  .progress-score-bar {
-    width: 80px;
-    height: 6px;
-    background: var(--surface2);
-    border-radius: 4px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .progress-score-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--p), var(--a));
-    border-radius: 4px;
-    transition: width .6s ease;
-  }
-
-  /* Lesson content */
-  .lesson-content {
-    background: var(--surface);
-    border: 1px solid var(--edge);
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    line-height: 1.8;
-    color: var(--txt);
-  }
-  .lesson-content h1,
-  .lesson-content h2,
-  .lesson-content h3 {
-    font-family: var(--display);
-    font-weight: 700;
-    color: #fff;
-    margin: 1.5rem 0 .5rem;
-    line-height: 1.3;
-  }
-  .lesson-content h1 { font-size: 1.4rem; }
-  .lesson-content h2 { font-size: 1.15rem; color: var(--txt); }
-  .lesson-content h3 { font-size: 1rem; }
-  .lesson-content p { margin-bottom: .9rem; color: var(--txt2); }
-  .lesson-content ul, .lesson-content ol {
-    padding-left: 1.4rem;
-    margin-bottom: .9rem;
+  .sbadge {
+    font-family: var(--mono);
+    font-size: .68rem;
+    padding: .22rem .7rem;
+    border-radius: 20px;
+    background: rgba(110, 91, 255, .08);
+    border: 1px solid rgba(110, 91, 255, .2);
     color: var(--txt2);
   }
-  .lesson-content li { margin-bottom: .3rem; }
-  .lesson-content code {
-    font-family: var(--mono);
-    font-size: .82em;
-    background: var(--surface2);
-    border: 1px solid var(--edge);
-    border-radius: 4px;
-    padding: .1em .4em;
+
+  .sbadge.green {
+    background: rgba(0, 245, 196, .07);
+    border-color: rgba(0, 245, 196, .2);
     color: var(--a);
   }
-  .lesson-content pre {
-    background: var(--surface2);
+
+  .sbadge.amber {
+    background: rgba(255, 184, 77, .07);
+    border-color: rgba(255, 184, 77, .2);
+    color: var(--w);
+  }
+
+  .sbadge.red {
+    background: rgba(255, 61, 107, .07);
+    border-color: rgba(255, 61, 107, .2);
+    color: var(--r);
+  }
+
+  .start-sub {
+    font-size: .86rem;
+    color: var(--txt2);
+    line-height: 1.7;
+    max-width: 420px;
+    font-weight: 300;
+  }
+
+  .start-prev-score {
+    font-family: var(--mono);
+    font-size: .78rem;
+    color: var(--a);
+    background: rgba(0, 245, 196, .06);
+    border: 1px solid rgba(0, 245, 196, .18);
+    border-radius: 8px;
+    padding: .35rem 1rem;
+  }
+
+  /* ════ YÜKLENIYOR ════ */
+  .loading-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .duo-spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(110, 91, 255, .15);
+    border-top-color: var(--p);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-text {
+    font-family: var(--mono);
+    font-size: .82rem;
+    color: var(--txt2);
+  }
+
+  .loading-dots span {
+    animation: dotBlink 1.2s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  .loading-dots span:nth-child(2) {
+    animation-delay: .2s;
+  }
+
+  .loading-dots span:nth-child(3) {
+    animation-delay: .4s;
+  }
+
+  @keyframes dotBlink {
+
+    0%,
+    80%,
+    100% {
+      opacity: .2
+    }
+
+    40% {
+      opacity: 1
+    }
+  }
+
+  /* ════ SORU EKRANI — ORTAK ════ */
+  .q-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: var(--mono);
+    font-size: .64rem;
+    color: var(--p);
+    background: rgba(110, 91, 255, .08);
+    border: 1px solid rgba(110, 91, 255, .2);
+    border-radius: 20px;
+    padding: .2rem .65rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  /* Hint kartı */
+  .duo-hint {
+    background: rgba(110, 91, 255, .07);
+    border: 1px solid rgba(110, 91, 255, .18);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.4rem;
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+  }
+
+  .hint-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(110, 91, 255, .15);
+    border: 1px solid rgba(110, 91, 255, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .9rem;
+    flex-shrink: 0;
+    color: var(--p);
+  }
+
+  .hint-text {
+    font-size: .85rem;
+    color: var(--txt2);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  /* Soru metni */
+  .duo-question {
+    font-family: var(--display);
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.5;
+    margin-bottom: 1.4rem;
+  }
+
+  /* Feedback kutusu */
+  .duo-feedback {
+    display: none;
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-top: 1rem;
+    gap: .75rem;
+    align-items: flex-start;
+    animation: duoIn .3s ease;
+  }
+
+  .duo-feedback.show {
+    display: flex;
+  }
+
+  .duo-feedback.fb-ok {
+    background: rgba(0, 245, 196, .07);
+    border: 1px solid rgba(0, 245, 196, .22);
+  }
+
+  .duo-feedback.fb-err {
+    background: rgba(255, 61, 107, .06);
+    border: 1px solid rgba(255, 61, 107, .2);
+  }
+
+  .fb-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .fb-body {
+    flex: 1;
+  }
+
+  .fb-title {
+    font-family: var(--display);
+    font-size: .9rem;
+    font-weight: 700;
+    margin-bottom: .3rem;
+  }
+
+  .fb-ok .fb-title {
+    color: var(--a);
+  }
+
+  .fb-err .fb-title {
+    color: var(--r);
+  }
+
+  .fb-explanation {
+    font-size: .82rem;
+    color: var(--txt2);
+    line-height: 1.65;
+  }
+
+  /* Devam butonu */
+  .btn-next-wrap {
+    margin-top: 1.4rem;
+  }
+
+  .btn-next-wrap button {
+    width: 100%;
+  }
+
+  /* ════ MCQ & FILLBLANK — şık butonları ════ */
+  .duo-options {
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+  }
+
+  .opt-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    padding: .9rem 1.1rem;
+    background: var(--surface);
+    border: 2px solid var(--edge);
+    border-radius: 14px;
+    color: var(--txt);
+    font-family: var(--sans);
+    font-size: .92rem;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+
+  .opt-btn:not(:disabled):hover {
+    border-color: var(--p);
+    background: rgba(110, 91, 255, .07);
+    transform: translateY(-2px);
+  }
+
+  .opt-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(110, 91, 255, .1);
+    border: 1.5px solid rgba(110, 91, 255, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--p);
+    flex-shrink: 0;
+    transition: all .2s;
+  }
+
+  .opt-text {
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .opt-btn:disabled {
+    cursor: default;
+  }
+
+  .opt-btn:disabled:not(.opt-ok):not(.opt-err) {
+    opacity: .38;
+  }
+
+  .opt-btn.opt-ok {
+    border-color: var(--a) !important;
+    background: rgba(0, 245, 196, .08) !important;
+    animation: correctPop .4s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  .opt-btn.opt-ok .opt-letter {
+    background: var(--a);
+    border-color: var(--a);
+    color: #04040d;
+  }
+
+  @keyframes correctPop {
+    0% {
+      transform: scale(1)
+    }
+
+    50% {
+      transform: scale(1.02)
+    }
+
+    100% {
+      transform: scale(1)
+    }
+  }
+
+  .opt-btn.opt-err {
+    border-color: var(--r) !important;
+    background: rgba(255, 61, 107, .06) !important;
+    animation: wrongShake .4s ease;
+  }
+
+  .opt-btn.opt-err .opt-letter {
+    background: var(--r);
+    border-color: var(--r);
+    color: #fff;
+  }
+
+  @keyframes wrongShake {
+
+    0%,
+    100% {
+      transform: translateX(0)
+    }
+
+    20% {
+      transform: translateX(-5px)
+    }
+
+    40% {
+      transform: translateX(5px)
+    }
+
+    60% {
+      transform: translateX(-3px)
+    }
+
+    80% {
+      transform: translateX(3px)
+    }
+  }
+
+  /* ════ TRUEFALSE ════ */
+  .tf-statement {
+    background: var(--surface);
     border: 1px solid var(--edge);
-    border-radius: 10px;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    font-size: 1rem;
+    color: var(--txt);
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+    font-style: italic;
+    border-left: 3px solid var(--p);
+  }
+
+  .tf-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+  }
+
+  .tf-btn {
     padding: 1.1rem;
-    overflow-x: auto;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 2px solid var(--edge);
+    cursor: pointer;
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--txt2);
+    transition: all .2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  .tf-btn .tf-emoji {
+    font-size: 1.8rem;
+  }
+
+  .tf-btn:not(:disabled):hover {
+    transform: translateY(-3px);
+  }
+
+  .tf-btn.tf-true:not(:disabled):hover {
+    border-color: var(--a);
+    color: var(--a);
+  }
+
+  .tf-btn.tf-false:not(:disabled):hover {
+    border-color: var(--r);
+    color: var(--r);
+  }
+
+  .tf-btn.opt-ok {
+    border-color: var(--a) !important;
+    background: rgba(0, 245, 196, .08) !important;
+    color: var(--a) !important;
+    animation: correctPop .4s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  .tf-btn.opt-err {
+    border-color: var(--r) !important;
+    background: rgba(255, 61, 107, .06) !important;
+    color: var(--r) !important;
+    animation: wrongShake .4s ease;
+  }
+
+  .tf-btn:disabled {
+    cursor: default;
+    opacity: .5;
+  }
+
+  .tf-btn.opt-ok,
+  .tf-btn.opt-err {
+    opacity: 1 !important;
+  }
+
+  /* ════ FILLBLANK ════ */
+  .fill-sentence {
+    font-family: var(--display);
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.7;
+    margin-bottom: 1.4rem;
+  }
+
+  .fill-blank {
+    display: inline-block;
+    min-width: 100px;
+    height: 28px;
+    background: rgba(110, 91, 255, .12);
+    border-bottom: 2px solid var(--p);
+    border-radius: 4px 4px 0 0;
+    vertical-align: middle;
+    margin: 0 .3rem;
+    transition: all .3s;
+  }
+
+  .fill-blank.filled {
+    background: rgba(0, 245, 196, .12);
+    border-bottom-color: var(--a);
+    padding: 0 .5rem;
+    color: var(--a);
+    font-weight: 600;
+  }
+
+  .fill-blank.wrong-fill {
+    background: rgba(255, 61, 107, .1);
+    border-bottom-color: var(--r);
+    color: var(--r);
+  }
+
+  /* ════ MATCHING ════ */
+  .matching-instruction {
+    font-size: .82rem;
+    color: var(--txt2);
+    margin-bottom: 1.2rem;
+    font-family: var(--mono);
+  }
+
+  .matching-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem;
     margin-bottom: 1rem;
   }
-  .lesson-content pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: .83rem;
-    color: var(--txt);
-  }
-  .lesson-content strong { color: var(--txt); font-weight: 600; }
 
-  /* Complete form */
-  .complete-panel {
+  .match-col {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .match-col-label {
+    font-family: var(--mono);
+    font-size: .64rem;
+    color: var(--txt3);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: .25rem;
+  }
+
+  .match-item {
+    padding: .7rem .9rem;
+    border-radius: 10px;
     background: var(--surface);
-    border: 1px solid var(--edge);
-    border-radius: 16px;
-    padding: 1.75rem;
-  }
-  .complete-panel h2 {
-    font-family: var(--display);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: .4rem;
-  }
-  .complete-panel p { color: var(--txt2); font-size: .85rem; margin-bottom: 1.25rem; }
-  .score-input-wrap {
+    border: 2px solid var(--edge);
+    font-size: .88rem;
+    color: var(--txt);
+    cursor: pointer;
+    transition: all .2s;
+    line-height: 1.35;
+    min-height: 44px;
     display: flex;
     align-items: center;
-    gap: .75rem;
-    margin-bottom: 1.25rem;
-    flex-wrap: wrap;
   }
-  .score-label { font-size: .82rem; color: var(--txt2); font-family: var(--mono); white-space: nowrap; }
-  .score-input {
-    width: 80px;
-    padding: .45rem .7rem;
-    background: var(--surface2);
-    border: 1px solid var(--edge);
-    border-radius: 8px;
-    color: var(--txt);
+
+  .match-item.left-item:not(.matched):not(.disabled-match):hover {
+    border-color: var(--p);
+    background: rgba(110, 91, 255, .08);
+  }
+
+  .match-item.selected-left {
+    border-color: var(--p) !important;
+    background: rgba(110, 91, 255, .15) !important;
+    box-shadow: 0 0 0 3px rgba(110, 91, 255, .15);
+  }
+
+  .match-item.right-item:not(.matched):not(.disabled-match):hover {
+    border-color: var(--a);
+    background: rgba(0, 245, 196, .06);
+  }
+
+  .match-item.matched-ok {
+    border-color: var(--a) !important;
+    background: rgba(0, 245, 196, .08) !important;
+    color: var(--a) !important;
+    cursor: default;
+    animation: correctPop .4s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  .match-item.matched-err {
+    border-color: var(--r) !important;
+    background: rgba(255, 61, 107, .06) !important;
+    color: var(--r) !important;
+    cursor: default;
+    animation: wrongShake .4s ease;
+  }
+
+  .match-item.disabled-match {
+    cursor: default;
+    opacity: .5;
+  }
+
+  .match-progress {
     font-family: var(--mono);
-    font-size: .9rem;
+    font-size: .72rem;
+    color: var(--txt3);
     text-align: center;
-    transition: border-color .2s;
-    outline: none;
+    margin-bottom: .75rem;
   }
-  .score-input:focus { border-color: var(--p); }
-  .score-hint { font-size: .72rem; color: var(--txt3); font-family: var(--mono); }
 
-  .nav-links {
+  .match-progress span {
+    color: var(--a);
+    font-weight: 600;
+  }
+
+  /* ════ TEKRAR TURU ════ */
+  .review-center {
+    flex: 1;
     display: flex;
-    gap: .75rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.1rem;
   }
 
-  @media(max-width:640px) {
-    .lesson-wrap { padding: 2rem 1rem 4rem; }
-    .lesson-content { padding: 1.25rem; }
+  .review-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: rgba(255, 184, 77, .1);
+    border: 1px solid rgba(255, 184, 77, .25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+  }
+
+  .review-title {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .review-sub {
+    font-size: .88rem;
+    color: var(--txt2);
+    line-height: 1.6;
+  }
+
+  .review-badge {
+    font-family: var(--mono);
+    font-size: .82rem;
+    color: var(--w);
+    background: rgba(255, 184, 77, .08);
+    border: 1px solid rgba(255, 184, 77, .2);
+    border-radius: 8px;
+    padding: .4rem 1.1rem;
+  }
+
+  /* ════ TAMAMLANDI ════ */
+  .complete-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.1rem;
+  }
+
+  .complete-trophy {
+    font-size: 4.5rem;
+    animation: trophyIn .6s cubic-bezier(.34, 1.56, .64, 1);
+  }
+
+  @keyframes trophyIn {
+    from {
+      transform: scale(0) rotate(-15deg)
+    }
+
+    to {
+      transform: scale(1) rotate(0)
+    }
+  }
+
+  .complete-title {
+    font-family: var(--display);
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .complete-title span {
+    background: linear-gradient(135deg, var(--p), var(--a));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .complete-stats {
+    display: flex;
+    gap: .65rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cstat {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 12px;
+    padding: .85rem 1.3rem;
+    text-align: center;
+    min-width: 82px;
+  }
+
+  .cstat-n {
+    font-family: var(--mono);
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--p);
+    display: block;
+    line-height: 1;
+  }
+
+  .cstat-n.g {
+    color: var(--a);
+  }
+
+  .cstat-n.r {
+    color: var(--r);
+  }
+
+  .cstat-l {
+    font-size: .66rem;
+    color: var(--txt3);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-top: .3rem;
+  }
+
+  .complete-xp {
+    font-family: var(--mono);
+    font-size: 1.15rem;
+    color: var(--a);
+    background: rgba(0, 245, 196, .07);
+    border: 1px solid rgba(0, 245, 196, .2);
+    border-radius: 10px;
+    padding: .6rem 1.6rem;
+  }
+
+  .complete-actions {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  /* ── GİRİŞ YAP ── */
+  .login-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .login-center p {
+    color: var(--txt2);
+    font-size: .9rem;
+  }
+
+  @media(max-width:600px) {
+    .duo-wrap {
+      padding: 1.5rem 1rem 4rem;
+    }
+
+    .tf-options {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .matching-area {
+      grid-template-columns: 1fr;
+    }
+
+    .match-col:last-child .match-col-label::before {
+      content: '→ ';
+    }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="lesson-wrap">
+<div class="duo-wrap">
+  {# Gizli veriler #}
+  <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+  <input type="hidden" id="lesson-id" value="{{ lesson.id }}">
+  <input type="hidden" id="complete-url" value="{{ url_for('main.lesson_complete', id=lesson.id) }}">
+
   <!-- Breadcrumb -->
-  <nav class="breadcrumb-nav cl-reveal" aria-label="Konum">
+  <nav class="breadcrumb-nav" aria-label="Konum">
     <a href="{{ url_for('main.index') }}"><i class="bi bi-house-door"></i></a>
     <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
-    <a href="{{ url_for('main.topics') }}">Konular</a>
-    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
-    <a href="{{ url_for('main.topic_detail', id=lesson.topic.id) }}">{{ lesson.topic.title }}</a>
+    <span>{{ lesson.topic.title }}</span>
     <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
     <span>{{ lesson.title }}</span>
   </nav>
 
-  <!-- Header -->
-  <header class="lesson-header cl-reveal">
-    <div class="lesson-header-top">
-      {% if lesson.difficulty == 'beginner' %}
-      <span class="diff-chip diff-beginner">🟢 Kolay</span>
-      {% elif lesson.difficulty == 'intermediate' %}
-      <span class="diff-chip diff-intermediate">🟡 Orta</span>
-      {% else %}
-      <span class="diff-chip diff-advanced">🔴 Zor</span>
-      {% endif %}
-      {% if progress and progress.is_completed %}
-      <span class="completed-chip"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Tamamlandı</span>
-      {% endif %}
+  <!-- Progress şeridi -->
+  <div class="duo-progress-wrap" id="duo-progress-wrap">
+    <a href="{{ url_for('main.index') }}" class="duo-close" title="Çık">
+      <i class="bi bi-x-lg"></i>
+    </a>
+    <div class="duo-pbar-track">
+      <div class="duo-pbar-fill" id="duo-pbar"></div>
     </div>
-    <h1>{{ lesson.title }}</h1>
-    <div class="lesson-header-meta">
-      <span><i class="bi bi-collection" aria-hidden="true"></i> {{ lesson.topic.title }}</span>
-      <span><i class="bi bi-list-ol" aria-hidden="true"></i> Ders #{{ lesson.order }}</span>
+    <span class="duo-pbar-label" id="duo-pbar-label">–</span>
+    <div class="duo-hearts" id="duo-hearts">
+      <span class="heart" id="h1">❤️</span>
+      <span class="heart" id="h2">❤️</span>
+      <span class="heart" id="h3">❤️</span>
     </div>
-  </header>
-
-  <!-- Progress panel (sadece giriş yapılmış + tamamlanmışsa) -->
-  {% if progress and progress.is_completed %}
-  <div class="progress-panel cl-reveal" role="status" aria-label="İlerleme durumu">
-    <div class="progress-icon" aria-hidden="true"><i class="bi bi-trophy"></i></div>
-    <div class="progress-text">
-      <strong>Bu dersi tamamladınız!</strong>
-      <span>
-        {% if progress.score is not none %}Puan: {{ progress.score }}/100 · {% endif %}
-        {% if progress.completed_at %}{{ progress.completed_at.strftime('%d.%m.%Y') }}{% endif %}
-      </span>
-    </div>
-    {% if progress.score is not none %}
-    <div class="progress-score-bar" aria-label="Puan: {{ progress.score }}/100" role="progressbar"
-         aria-valuenow="{{ progress.score }}" aria-valuemin="0" aria-valuemax="100">
-      <div class="progress-score-fill" style="width: {{ progress.score }}%"></div>
-    </div>
-    {% endif %}
   </div>
-  {% endif %}
 
-  <!-- Content -->
-  <article class="lesson-content cl-reveal" aria-label="Ders içeriği">
-    {{ lesson.content | replace('\n', '<br>') | safe }}
-  </article>
-
-  <!-- Complete form -->
   {% if current_user.is_authenticated %}
-  <section class="complete-panel cl-reveal" aria-label="Dersi tamamla">
-    <h2>
-      {% if progress and progress.is_completed %}
-      <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Tekrar Tamamla
-      {% else %}
-      <i class="bi bi-check-circle" aria-hidden="true"></i> Dersi Tamamla
-      {% endif %}
-    </h2>
-    <p>Dersi bitirdiğinizde aşağıdaki butona tıklayın. İsteğe bağlı olarak kendinize bir puan verebilirsiniz.</p>
-    <form method="POST" action="{{ url_for('main.lesson_complete', id=lesson.id) }}" id="form-complete">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="score-input-wrap">
-        <label class="score-label" for="score">Puan (0–100):</label>
-        <input class="score-input"
-               type="number" id="score" name="score"
-               min="0" max="100"
-               value="{{ progress.score if progress and progress.score is not none else 100 }}"
-               aria-label="Puan">
-        <span class="score-hint">İsteğe bağlı</span>
+
+  <!-- ════ BAŞLAT ════ -->
+  <div class="duo-screen active" id="screen-start">
+    <div class="start-center">
+      <div class="start-icon">{{ lesson.topic.icon or '🛡️' }}</div>
+      <h1 class="start-title">{{ lesson.title }}</h1>
+      <div class="start-badges">
+        {% if lesson.difficulty == 'beginner' %}
+        <span class="sbadge green">🟢 Kolay</span>
+        {% elif lesson.difficulty == 'intermediate' %}
+        <span class="sbadge amber">🟡 Orta</span>
+        {% else %}
+        <span class="sbadge red">🔴 Zor</span>
+        {% endif %}
+        <span class="sbadge">{{ lesson.topic.title }}</span>
+        {% if progress and progress.attempts %}
+        <span class="sbadge">{{ progress.attempts }}. deneme</span>
+        {% endif %}
       </div>
-      <button type="submit" class="cl-btn-primary" id="btn-complete-lesson">
-        <i class="bi bi-check-lg" aria-hidden="true"></i>
-        {% if progress and progress.is_completed %}Tekrar Tamamla{% else %}Tamamlandı Olarak İşaretle{% endif %}
+      <p class="start-sub">
+        AI tarafından hazırlanan çeşitli sorularla bu konuyu öğreneceksin.
+        Çoktan seçmeli, doğru/yanlış, boşluk doldurma ve eşleştirme soruları seni bekliyor.
+        Yanlış yaptıkların sona eklenir, hepsini doğru yapana kadar devam edersin.
+      </p>
+      {% if progress and progress.is_completed %}
+      <div class="start-prev-score">
+        Son puan: {{ progress.score }}/100 · {{ progress.attempts }} deneme
+      </div>
+      {% endif %}
+      <button class="cl-btn-primary" id="btn-start" type="button" style="min-width:220px">
+        <i class="bi bi-play-fill"></i>
+        {% if progress and progress.is_completed %}Tekrar Başla{% else %}Başla{% endif %}
       </button>
-    </form>
-  </section>
+    </div>
+  </div>
+
+  <!-- ════ YÜKLENIYOR ════ -->
+  <div class="duo-screen" id="screen-loading">
+    <div class="loading-center">
+      <div class="duo-spinner"></div>
+      <div class="loading-text">
+        Hazırlan, Sana Özel Sorular Hazırlanıyor...
+        <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ SORU EKRANI ════ -->
+  <div class="duo-screen" id="screen-question">
+    <!-- Tip rozeti -->
+    <div class="q-type-badge" id="q-type-badge">
+      <i class="bi bi-question-circle"></i> <span id="q-type-label">Soru</span>
+    </div>
+    <!-- Hint -->
+    <div class="duo-hint" id="duo-hint">
+      <div class="hint-icon"><i class="bi bi-lightbulb-fill"></i></div>
+      <div class="hint-text" id="hint-text"></div>
+    </div>
+    <!-- Soru içerikleri (tip bazlı) -->
+    <div id="q-mcq-area">
+      <div class="duo-question" id="mcq-question"></div>
+      <div class="duo-options" id="mcq-options"></div>
+    </div>
+    <div id="q-tf-area" style="display:none">
+      <div class="tf-statement" id="tf-statement"></div>
+      <div class="tf-options">
+        <button class="tf-btn tf-true" id="tf-true" type="button">
+          <span class="tf-emoji">✅</span> Doğru
+        </button>
+        <button class="tf-btn tf-false" id="tf-false" type="button">
+          <span class="tf-emoji">❌</span> Yanlış
+        </button>
+      </div>
+    </div>
+    <div id="q-fill-area" style="display:none">
+      <div class="fill-sentence" id="fill-sentence"></div>
+      <div class="duo-options" id="fill-options"></div>
+    </div>
+    <div id="q-match-area" style="display:none">
+      <div class="matching-instruction" id="match-instruction"></div>
+      <div class="match-progress" id="match-progress"></div>
+      <div class="matching-area">
+        <div class="match-col">
+          <div class="match-col-label">Terimler</div>
+          <div id="match-left"></div>
+        </div>
+        <div class="match-col">
+          <div class="match-col-label">Tanımlar</div>
+          <div id="match-right"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Feedback -->
+    <div class="duo-feedback" id="duo-feedback">
+      <div class="fb-icon" id="fb-icon"></div>
+      <div class="fb-body">
+        <div class="fb-title" id="fb-title"></div>
+        <div class="fb-explanation" id="fb-expl"></div>
+      </div>
+    </div>
+    <!-- Devam -->
+    <div class="btn-next-wrap" id="btn-next-wrap" style="display:none">
+      <button class="cl-btn-primary" id="btn-next" type="button">
+        Devam Et <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ TEKRAR TURU ════ -->
+  <div class="duo-screen" id="screen-review">
+    <div class="review-center">
+      <div class="review-icon">🔄</div>
+      <h2 class="review-title">Yanlışları tekrar dene!</h2>
+      <p class="review-sub">Harika! Şimdi yanlış yaptığın sorular tekrar önüne gelecek.<br>Hepsini doğru yapana kadar
+        devam edersin.</p>
+      <div class="review-badge" id="review-badge"></div>
+      <button class="cl-btn-primary" id="btn-review" type="button" style="min-width:220px">
+        <i class="bi bi-arrow-repeat"></i> Devam Et
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ TAMAMLANDI ════ -->
+  <div class="duo-screen" id="screen-complete">
+    <div class="complete-center">
+      <div class="complete-trophy">🏆</div>
+      <h2 class="complete-title">Ders<br><span>Tamamlandı!</span></h2>
+      <div class="complete-stats">
+        <div class="cstat"><span class="cstat-n g" id="st-correct">0</span>
+          <div class="cstat-l">Doğru</div>
+        </div>
+        <div class="cstat"><span class="cstat-n r" id="st-wrong">0</span>
+          <div class="cstat-l">Yanlış</div>
+        </div>
+        <div class="cstat"><span class="cstat-n" id="st-total">0</span>
+          <div class="cstat-l">Toplam</div>
+        </div>
+      </div>
+      <div class="complete-xp" id="complete-xp">+0 XP</div>
+      <div class="complete-actions">
+        <button class="cl-btn-primary" id="btn-finish" type="button">
+          <i class="bi bi-check-lg"></i> Tamamla ve Kaydet
+        </button>
+        <a href="{{ url_for('main.index') }}" class="cl-btn-ghost">
+          <i class="bi bi-house-door"></i> Ana Sayfaya Dön
+        </a>
+      </div>
+    </div>
+  </div>
+
   {% else %}
-  <div class="complete-panel cl-reveal" style="text-align:center;">
-    <p style="margin-bottom:1rem;">Bu dersi tamamlamak için giriş yapmanız gerekiyor.</p>
-    <a href="{{ url_for('auth.login') }}" class="cl-btn-primary">
-      <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Giriş Yap
-    </a>
+  <div class="duo-screen active" id="screen-login">
+    <div class="login-center">
+      <div style="font-size:3rem">🔒</div>
+      <p>Bu dersi tamamlamak için giriş yapmalısın.</p>
+      <a href="{{ url_for('auth.login') }}" class="cl-btn-primary">
+        <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+      </a>
+    </div>
   </div>
   {% endif %}
 
-  <!-- Navigation -->
-  <nav class="nav-links cl-reveal" aria-label="Ders navigasyonu">
-    <a href="{{ url_for('main.topic_detail', id=lesson.topic.id) }}" class="cl-btn-ghost">
-      <i class="bi bi-arrow-left" aria-hidden="true"></i> Konuya Dön
-    </a>
-    <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost">
-      <i class="bi bi-grid" aria-hidden="true"></i> Tüm Konular
-    </a>
-  </nav>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    'use strict';
+
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    const MAX_WRONG = 3;
+
+    const csrfToken = document.getElementById('csrf-token')?.value;
+    const lessonId = document.getElementById('lesson-id')?.value;
+    const completeUrl = document.getElementById('complete-url')?.value;
+    const btnStart = document.getElementById('btn-start');
+    if (!btnStart) return;
+
+    const btnNext = document.getElementById('btn-next');
+    const btnReview = document.getElementById('btn-review');
+    const btnFinish = document.getElementById('btn-finish');
+    const pbar = document.getElementById('duo-pbar');
+    const pbarLabel = document.getElementById('duo-pbar-label');
+    const hearts = ['h1', 'h2', 'h3'].map(id => document.getElementById(id));
+
+    let questions = [];
+    let queue = [];
+    let wrongQueue = [];
+    let currentQ = null;
+    let answered = false;
+    let totalQ = 0;
+    let totalCorrect = 0;
+    let totalWrong = 0;
+    let wrongCount = 0;
+    let inReview = false;
+
+    // Eşleştirme durumu
+    let matchSelected = null;
+    let matchPairs = [];
+    let matchDone = 0;
+    let matchWrong = false;
+
+    /* ── EKRAN ── */
+    function show(id) {
+      document.querySelectorAll('.duo-screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    /* ── PROGRESS ── */
+    function updateProgress() {
+      const total = inReview
+        ? (wrongQueue.length + queue.length + (currentQ ? 1 : 0))
+        : totalQ;
+      const done = inReview
+        ? (wrongQueue.length - queue.length - (currentQ ? 1 : 0))
+        : (totalQ - queue.length - (currentQ ? 1 : 0));
+      const pct = total > 0 ? Math.round(Math.max(0, done) / total * 100) : 0;
+      pbar.style.width = pct + '%';
+      pbarLabel.textContent = inReview
+        ? `🔄 ${queue.length + (currentQ ? 1 : 0)}`
+        : `${Math.max(0, done)}/${total}`;
+    }
+
+    function updateHearts() {
+      hearts.forEach((h, i) => h.classList.toggle('lost', i >= MAX_WRONG - wrongCount));
+    }
+
+    /* ── BAŞLAT ── */
+    btnStart.addEventListener('click', async () => {
+      show('screen-loading');
+      try {
+        const res = await fetch(`/lessons/${lessonId}/quiz`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+          body: JSON.stringify({}),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        questions = data.questions || [];
+        queue = [...questions];
+        wrongQueue = [];
+        totalQ = questions.length;
+        totalCorrect = 0;
+        totalWrong = 0;
+        wrongCount = 0;
+        inReview = false;
+        answered = false;
+
+        updateHearts();
+        nextQuestion();
+      } catch (err) {
+        show('screen-start');
+        btnStart.innerHTML = '<i class="bi bi-exclamation-circle"></i> Tekrar Dene';
+        console.error(err);
+      }
+    });
+
+    /* ── SONRAKİ SORU ── */
+    function nextQuestion() {
+      if (queue.length === 0) {
+        if (wrongQueue.length > 0) {
+          showReview();
+        } else {
+          showComplete();
+        }
+        return;
+      }
+      currentQ = queue.shift();
+      answered = false;
+      updateProgress();
+      renderQuestion(currentQ);
+      show('screen-question');
+    }
+
+    /* ── TİP ROZET ── */
+    const TYPE_META = {
+      mcq: { label: 'Çoktan Seçmeli', icon: 'bi-list-check' },
+      truefalse: { label: 'Doğru / Yanlış', icon: 'bi-toggles' },
+      fillblank: { label: 'Boşluk Doldurma', icon: 'bi-input-cursor-text' },
+      matching: { label: 'Eşleştirme', icon: 'bi-arrow-left-right' },
+    };
+
+    function renderQuestion(q) {
+      // Tüm alanları gizle
+      ['q-mcq-area', 'q-tf-area', 'q-fill-area', 'q-match-area'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+      document.getElementById('duo-feedback').className = 'duo-feedback';
+      document.getElementById('btn-next-wrap').style.display = 'none';
+
+      // Tip rozeti
+      const meta = TYPE_META[q.type] || { label: 'Soru', icon: 'bi-question-circle' };
+      document.getElementById('q-type-label').textContent = meta.label;
+      document.querySelector('#q-type-badge i').className = `bi ${meta.icon}`;
+
+      // Hint
+      const hintEl = document.getElementById('duo-hint');
+      const hintTx = document.getElementById('hint-text');
+      if (q.hint) {
+        hintTx.textContent = q.hint;
+        hintEl.style.display = 'flex';
+      } else {
+        hintEl.style.display = 'none';
+      }
+
+      if (q.type === 'mcq') renderMCQ(q);
+      else if (q.type === 'truefalse') renderTF(q);
+      else if (q.type === 'fillblank') renderFill(q);
+      else if (q.type === 'matching') renderMatch(q);
+      else renderMCQ(q); // fallback
+    }
+
+    /* ── MCQ ── */
+    function renderMCQ(q) {
+      document.getElementById('q-mcq-area').style.display = 'block';
+      document.getElementById('mcq-question').textContent = q.question;
+      const cont = document.getElementById('mcq-options');
+      cont.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.type = 'button';
+        btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span class="opt-text">${opt.replace(/^[A-D]\)\s*/, '')}</span>`;
+        btn.addEventListener('click', () => handleMCQ(i, q, cont));
+        cont.appendChild(btn);
+      });
+    }
+
+    function handleMCQ(idx, q, cont) {
+      if (answered) return;
+      answered = true;
+      const btns = cont.querySelectorAll('.opt-btn');
+      btns.forEach(b => b.disabled = true);
+      const isRight = idx === q.correct_index;
+      btns[idx].classList.add(isRight ? 'opt-ok' : 'opt-err');
+      if (!isRight) btns[q.correct_index].classList.add('opt-ok');
+      showFeedback(isRight, q.explanation, q);
+    }
+
+    /* ── TRUEFALSE ── */
+    function renderTF(q) {
+      document.getElementById('q-tf-area').style.display = 'block';
+      document.getElementById('tf-statement').textContent = q.statement;
+      const trueBtn = document.getElementById('tf-true');
+      const falseBtn = document.getElementById('tf-false');
+      trueBtn.disabled = false;
+      falseBtn.disabled = false;
+      trueBtn.className = 'tf-btn tf-true';
+      falseBtn.className = 'tf-btn tf-false';
+
+      trueBtn.onclick = () => handleTF(true, q);
+      falseBtn.onclick = () => handleTF(false, q);
+    }
+
+    function handleTF(selected, q) {
+      if (answered) return;
+      answered = true;
+      const trueBtn = document.getElementById('tf-true');
+      const falseBtn = document.getElementById('tf-false');
+      trueBtn.disabled = true;
+      falseBtn.disabled = true;
+      const isRight = selected === q.correct;
+      if (selected) {
+        trueBtn.classList.add(isRight ? 'opt-ok' : 'opt-err');
+        if (!isRight) falseBtn.classList.add('opt-ok');
+      } else {
+        falseBtn.classList.add(isRight ? 'opt-ok' : 'opt-err');
+        if (!isRight) trueBtn.classList.add('opt-ok');
+      }
+      showFeedback(isRight, q.explanation, q);
+    }
+
+    /* ── FILLBLANK ── */
+    function renderFill(q) {
+      document.getElementById('q-fill-area').style.display = 'block';
+      const sentEl = document.getElementById('fill-sentence');
+      // ___ → span.fill-blank
+      sentEl.innerHTML = q.sentence.replace(/___/g,
+        '<span class="fill-blank" id="fill-blank-span"></span>');
+
+      const cont = document.getElementById('fill-options');
+      cont.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.type = 'button';
+        btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span class="opt-text">${opt.replace(/^[A-D]\)\s*/, '')}</span>`;
+        btn.addEventListener('click', () => handleFill(i, q, cont));
+        cont.appendChild(btn);
+      });
+    }
+
+    function handleFill(idx, q, cont) {
+      if (answered) return;
+      answered = true;
+      const btns = cont.querySelectorAll('.opt-btn');
+      btns.forEach(b => b.disabled = true);
+      const isRight = idx === q.correct_index;
+      btns[idx].classList.add(isRight ? 'opt-ok' : 'opt-err');
+      if (!isRight) btns[q.correct_index].classList.add('opt-ok');
+
+      // Boşluğu doldur
+      const blankEl = document.getElementById('fill-blank-span');
+      if (blankEl) {
+        const correctText = q.options[q.correct_index].replace(/^[A-D]\)\s*/, '');
+        blankEl.textContent = correctText;
+        blankEl.classList.add(isRight ? 'filled' : 'wrong-fill');
+      }
+      showFeedback(isRight, q.explanation, q);
+    }
+
+    /* ── MATCHING ── */
+    function renderMatch(q) {
+      document.getElementById('q-match-area').style.display = 'block';
+      document.getElementById('match-instruction').textContent =
+        q.instruction || 'Terimleri tanımlarıyla eşleştir';
+
+      matchSelected = null;
+      matchPairs = [...q.pairs];
+      matchDone = 0;
+      matchWrong = false;
+
+      updateMatchProgress(q.pairs.length);
+
+      const leftCont = document.getElementById('match-left');
+      const rightCont = document.getElementById('match-right');
+      leftCont.innerHTML = '';
+      rightCont.innerHTML = '';
+
+      // Sol (terms) — karışık değil
+      q.pairs.forEach((pair, i) => {
+        const el = document.createElement('div');
+        el.className = 'match-item left-item';
+        el.textContent = pair.left;
+        el.dataset.idx = i;
+        el.addEventListener('click', () => selectLeft(el, i));
+        leftCont.appendChild(el);
+      });
+
+      // Sağ (definitions) — karıştırılmış
+      const shuffled = [...q.pairs.map((p, i) => ({ ...p, origIdx: i }))]
+        .sort(() => Math.random() - 0.5);
+      shuffled.forEach(pair => {
+        const el = document.createElement('div');
+        el.className = 'match-item right-item';
+        el.textContent = pair.right;
+        el.dataset.origIdx = pair.origIdx;
+        el.addEventListener('click', () => selectRight(el));
+        rightCont.appendChild(el);
+      });
+    }
+
+    function updateMatchProgress(total) {
+      const p = document.getElementById('match-progress');
+      p.innerHTML = `<span>${matchDone}</span>/${total} eşleşti`;
+    }
+
+    function selectLeft(el, idx) {
+      if (el.classList.contains('matched-ok') || el.classList.contains('disabled-match')) return;
+      document.querySelectorAll('#match-left .match-item').forEach(e => e.classList.remove('selected-left'));
+      matchSelected = idx;
+      el.classList.add('selected-left');
+    }
+
+    function selectRight(el) {
+      if (matchSelected === null) return;
+      if (el.classList.contains('matched-ok') || el.classList.contains('disabled-match')) return;
+
+      const rightIdx = parseInt(el.dataset.origIdx);
+      const isRight = rightIdx === matchSelected;
+
+      const leftItems = document.querySelectorAll('#match-left .match-item');
+      const leftEl = leftItems[matchSelected];
+
+      if (isRight) {
+        leftEl.classList.remove('selected-left');
+        leftEl.classList.add('matched-ok', 'disabled-match');
+        el.classList.add('matched-ok', 'disabled-match');
+        matchDone++;
+        updateMatchProgress(matchPairs.length);
+
+        if (matchDone === matchPairs.length) {
+          // Tüm eşleşmeler tamam
+          answered = true;
+          const wasWrong = matchWrong;
+          showFeedback(!wasWrong, wasWrong ? 'Bazı eşleştirmeleri yanlış yaptın ama sonunda tamamladın.' : 'Tüm eşleştirmeleri doğru yaptın!', currentQ);
+        }
+      } else {
+        // Yanlış eşleştirme — kısa titreşim
+        leftEl.classList.remove('selected-left');
+        el.classList.add('matched-err');
+        setTimeout(() => el.classList.remove('matched-err'), 600);
+        matchWrong = true;
+        matchSelected = null;
+        // Yanlış sayacı
+        if (!matchPenaltyApplied) {
+          matchPenaltyApplied = true;
+          // Sonunda feedback'te "yanlış" olarak işle
+        }
+      }
+    }
+
+    let matchPenaltyApplied = false;
+
+    /* ── FEEDBACK ── */
+    function showFeedback(isRight, explanation, q) {
+      const fb = document.getElementById('duo-feedback');
+      const fbIcon = document.getElementById('fb-icon');
+      const fbTitle = document.getElementById('fb-title');
+      const fbExpl = document.getElementById('fb-expl');
+
+      if (isRight) {
+        fb.className = 'duo-feedback fb-ok show';
+        fbIcon.textContent = '✅';
+        fbTitle.textContent = 'Doğru!';
+        totalCorrect++;
+      } else {
+        fb.className = 'duo-feedback fb-err show';
+        fbIcon.textContent = '❌';
+        fbTitle.textContent = 'Yanlış!';
+        totalWrong++;
+        wrongCount = Math.min(wrongCount + 1, MAX_WRONG);
+        updateHearts();
+        wrongQueue.push(q);
+      }
+
+      fbExpl.textContent = explanation || '';
+      document.getElementById('btn-next-wrap').style.display = 'block';
+      document.getElementById('btn-next-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      matchPenaltyApplied = false;
+    }
+
+    btnNext.addEventListener('click', nextQuestion);
+
+    /* ── TEKRAR TURU ── */
+    function showReview() {
+      inReview = true;
+      queue = [...wrongQueue];
+      wrongQueue = [];
+      document.getElementById('review-badge').textContent =
+        `${queue.length} soru tekrar edilecek`;
+      show('screen-review');
+    }
+    btnReview.addEventListener('click', nextQuestion);
+
+    /* ── TAMAMLANDI ── */
+    function showComplete() {
+      const score = Math.max(10, Math.round(totalCorrect / Math.max(1, totalQ) * 100));
+      document.getElementById('st-correct').textContent = totalCorrect;
+      document.getElementById('st-wrong').textContent = totalWrong;
+      document.getElementById('st-total').textContent = totalQ;
+      document.getElementById('complete-xp').textContent = `+${score} XP`;
+      pbar.style.width = '100%';
+      pbarLabel.textContent = `${totalQ}/${totalQ}`;
+      btnFinish.dataset.score = score;
+      btnFinish.dataset.wrong = totalWrong;
+      show('screen-complete');
+    }
+
+    /* ── KAYDET ── */
+    btnFinish.addEventListener('click', () => {
+      btnFinish.disabled = true;
+      btnFinish.innerHTML = '<i class="bi bi-hourglass-split"></i> Kaydediliyor...';
+      const form = document.createElement('form');
+      form.method = 'POST'; form.action = completeUrl; form.style.display = 'none';
+      [['csrf_token', csrfToken], ['ai_score', btnFinish.dataset.score], ['wrong_count', btnFinish.dataset.wrong]]
+        .forEach(([n, v]) => {
+          const i = document.createElement('input');
+          i.type = 'hidden'; i.name = n; i.value = v;
+          form.appendChild(i);
+        });
+      document.body.appendChild(form);
+      form.submit();
+    });
+
+  })();
+</script>
 {% endblock %}

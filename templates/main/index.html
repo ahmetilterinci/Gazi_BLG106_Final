@@ -5,12 +5,23 @@ hacking ve daha fazlası.{% endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── SCENE DIVIDER ── */
+  /* ─── GENEL ─── */
+  #scroll-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    z-index: 999;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    box-shadow: 0 0 12px var(--pg)
+  }
+
   .scene-div {
     position: relative;
     z-index: 2;
     height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(110, 91, 255, .25) 25%, rgba(0, 245, 196, .25) 50%, rgba(110, 91, 255, .25) 75%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(110, 91, 255, .25)25%, rgba(0, 245, 196, .25)50%, rgba(110, 91, 255, .25)75%, transparent 100%);
     overflow: visible
   }
 
@@ -31,17 +42,16 @@ hacking ve daha fazlası.{% endblock %}
 
     0%,
     100% {
-      transform: translateX(-50%) scale(1);
+      transform: translateX(-50%)scale(1);
       opacity: .5
     }
 
     50% {
-      transform: translateX(-50%) scale(1.6);
+      transform: translateX(-50%)scale(1.6);
       opacity: 1
     }
   }
 
-  /* ── SECTION SHARED ── */
   .cl-section {
     position: relative;
     z-index: 2;
@@ -84,7 +94,7 @@ hacking ve daha fazlası.{% endblock %}
     font-weight: 300
   }
 
-  /* ── HERO ── */
+  /* ─── HERO (anonim) ─── */
   #s-hero {
     position: relative;
     z-index: 2;
@@ -99,7 +109,7 @@ hacking ve daha fazlası.{% endblock %}
   .hero-grid {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(rgba(110, 91, 255, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(110, 91, 255, .055) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(110, 91, 255, .055)1px, transparent 1px), linear-gradient(90deg, rgba(110, 91, 255, .055)1px, transparent 1px);
     background-size: 56px 56px;
     animation: gridDrift 30s linear infinite;
     mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 25%, transparent 100%);
@@ -108,11 +118,11 @@ hacking ve daha fazlası.{% endblock %}
 
   @keyframes gridDrift {
     0% {
-      transform: translateY(0) translateX(0)
+      transform: translateY(0)translateX(0)
     }
 
     100% {
-      transform: translateY(56px) translateX(28px)
+      transform: translateY(56px)translateX(28px)
     }
   }
 
@@ -126,7 +136,7 @@ hacking ve daha fazlası.{% endblock %}
   .orb-a {
     width: 700px;
     height: 700px;
-    background: radial-gradient(circle, rgba(110, 91, 255, .15) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(110, 91, 255, .15)0%, transparent 65%);
     top: -200px;
     left: 50%;
     transform: translateX(-52%);
@@ -136,7 +146,7 @@ hacking ve daha fazlası.{% endblock %}
   .orb-b {
     width: 450px;
     height: 450px;
-    background: radial-gradient(circle, rgba(0, 245, 196, .12) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(0, 245, 196, .12)0%, transparent 65%);
     bottom: -80px;
     right: 3%;
     animation: orbB 15s ease-in-out infinite
@@ -145,7 +155,7 @@ hacking ve daha fazlası.{% endblock %}
   .orb-c {
     width: 320px;
     height: 320px;
-    background: radial-gradient(circle, rgba(255, 61, 107, .07) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(255, 61, 107, .07)0%, transparent 65%);
     top: 25%;
     left: 3%;
     animation: orbC 10s ease-in-out infinite
@@ -155,11 +165,11 @@ hacking ve daha fazlası.{% endblock %}
 
     0%,
     100% {
-      transform: translateX(-52%) translateY(0)
+      transform: translateX(-52%)translateY(0)
     }
 
     50% {
-      transform: translateX(-52%) translateY(-50px)
+      transform: translateX(-52%)translateY(-50px)
     }
   }
 
@@ -167,11 +177,11 @@ hacking ve daha fazlası.{% endblock %}
 
     0%,
     100% {
-      transform: translateY(0) scale(1)
+      transform: translateY(0)scale(1)
     }
 
     50% {
-      transform: translateY(-30px) scale(1.1)
+      transform: translateY(-30px)scale(1.1)
     }
   }
 
@@ -179,11 +189,11 @@ hacking ve daha fazlası.{% endblock %}
 
     0%,
     100% {
-      transform: translateY(0) translateX(0)
+      transform: translateY(0)translateX(0)
     }
 
     50% {
-      transform: translateY(25px) translateX(18px)
+      transform: translateY(25px)translateX(18px)
     }
   }
 
@@ -255,7 +265,7 @@ hacking ve daha fazlası.{% endblock %}
 
   .hero-h1 .line2 {
     display: block;
-    background: linear-gradient(135deg, var(--p) 0%, var(--a) 55%, #fff 100%);
+    background: linear-gradient(135deg, var(--p)0%, var(--a)55%, #fff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -272,7 +282,7 @@ hacking ve daha fazlası.{% endblock %}
     background: linear-gradient(90deg, var(--p), var(--a));
     transform: scaleX(0);
     transform-origin: left;
-    animation: underlineX 1.4s .8s cubic-bezier(.22, 1, .36, 1) forwards
+    animation: underlineX 1.4s .8s cubic-bezier(.22, 1, .36, 1)forwards
   }
 
   @keyframes underlineX {
@@ -369,12 +379,12 @@ hacking ve daha fazlası.{% endblock %}
   @keyframes scrollWheel {
     0% {
       opacity: 1;
-      transform: translateX(-50%) translateY(0)
+      transform: translateX(-50%)translateY(0)
     }
 
     100% {
       opacity: 0;
-      transform: translateX(-50%) translateY(14px)
+      transform: translateX(-50%)translateY(14px)
     }
   }
 
@@ -382,17 +392,17 @@ hacking ve daha fazlası.{% endblock %}
 
     0%,
     100% {
-      transform: translateX(-50%) translateY(0)
+      transform: translateX(-50%)translateY(0)
     }
 
     50% {
-      transform: translateX(-50%) translateY(-6px)
+      transform: translateX(-50%)translateY(-6px)
     }
   }
 
-  /* ── FEATURES ── */
+  /* ─── FEATURES ─── */
   #s-features {
-    background: linear-gradient(180deg, transparent 0%, rgba(110, 91, 255, .025) 50%, transparent 100%)
+    background: linear-gradient(180deg, transparent 0%, rgba(110, 91, 255, .025)50%, transparent 100%)
   }
 
   .feat-grid {
@@ -604,11 +614,7 @@ hacking ve daha fazlası.{% endblock %}
     }
   }
 
-  /* ── HOW ── */
-  #s-how {
-    position: relative
-  }
-
+  /* ─── HOW ─── */
   .how-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -624,7 +630,7 @@ hacking ve daha fazlası.{% endblock %}
     left: 12%;
     width: 76%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(110, 91, 255, .35) 20%, rgba(0, 245, 196, .35) 50%, rgba(110, 91, 255, .35) 80%, transparent);
+    background: linear-gradient(90deg, transparent, rgba(110, 91, 255, .35)20%, rgba(0, 245, 196, .35)50%, rgba(110, 91, 255, .35)80%, transparent);
     z-index: 0
   }
 
@@ -674,11 +680,7 @@ hacking ve daha fazlası.{% endblock %}
     font-weight: 300
   }
 
-  /* ── TOPICS ── */
-  #s-topics {
-    position: relative
-  }
-
+  /* ─── TOPICS (anonim önizleme) ─── */
   .topics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -788,7 +790,7 @@ hacking ve daha fazlası.{% endblock %}
     border: 1px solid rgba(255, 61, 107, .2)
   }
 
-  /* ── STATS ── */
+  /* ─── STATS ─── */
   #s-stats {
     position: relative;
     z-index: 2;
@@ -808,7 +810,7 @@ hacking ve daha fazlası.{% endblock %}
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(110, 91, 255, .03) 50%, transparent 100%)
+    background: linear-gradient(90deg, transparent 0%, rgba(110, 91, 255, .03)50%, transparent 100%)
   }
 
   .stats-row {
@@ -857,7 +859,7 @@ hacking ve daha fazlası.{% endblock %}
     font-weight: 300
   }
 
-  /* ── CTA ── */
+  /* ─── CTA ─── */
   #s-cta {
     position: relative;
     z-index: 2;
@@ -871,7 +873,7 @@ hacking ve daha fazlası.{% endblock %}
     width: 800px;
     height: 500px;
     border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(110, 91, 255, .1) 0%, transparent 65%);
+    background: radial-gradient(ellipse, rgba(110, 91, 255, .1)0%, transparent 65%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -885,12 +887,12 @@ hacking ve daha fazlası.{% endblock %}
     0%,
     100% {
       opacity: .7;
-      transform: translate(-50%, -50%) scale(1)
+      transform: translate(-50%, -50%)scale(1)
     }
 
     50% {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1.12)
+      transform: translate(-50%, -50%)scale(1.12)
     }
   }
 
@@ -918,188 +920,555 @@ hacking ve daha fazlası.{% endblock %}
     font-weight: 300
   }
 
-  /* ── AUTH DASHBOARD ── */
-  .auth-hero {
-    min-height: calc(100vh - var(--nav-h));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 1.5rem;
+  /* ════════════════════════════════════════════════════
+     ─── ÖĞRENME YOLU (authenticated) ───
+  ════════════════════════════════════════════════════ */
+  .path-page {
     position: relative;
-    z-index: 2
+    z-index: 2;
+    min-height: calc(100vh - var(--nav-h));
+    padding: 3rem 1.5rem 6rem;
   }
 
-  .auth-inner {
-    max-width: 900px;
-    width: 100%;
-    text-align: center
+  /* Üst başlık */
+  .path-top {
+    max-width: 860px;
+    margin: 0 auto 3rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
   }
 
-  .auth-welcome {
+  .path-top-left {}
+
+  .path-welcome {
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--a);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    margin-bottom: .4rem;
+  }
+
+  .path-title {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: .5rem;
+    letter-spacing: -.025em;
+  }
+
+  .path-title span {
+    background: linear-gradient(135deg, var(--p), var(--a));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .path-subtitle {
+    font-size: .88rem;
+    color: var(--txt2);
+    font-weight: 300;
+  }
+
+  .path-top-stats {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .pstat {
     background: var(--surface);
     border: 1px solid var(--edge);
-    border-radius: 22px;
-    padding: 3rem 2.5rem;
-    margin-bottom: 2rem;
-    position: relative;
-    overflow: hidden
+    border-radius: 12px;
+    padding: .75rem 1.2rem;
+    text-align: center;
+    min-width: 80px;
   }
 
-  .auth-welcome::before {
+  .pstat-n {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--p);
+    display: block;
+    line-height: 1;
+  }
+
+  .pstat-l {
+    font-size: .65rem;
+    color: var(--txt3);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-top: .3rem;
+  }
+
+  /* ─── DÜNYA BLOĞU ─── */
+  .world-block {
+    max-width: 860px;
+    margin: 0 auto 4rem;
+    position: relative;
+  }
+
+  /* Dünya başlık bandı */
+  .world-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 18px 18px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .world-header::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--p), var(--a), var(--p));
-    background-size: 200%;
-    animation: shimmerLine 3s linear infinite
+    background: linear-gradient(90deg, var(--p), var(--a));
+    opacity: 0;
+    transition: opacity .3s;
   }
 
-  @keyframes shimmerLine {
-    0% {
-      background-position: 200% 0
-    }
-
-    100% {
-      background-position: -200% 0
-    }
+  .world-block:not(.locked) .world-header::before {
+    opacity: 1;
   }
 
-  .auth-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--p), var(--a));
+  .world-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--pg), var(--ag));
+    border: 1px solid var(--edge);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--display);
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #fff;
-    margin: 0 auto 1.25rem;
-    box-shadow: 0 0 30px var(--pg)
-  }
-
-  .auth-name {
-    font-family: var(--display);
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: .4rem
-  }
-
-  .auth-name span {
-    background: linear-gradient(135deg, var(--p), var(--a));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text
-  }
-
-  .auth-sub {
-    color: var(--txt2);
-    font-size: .9rem;
-    margin-bottom: 2rem;
-    font-weight: 300
-  }
-
-  .auth-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 2rem
-  }
-
-  .auth-stat {
-    background: var(--bg2);
-    border: 1px solid var(--edge);
-    border-radius: 10px;
-    padding: 1.25rem;
-    text-align: center
-  }
-
-  .auth-stat-n {
-    font-family: var(--mono);
     font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--p);
-    display: block
+    flex-shrink: 0;
   }
 
-  .auth-stat-l {
-    font-size: .72rem;
+  .world-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .world-num {
+    font-family: var(--mono);
+    font-size: .65rem;
     color: var(--txt3);
     text-transform: uppercase;
-    letter-spacing: .1em;
-    margin-top: .3rem
+    letter-spacing: .12em;
+    margin-bottom: .2rem;
   }
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:900px) {
-    .feat-grid {
-      grid-template-columns: 1fr
+  .world-name {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: .5rem;
+  }
+
+  .world-prog-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+
+  .world-prog-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(110, 91, 255, .12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .world-prog-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    transition: width 1s cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .world-prog-label {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--txt3);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .world-lock-badge {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--txt3);
+    background: rgba(100, 80, 255, .06);
+    border: 1px solid var(--edge);
+    border-radius: 8px;
+    padding: .35rem .75rem;
+    flex-shrink: 0;
+  }
+
+  /* ─── PATH CONTAINER ─── */
+  .path-container {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .world-block.locked .path-container {
+    opacity: .38;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* ─── İZOMETRİK YOL ─── */
+  .iso-track {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    position: relative;
+  }
+
+  /* Her satır: ders düğümleri + konnektörler */
+  .track-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+  }
+
+  .track-row.row-right {
+    justify-content: flex-end;
+  }
+
+  .track-row.row-left {
+    justify-content: flex-start;
+  }
+
+  /* Düğüm sarmalayıcı */
+  .node-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    width: 90px;
+  }
+
+  /* Düğüm çemberi */
+  .lesson-node {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 2px solid var(--edge);
+    background: var(--surface2);
+    position: relative;
+    transition: transform .2s, box-shadow .2s;
+    text-decoration: none;
+    cursor: default;
+    flex-shrink: 0;
+  }
+
+  a.lesson-node {
+    cursor: pointer;
+  }
+
+  a.lesson-node:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 6px rgba(110, 91, 255, .15), 0 8px 32px rgba(0, 0, 0, .4);
+  }
+
+  /* Tamamlandı */
+  .lesson-node.done {
+    background: rgba(110, 91, 255, .15);
+    border-color: var(--p);
+  }
+
+  /* Aktif (şimdiki ders) */
+  .lesson-node.active {
+    background: rgba(110, 91, 255, .2);
+    border-color: var(--p);
+    box-shadow: 0 0 0 6px rgba(110, 91, 255, .12), 0 0 28px rgba(110, 91, 255, .25);
+    animation: activeGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes activeGlow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 6px rgba(110, 91, 255, .12), 0 0 28px rgba(110, 91, 255, .2)
     }
 
-    .feat-hero {
-      grid-template-columns: 1fr
+    50% {
+      box-shadow: 0 0 0 10px rgba(110, 91, 255, .18), 0 0 40px rgba(110, 91, 255, .35)
+    }
+  }
+
+  /* Kilitli */
+  .lesson-node.locked-node {
+    opacity: .45;
+    filter: grayscale(.6);
+  }
+
+  /* Check ikonları */
+  .node-check {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--p);
+    border: 2px solid var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .65rem;
+    color: #fff;
+  }
+
+  .node-lock-icon {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1.5px solid var(--edge);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .6rem;
+    color: var(--txt3);
+  }
+
+  /* Düğüm etiketi */
+  .node-label {
+    font-size: .72rem;
+    color: var(--txt2);
+    text-align: center;
+    line-height: 1.3;
+    max-width: 86px;
+    font-family: var(--sans);
+  }
+
+  .node-label.active-label {
+    color: var(--txt);
+    font-weight: 500;
+  }
+
+  /* ─── SVG CONNECTOR ─── */
+  .conn-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 30px;
+    max-width: 120px;
+    height: 72px;
+    position: relative;
+  }
+
+  .conn-line {
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(110, 91, 255, .12);
+  }
+
+  .conn-line.done {
+    background: linear-gradient(90deg, var(--p), var(--a));
+    box-shadow: 0 0 6px rgba(110, 91, 255, .3);
+  }
+
+  /* ─── DÖNÜŞ KONNEKTÖRÜ ─── */
+  .turn-row {
+    display: flex;
+    justify-content: var(--turn-align, center);
+    padding: 0 0 0 0;
+    height: 52px;
+    position: relative;
+  }
+
+  .turn-svg {
+    overflow: visible;
+  }
+
+  /* ─── KİLİT OVERLAY (locked world üstünde) ─── */
+  .world-lock-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .lock-bubble {
+    background: var(--surface);
+    border: 1px solid rgba(110, 91, 255, .25);
+    border-radius: 14px;
+    padding: 1rem 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .4);
+  }
+
+  .lock-bubble-icon {
+    font-size: 1.4rem;
+  }
+
+  .lock-bubble-text {}
+
+  .lock-bubble-text strong {
+    display: block;
+    font-family: var(--display);
+    font-size: .92rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: .2rem;
+  }
+
+  .lock-bubble-text span {
+    font-size: .78rem;
+    color: var(--txt2);
+    font-family: var(--mono);
+  }
+
+  /* ─── TAMAMLANDI BANNER ─── */
+  .world-complete-banner {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .9rem 1.5rem;
+    background: rgba(0, 245, 196, .06);
+    border: 1px solid rgba(0, 245, 196, .2);
+    border-radius: 0 0 18px 18px;
+    margin-top: 0;
+  }
+
+  .wcb-icon {
+    font-size: 1.3rem;
+  }
+
+  .wcb-text {
+    font-size: .85rem;
+    color: var(--a);
+    font-family: var(--mono);
+  }
+
+  /* ─── MOBILE ─── */
+  @media(max-width:640px) {
+    .path-page {
+      padding: 2rem 1rem 4rem;
+    }
+
+    .node-wrap {
+      width: 72px;
+    }
+
+    .lesson-node {
+      width: 58px;
+      height: 58px;
+      font-size: 1.2rem;
+    }
+
+    .node-label {
+      font-size: .65rem;
+      max-width: 68px;
+    }
+
+    .conn-wrap {
+      min-width: 16px;
+      max-width: 50px;
+    }
+
+    .path-container {
+      padding: 1.5rem 1rem;
+    }
+
+    .world-header {
+      padding: 1rem;
+      gap: .75rem;
+    }
+
+    .world-icon {
+      width: 42px;
+      height: 42px;
+      font-size: 1.2rem;
+      border-radius: 10px;
+    }
+
+    .path-top {
+      flex-direction: column;
     }
 
     .how-grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: 2rem
+      gap: 2rem;
     }
 
     .how-grid::before {
-      display: none
+      display: none;
     }
 
     .topics-grid {
-      grid-template-columns: repeat(2, 1fr)
+      grid-template-columns: 1fr;
     }
 
     .stats-row {
-      grid-template-columns: repeat(2, 1fr)
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .auth-grid {
-      grid-template-columns: repeat(2, 1fr)
+    .feat-grid {
+      grid-template-columns: 1fr;
     }
-  }
 
-  @media(max-width:600px) {
+    .feat-hero {
+      grid-template-columns: 1fr;
+    }
+
     .hero-h1 {
-      font-size: 2.4rem
-    }
-
-    .topics-grid {
-      grid-template-columns: 1fr
-    }
-
-    .stats-row {
-      grid-template-columns: 1fr 1fr
-    }
-
-    .how-grid {
-      grid-template-columns: 1fr
+      font-size: 2.4rem;
     }
 
     .hero-cta {
       flex-direction: column;
-      align-items: center
+      align-items: center;
     }
 
     .hero-stats {
-      gap: 1.5rem
+      gap: 1.5rem;
     }
 
     .cl-section {
-      padding: 4rem 1rem
-    }
-
-    .auth-grid {
-      grid-column: 1fr
+      padding: 4rem 1rem;
     }
   }
 </style>
@@ -1108,48 +1477,243 @@ hacking ve daha fazlası.{% endblock %}
 {% block content %}
 
 {% if current_user.is_authenticated %}
-<!-- ════ AUTHENTICATED DASHBOARD ════ -->
-<section class="auth-hero">
-  <div class="h-orb orb-a" style="opacity:.6"></div>
-  <div class="h-orb orb-b" style="opacity:.5"></div>
-  <div class="auth-inner">
-    <div class="auth-welcome cl-reveal">
-      <div class="auth-avatar">{{ current_user.username[0].upper() }}</div>
-      <h1 class="auth-name">Tekrar hoş geldin, <span>{{ current_user.username }}</span>! 👋</h1>
-      <p class="auth-sub">Öğrenmeye kaldığın yerden devam et.</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <a href="#" class="cl-btn-primary"><i class="bi bi-play-circle"></i> Derse Devam Et</a>
-        <a href="#" class="cl-btn-ghost"><i class="bi bi-grid-3x3-gap"></i> Tüm Dersler</a>
+{# ════════════════════════════════════════════════════
+AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
+════════════════════════════════════════════════════ #}
+
+{# Toplam istatistikler #}
+{% set total_completed = namespace(n=0) %}
+{% set total_lessons = namespace(n=0) %}
+{% for wd in topics_with_data %}
+{% set total_completed.n = total_completed.n + wd.completed_count %}
+{% set total_lessons.n = total_lessons.n + wd.total_count %}
+{% endfor %}
+{% set total_xp = total_completed.n * 100 %}
+
+<div class="path-page">
+  <div class="h-orb orb-a" style="opacity:.35;pointer-events:none"></div>
+  <div class="h-orb orb-b" style="opacity:.25;pointer-events:none"></div>
+
+  <!-- Üst başlık -->
+  <div class="path-top cl-reveal">
+    <div class="path-top-left">
+      <div class="path-welcome"><i class="bi bi-map"></i> Öğrenme Yolun</div>
+      <h1 class="path-title">Merhaba, <span>{{ current_user.username }}</span>! 👋</h1>
+      <p class="path-subtitle">
+        {% if total_lessons.n > 0 %}
+        {{ total_completed.n }}/{{ total_lessons.n }} ders tamamlandı — devam et!
+        {% else %}
+        Yolculuğuna başlamak için ilk derse gir.
+        {% endif %}
+      </p>
+    </div>
+    <div class="path-top-stats">
+      <div class="pstat">
+        <span class="pstat-n">{{ total_completed.n }}</span>
+        <div class="pstat-l">Tamamlanan</div>
       </div>
-      <div class="auth-grid" style="margin-top:2rem">
-        <div class="auth-stat cl-reveal" style="transition-delay:.1s"><span class="auth-stat-n">0</span>
-          <div class="auth-stat-l">Tamamlanan Ders</div>
-        </div>
-        <div class="auth-stat cl-reveal" style="transition-delay:.2s"><span class="auth-stat-n">0</span>
-          <div class="auth-stat-l">Kazanılan XP</div>
-        </div>
-        <div class="auth-stat cl-reveal" style="transition-delay:.3s"><span class="auth-stat-n">0</span>
-          <div class="auth-stat-l">Günlük Seri</div>
-        </div>
+      <div class="pstat">
+        <span class="pstat-n" style="color:var(--a)">{{ total_xp }}</span>
+        <div class="pstat-l">XP</div>
+      </div>
+      <div class="pstat">
+        <span class="pstat-n" style="color:var(--w)">{{ topics_with_data | length }}</span>
+        <div class="pstat-l">Dünya</div>
       </div>
     </div>
   </div>
-</section>
+
+  {# ─── Her Dünya ─── #}
+  {% for wd in topics_with_data %}
+  {% set topic = wd.topic %}
+  {% set lessons = wd.lessons %}
+  {% set is_locked = wd.is_locked %}
+  {% set completed = wd.completed_count %}
+  {% set total = wd.total_count %}
+  {% set pmap = wd.progress_map %}
+  {% set pct = ((completed / total * 100) | int) if total > 0 else 0 %}
+  {% set world_done = (completed == total and total > 0) %}
+
+  <div class="world-block {{ 'locked' if is_locked else '' }} cl-reveal"
+    style="transition-delay:{{ loop.index0 * 0.08 }}s">
+
+    {# Başlık bandı #}
+    <div class="world-header">
+      <div class="world-icon">{{ topic.icon or '📘' }}</div>
+      <div class="world-info">
+        <div class="world-num">Dünya {{ loop.index }}</div>
+        <div class="world-name">{{ topic.title }}</div>
+        <div class="world-prog-row">
+          <div class="world-prog-bar">
+            <div class="world-prog-fill" style="width:{{ pct }}%"></div>
+          </div>
+          <span class="world-prog-label">{{ completed }}/{{ total }}</span>
+        </div>
+      </div>
+      {% if is_locked %}
+      <div class="world-lock-badge">
+        <i class="bi bi-lock-fill" style="font-size:.8rem"></i> Kilitli
+      </div>
+      {% elif world_done %}
+      <div class="world-lock-badge"
+        style="color:var(--a);border-color:rgba(0,245,196,.2);background:rgba(0,245,196,.06)">
+        <i class="bi bi-check-circle-fill" style="font-size:.8rem"></i> Tamamlandı
+      </div>
+      {% endif %}
+    </div>
+
+    {# Ders yolu #}
+    <div class="path-container" style="position:relative">
+
+      {# Kilitli overlay #}
+      {% if is_locked %}
+      <div class="world-lock-overlay">
+        <div class="lock-bubble">
+          <div class="lock-bubble-icon">🔒</div>
+          <div class="lock-bubble-text">
+            <strong>Bu dünya kilitli</strong>
+            <span>
+              {% if loop.index > 1 %}
+              "{{ topics_with_data[loop.index0 - 1].topic.title }}" dünyasını tamamla
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      {# İzometrik ders yolu — 3'lü gruplar, sağ-sol zigzag #}
+      <div class="iso-track">
+        {% set chunk_size = 3 %}
+        {% set chunks = [] %}
+        {% for i in range(0, lessons|length, chunk_size) %}
+        {% set _ = chunks.append(lessons[i:i+chunk_size]) %}
+        {% endfor %}
+
+        {% for chunk in chunks %}
+        {% set row_idx = loop.index0 %}
+        {% set is_right_row = (row_idx % 2 == 0) %}
+
+        {# Dönüş konnektörü (ilk satır hariç) #}
+        {% if row_idx > 0 %}
+        {% set prev_is_right = ((row_idx - 1) % 2 == 0) %}
+        <div class="turn-row" style="--turn-align:{{ 'flex-end' if prev_is_right else 'flex-start' }}">
+          <svg class="turn-svg" width="80" height="52" viewBox="0 0 80 52" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            {% if prev_is_right %}
+            <path d="M 36 0 Q 72 0 72 26 Q 72 52 36 52" stroke="rgba(110,91,255,0.2)" stroke-width="3"
+              stroke-linecap="round" />
+            {% else %}
+            <path d="M 44 0 Q 8 0 8 26 Q 8 52 44 52" stroke="rgba(110,91,255,0.2)" stroke-width="3"
+              stroke-linecap="round" />
+            {% endif %}
+          </svg>
+        </div>
+        {% endif %}
+
+        {# Ders satırı #}
+        <div class="track-row {{ 'row-right' if not is_right_row else 'row-left' }}">
+          {% set display_chunk = chunk if is_right_row else chunk | reverse | list %}
+          {% for lesson in display_chunk %}
+          {% set prog = pmap.get(lesson.id) %}
+          {% set is_done = prog and prog.is_completed %}
+
+          {# Bu ders aktif mi? (ilk tamamlanmamış ders) #}
+          {% set is_active = namespace(v=false) %}
+          {% if not is_locked %}
+          {# lesson'ın global sırasını bul #}
+          {% for all_l in lessons %}
+          {% if all_l.id == lesson.id %}
+          {% set prev_done = namespace(ok=true) %}
+          {% if loop.index0 > 0 %}
+          {% set prev_l = lessons[loop.index0 - 1] %}
+          {% set prev_prog = pmap.get(prev_l.id) %}
+          {% if not (prev_prog and prev_prog.is_completed) %}
+          {% set prev_done.ok = false %}
+          {% endif %}
+          {% endif %}
+          {% if not is_done and prev_done.ok %}
+          {% set is_active.v = true %}
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+
+          {# Bağlantı çizgisi (son düğüm hariç) #}
+          {% if not loop.last %}
+          <div class="conn-wrap">
+            <div class="conn-line {{ 'done' if is_done else '' }}"></div>
+          </div>
+          {% endif %}
+
+          <div class="node-wrap">
+            {% if is_done %}
+            <a href="{{ url_for('main.lesson_detail', id=lesson.id) }}" class="lesson-node done"
+              title="{{ lesson.title }}">
+              {{ topic.icon or '📘' }}
+              <span class="node-check"><i class="bi bi-check-lg" style="font-size:.7rem"></i></span>
+            </a>
+            {% elif is_active.v and not is_locked %}
+            <a href="{{ url_for('main.lesson_detail', id=lesson.id) }}" class="lesson-node active"
+              title="{{ lesson.title }}">
+              {{ topic.icon or '📘' }}
+            </a>
+            {% else %}
+            <span class="lesson-node locked-node" title="{{ lesson.title }}">
+              🔒
+              <span class="node-lock-icon"><i class="bi bi-lock-fill" style="font-size:.55rem"></i></span>
+            </span>
+            {% endif %}
+            <span class="node-label {{ 'active-label' if is_active.v and not is_locked else '' }}">{{ lesson.title
+              }}</span>
+          </div>
+
+          {% endfor %}
+        </div>
+        {% endfor %}
+
+      </div>{# /iso-track #}
+    </div>{# /path-container #}
+
+    {# Tamamlandı banner #}
+    {% if world_done %}
+    <div class="world-complete-banner">
+      <span class="wcb-icon">🎉</span>
+      <span class="wcb-text">Bu dünya tamamlandı! Bir sonraki dünya seni bekliyor.</span>
+    </div>
+    {% endif %}
+
+  </div>{# /world-block #}
+  {% endfor %}
+
+  {# Hiç konu yoksa #}
+  {% if not topics_with_data %}
+  <div style="text-align:center;padding:5rem 2rem;color:var(--txt2)">
+    <div style="font-size:3rem;margin-bottom:1rem">🗺️</div>
+    <h2 style="font-family:var(--display);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.5rem">Henüz içerik
+      yok</h2>
+    <p style="font-size:.9rem;margin-bottom:1.5rem">Yönetici henüz ders eklememiş.</p>
+    <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost"><i class="bi bi-grid"></i> Konulara Bak</a>
+  </div>
+  {% endif %}
+
+</div>
 
 {% else %}
-<!-- ════ ANONYMOUS HERO ════ -->
+{# ════════════════════════════════════════════════════
+ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
+════════════════════════════════════════════════════ #}
+<div id="scroll-bar"></div>
+
+<!-- HERO -->
 <section id="s-hero">
   <div class="hero-grid"></div>
   <div class="h-orb orb-a"></div>
   <div class="h-orb orb-b"></div>
   <div class="h-orb orb-c"></div>
-
   <div class="hero-inner">
     <div class="hero-badge"><span class="badge-dot"></span> Yapay Zeka Destekli Öğrenme Platformu</div>
-    <h1 class="hero-h1">
-      Siber Güvenliği
-      <span class="line2">Oyun Gibi Öğren</span>
-    </h1>
+    <h1 class="hero-h1">Siber Güvenliği<span class="line2">Oyun Gibi Öğren</span></h1>
     <p class="hero-sub">Duolingo'nun bağımlılık yapıcı öğrenme modeliyle siber güvenliği birleştiren AI destekli
       platform. Ağ güvenliği, kriptografi, etik hacking — adım adım, sahne sahne.</p>
     <div class="hero-cta">
@@ -1182,7 +1746,7 @@ hacking ve daha fazlası.{% endblock %}
 
 <div class="scene-div"></div>
 
-<!-- ════ FEATURES ════ -->
+<!-- FEATURES -->
 <section id="s-features">
   <div class="cl-section">
     <div class="cl-reveal">
@@ -1244,7 +1808,7 @@ hacking ve daha fazlası.{% endblock %}
 
 <div class="scene-div"></div>
 
-<!-- ════ HOW IT WORKS ════ -->
+<!-- HOW IT WORKS -->
 <section id="s-how">
   <div class="cl-section">
     <div class="cl-reveal" style="text-align:center">
@@ -1278,7 +1842,7 @@ hacking ve daha fazlası.{% endblock %}
 
 <div class="scene-div"></div>
 
-<!-- ════ TOPICS ════ -->
+<!-- TOPICS PREVIEW -->
 <section id="s-topics">
   <div class="cl-section">
     <div class="cl-reveal"
@@ -1288,7 +1852,8 @@ hacking ve daha fazlası.{% endblock %}
         <h2 class="sec-title" style="margin-bottom:.5rem">Neden öğreneceğimi<br>bilmeden öğrenmem.</h2>
         <p class="sec-sub">Her konu, gerçek dünya senaryolarıyla destekleniyor.</p>
       </div>
-      <a href="#" class="cl-btn-ghost" style="flex-shrink:0">Tüm Dersler <i class="bi bi-arrow-right"></i></a>
+      <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost" style="flex-shrink:0">Tüm Dersler <i
+          class="bi bi-arrow-right"></i></a>
     </div>
     <div class="topics-grid">
       {% set topics_preview = [
@@ -1300,7 +1865,8 @@ hacking ve daha fazlası.{% endblock %}
       {'emoji':'🦠','name':'Malware Analizi','lessons':10,'diff':'hard','lbl':'İleri','bar':30},
       ] %}
       {% for t in topics_preview %}
-      <a href="#" class="topic-card cl-reveal" style="transition-delay:{{ loop.index0 * 0.08 }}s;--bw:{{ t.bar }}%">
+      <a href="{{ url_for('auth.register') }}" class="topic-card cl-reveal"
+        style="transition-delay:{{ loop.index0 * 0.08 }}s;--bw:{{ t.bar }}%">
         <span class="topic-emoji">{{ t.emoji }}</span>
         <div class="topic-name">{{ t.name }}</div>
         <div class="topic-meta">{{ t.lessons }} ders modülü</div>
@@ -1315,7 +1881,7 @@ hacking ve daha fazlası.{% endblock %}
   </div>
 </section>
 
-<!-- ════ STATS ════ -->
+<!-- STATS -->
 <section id="s-stats">
   <div class="stats-inner">
     <div class="stats-row">
@@ -1341,7 +1907,7 @@ hacking ve daha fazlası.{% endblock %}
 
 <div class="scene-div"></div>
 
-<!-- ════ CTA ════ -->
+<!-- CTA -->
 <section id="s-cta">
   <div class="cta-orb"></div>
   <div class="cta-inner cl-reveal">
@@ -1362,14 +1928,14 @@ hacking ve daha fazlası.{% endblock %}
 {% block extra_js %}
 <script>
   (function () {
-    /* COUNT UP */
-    function countUp(el) {
-      const target = parseInt(el.dataset.target), sfx = el.dataset.sfx || '';
-      let v = 0; const step = target / 112;
-      const t = setInterval(() => { v = Math.min(v + step, target); el.textContent = Math.floor(v).toLocaleString('tr') + sfx; if (v >= target) clearInterval(t) }, 16);
-    }
+    /* SCROLL BAR */
+    const sb = document.getElementById('scroll-bar');
+    if (sb) addEventListener('scroll', () => { const p = scrollY / (document.body.scrollHeight - innerHeight) * 100; sb.style.width = Math.min(p, 100) + '%' }, { passive: true });
 
-    /* OBSERVERS */
+    /* COUNT UP */
+    function countUp(el) { const target = parseInt(el.dataset.target), sfx = el.dataset.sfx || ''; let v = 0; const step = target / 112; const t = setInterval(() => { v = Math.min(v + step, target); el.textContent = Math.floor(v).toLocaleString('tr') + sfx; if (v >= target) clearInterval(t) }, 16); }
+
+    /* REVEAL OBSERVER */
     const revObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -1381,8 +1947,9 @@ hacking ve daha fazlası.{% endblock %}
     }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.cl-reveal,.cl-reveal-left,.cl-reveal-right,.topic-card').forEach(el => revObs.observe(el));
 
+    /* STATS OBSERVER */
     const statObs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (!e.isIntersecting) return; e.target.querySelectorAll('[data-target]').forEach(countUp); statObs.unobserve(e.target) });
+      entries.forEach(e => { if (!e.isIntersecting) return; e.target.querySelectorAll('[data-target]').forEach(countUp); statObs.unobserve(e.target); });
     }, { threshold: .25 });
     document.querySelectorAll('.stats-row,.hero-stats').forEach(el => statObs.observe(el));
 
@@ -1399,7 +1966,7 @@ hacking ve daha fazlası.{% endblock %}
 
     /* PARALLAX ORBS */
     const orbs = document.querySelectorAll('.h-orb');
-    addEventListener('scroll', () => { const y = scrollY; orbs.forEach((o, i) => o.style.transform = `translateY(${y * (i + 1) * .14}px)`) }, { passive: true });
+    addEventListener('scroll', () => { const y = scrollY; orbs.forEach((o, i) => o.style.transform = `translateY(${y * (i + 1) * .14}px)`); }, { passive: true });
 
     /* TERMINAL LOOP */
     const term = document.getElementById('hero-terminal');
@@ -1410,6 +1977,19 @@ hacking ve daha fazlası.{% endblock %}
         tls.forEach(l => { l.style.animation = 'none'; l.offsetHeight; l.style.animation = ''; l.style.opacity = '0' });
         setTimeout(() => tls.forEach((l, i) => { l.style.animation = `tla .4s ${i * .8}s ease forwards` }), 50);
       }, 10000);
+    }
+
+    /* PROGRESS BAR ANİMASYON (authenticated yol) */
+    const progFills = document.querySelectorAll('.world-prog-fill');
+    if (progFills.length) {
+      const po = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          /* width zaten style'da set edildi, transition halledecek */
+          po.unobserve(e.target);
+        });
+      }, { threshold: .3 });
+      progFills.forEach(f => po.observe(f));
     }
   })();
 </script>
