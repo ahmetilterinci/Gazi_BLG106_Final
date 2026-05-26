@@ -5,3 +5,4 @@ flask-login
 flask-wtf
 python-dotenv
 email-validator
+google-generativeai

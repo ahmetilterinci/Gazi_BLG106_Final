@@ -5,18 +5,6 @@ hacking ve daha fazlası.{% endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── SCROLL PROGRESS ── */
-  #scroll-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 2px;
-    width: 0%;
-    z-index: 999;
-    background: linear-gradient(90deg, var(--p), var(--a));
-    box-shadow: 0 0 12px var(--pg)
-  }
-
   /* ── SCENE DIVIDER ── */
   .scene-div {
     position: relative;
@@ -1118,7 +1106,6 @@ hacking ve daha fazlası.{% endblock %}
 {% endblock %}
 
 {% block content %}
-<div id="scroll-bar"></div>
 
 {% if current_user.is_authenticated %}
 <!-- ════ AUTHENTICATED DASHBOARD ════ -->
@@ -1375,10 +1362,6 @@ hacking ve daha fazlası.{% endblock %}
 {% block extra_js %}
 <script>
   (function () {
-    /* SCROLL BAR */
-    const sb = document.getElementById('scroll-bar');
-    addEventListener('scroll', () => { const p = scrollY / (document.body.scrollHeight - innerHeight) * 100; if (sb) sb.style.width = Math.min(p, 100) + '%' }, { passive: true });
-
     /* COUNT UP */
     function countUp(el) {
       const target = parseInt(el.dataset.target), sfx = el.dataset.sfx || '';

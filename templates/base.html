@@ -80,6 +80,37 @@
       color: #fff
     }
 
+    /* ── CUSTOM SCROLLBAR ── */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg2);
+      border-left: 1px solid rgba(110, 91, 255, .08)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--p) 0%, #8b6fff 40%, var(--a) 100%);
+      border-radius: 3px;
+      box-shadow: 0 0 8px rgba(0, 245, 196, .35)
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, var(--p2) 0%, var(--a) 100%);
+      box-shadow: 0 0 14px rgba(0, 245, 196, .6)
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: var(--bg2)
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--p) var(--bg2)
+    }
+
     #cl-canvas {
       position: fixed;
       inset: 0;
@@ -754,6 +785,134 @@
       box-shadow: 0 0 20px var(--pg)
     }
 
+    /* ── SCROLL INDICATOR ── */
+    #cl-scroll-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      z-index: 9999;
+      pointer-events: none;
+      background: rgba(110, 91, 255, .06)
+    }
+
+    #cl-scroll-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--p) 0%, #8b6fff 30%, var(--a) 70%, #7fffea 100%);
+      box-shadow: 0 0 12px rgba(0, 245, 196, .5), 0 0 3px rgba(110, 91, 255, .8);
+      transition: width .07s linear;
+      position: relative
+    }
+
+    #cl-scroll-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--a);
+      box-shadow: 0 0 8px var(--a), 0 0 18px rgba(0, 245, 196, .6), 0 0 30px rgba(0, 245, 196, .25);
+      opacity: 0;
+      transition: opacity .25s
+    }
+
+    #cl-scroll-fill.active::after {
+      opacity: 1
+    }
+
+    #cl-scroll-pct {
+      position: fixed;
+      bottom: calc(2rem + 54px);
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0;
+      transform: scale(.8);
+      transition: opacity .35s, transform .35s
+    }
+
+    #cl-scroll-pct.visible {
+      opacity: 1;
+      transform: scale(1)
+    }
+
+    #cl-scroll-pct svg {
+      width: 44px;
+      height: 44px;
+      transform: rotate(-90deg)
+    }
+
+    #cl-scroll-pct-ring {
+      fill: none;
+      stroke: var(--p);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 113;
+      stroke-dashoffset: 113;
+      transition: stroke-dashoffset .1s linear
+    }
+
+    #cl-scroll-pct-track {
+      fill: none;
+      stroke: rgba(110, 91, 255, .12);
+      stroke-width: 2.5
+    }
+
+    #cl-scroll-pct-num {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: .52rem;
+      font-weight: 600;
+      color: var(--a)
+    }
+
+    #cl-btt {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      z-index: 9998;
+      background: var(--surface);
+      border: 1px solid rgba(110, 91, 255, .28);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--a);
+      font-size: 1rem;
+      opacity: 0;
+      transform: scale(.8) translateY(6px);
+      transition: opacity .35s, transform .35s, border-color .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .4)
+    }
+
+    #cl-btt.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0)
+    }
+
+    #cl-btt:hover {
+      border-color: var(--a);
+      box-shadow: 0 0 18px rgba(0, 245, 196, .35), 0 4px 24px rgba(0, 0, 0, .5)
+    }
+
+    #cl-btt:active {
+      transform: scale(.92)
+    }
+
     @media(max-width:768px) {
       #cl-nav {
         padding: 0 1rem
@@ -779,6 +938,18 @@
       .cl-footer-brand {
         grid-column: 1/-1
       }
+
+      #cl-scroll-pct {
+        bottom: calc(1rem + 54px);
+        right: .75rem
+      }
+
+      #cl-btt {
+        bottom: 1rem;
+        right: .75rem;
+        width: 40px;
+        height: 40px
+      }
     }
 
     @media(max-width:480px) {
@@ -794,6 +965,21 @@
 <body>
   <canvas id="cl-canvas"></canvas>
   <div id="cl-cursor"></div>
+
+  <!-- ── SCROLL INDICATOR ── -->
+  <div id="cl-scroll-track">
+    <div id="cl-scroll-fill"></div>
+  </div>
+  <div id="cl-scroll-pct">
+    <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle id="cl-scroll-pct-track" cx="22" cy="22" r="18" />
+      <circle id="cl-scroll-pct-ring" cx="22" cy="22" r="18" />
+    </svg>
+    <div id="cl-scroll-pct-num">0%</div>
+  </div>
+  <button id="cl-btt" aria-label="Sayfanın başına dön" title="Başa dön">
+    <i class="bi bi-chevron-up" aria-hidden="true"></i>
+  </button>
 
   <nav id="cl-nav" role="navigation" aria-label="Ana menü">
     <a class="cl-brand" href="{{ url_for('main.index') }}" aria-label="CyberLearn.io ana sayfa">
@@ -995,6 +1181,34 @@
           mBtn.setAttribute('aria-expanded', String(!open));
         });
       }
+
+      /* ── SCROLL INDICATOR ── */
+      (function () {
+        const fill = document.getElementById('cl-scroll-fill');
+        const pctEl = document.getElementById('cl-scroll-pct');
+        const ring = document.getElementById('cl-scroll-pct-ring');
+        const numEl = document.getElementById('cl-scroll-pct-num');
+        const btt = document.getElementById('cl-btt');
+        const CIRC = 2 * Math.PI * 18;
+
+        addEventListener('scroll', () => {
+          const scrollable = document.body.scrollHeight - innerHeight;
+          if (scrollable <= 0) return;
+          const pct = Math.min(scrollY / scrollable, 1);
+
+          fill.style.width = (pct * 100) + '%';
+          fill.classList.toggle('active', pct > 0.01 && pct < 0.99);
+
+          const show = pct > 0.05 && pct < 0.98;
+          pctEl.classList.toggle('visible', show);
+          btt.classList.toggle('visible', show);
+          ring.style.strokeDashoffset = CIRC * (1 - pct);
+          numEl.textContent = Math.round(pct * 100) + '%';
+        }, { passive: true });
+
+        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      })();
+
     })();
   </script>
 

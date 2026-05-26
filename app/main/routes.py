@@ -13,12 +13,14 @@ POST /topics/<id>/delete          → konuyu sil (login_required + yetki)
 GET,POST /topics/<id>/lessons/new → konuya ders ekle (login_required)
 """
 
+import json
+import os
 from datetime import datetime, timezone
 
-from flask import abort, flash, redirect, render_template, request, url_for
+from flask import abort, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
-from app import db
+from app import db, csrf
 from app.main import main
 from app.main.forms import LessonForm, TopicForm
 from app.models import Lesson, Topic, UserProgress
@@ -114,6 +116,47 @@ def lesson_detail(id: int):
 
 
 # ---------------------------------------------------------------------------
+# Ders Quiz (Gemini AI)
+# ---------------------------------------------------------------------------
+
+@main.route("/lessons/<int:id>/quiz", methods=["POST"])
+@csrf.exempt
+@login_required
+def lesson_quiz(id: int):
+    """Gemini ile ders içeriğine dayalı çoktan seçmeli soru üret."""
+    import google.generativeai as genai  # noqa: PLC0415
+
+    lesson = db.get_or_404(Lesson, id)
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        return jsonify({"error": "GEMINI_API_KEY ortam değişkeni tanımlı değil"}), 500
+
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel(
+            model_name="gemini-2.5-flash",
+            system_instruction=(
+                "Sen bir siber güvenlik eğitim asistanısın. Verilen ders "
+                "içeriğine dayalı 1 adet çoktan seçmeli soru üret. "
+                'YALNIZCA şu JSON formatında yanıt ver, başka hiçbir şey yazma: '
+                '{"question": "...", "options": ["A) ...", "B) ...", '
+                '"C) ...", "D) ..."], "correct_index": 0, '
+                '"explanation": "..."}'
+            ),
+        )
+        prompt = f"Ders Başlığı: {lesson.title}\n\nDers İçeriği:\n{lesson.content}"
+        response = model.generate_content(prompt)
+        # Gemini bazen yanıtı ```json ... ``` bloğu içinde döndürebilir;
+        # json.loads'tan önce bu işaretleri temizle
+        raw = response.text.strip().removeprefix("```json").removesuffix("```").strip()
+        quiz_data = json.loads(raw)
+        return jsonify(quiz_data), 200
+    except Exception as exc:
+        return jsonify({"error": str(exc)}), 500
+
+
+# ---------------------------------------------------------------------------
 # Ders Tamamlama
 # ---------------------------------------------------------------------------
 
@@ -123,10 +166,14 @@ def lesson_complete(id: int):
     """Dersi tamamla: UserProgress oluştur veya güncelle."""
     lesson = db.get_or_404(Lesson, id)
 
-    # Score 0-100 arası integer; form değeri yoksa ya da geçersizse 0 kullan
+    # ai_score (AI quiz'den gelen puan) varsa öncelikli kullan;
+    # yoksa form'daki manual score'a bak; her ikisi de 0-100 aralığına kısıtlanır
     try:
-        score = int(request.form.get("score", 0))
-        score = max(0, min(100, score))
+        ai_score_raw = request.form.get("ai_score")
+        if ai_score_raw is not None:
+            score = max(0, min(100, int(ai_score_raw)))
+        else:
+            score = max(0, min(100, int(request.form.get("score", 0))))
     except (TypeError, ValueError):
         score = 0
 

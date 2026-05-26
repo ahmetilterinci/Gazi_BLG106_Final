@@ -193,3 +193,92 @@ için şimdilik kabul edildi. Teknik doğruluk ≠ iyi UX.
 | 5 | login ve register şablonları yenilendi |
 | 6 | 404 ve 500 hata sayfaları yenilendi |
 | 7 | CRUD rotaları, şablonlar, pagination, UserProgress ve seed eklendi - Prompt 6 |
+
+
+
+
+
+
+
+
+## Oturum 3 — 27.05.2026 — (saat aralığını kendin ekle)
+
+### Hedef
+Projeyi "döküman okuma + kendine puan ver" sisteminden çıkarıp
+Duolingo tarzı AI destekli quiz deneyimine dönüştürmek.
+Bu oturumda backend ayağı (Gemini AI quiz endpoint'i) tamamlandı.
+
+### Kullandığım Mod ve Model
+- Mod: Plan
+- Model: Claude Sonnet 4.6 (Antigravity içinde) + Danışman Claude (claude.ai)
+- Görünüm: Manager View
+
+### Verdiğim Promptlar
+1. Prompt A — Gemini AI Quiz Backend: routes.py'e POST /lessons/<id>/quiz
+   rotası eklenmesi, lesson_complete rotasına ai_score desteği,
+   requirements.txt'e google-generativeai eklenmesi
+2. CSRF muafiyet düzeltmesi: lesson_quiz rotasına @csrf.exempt eklenmesi
+
+### Ajanın Önerdiği Plan (Prompt A)
+- requirements.txt'e google-generativeai satırı eklenir
+- routes.py'e import json, import os, jsonify eklenir
+- Yeni lesson_quiz rotası: @main.route + @login_required
+- genai.GenerativeModel("gemini-2.5-flash") ile soru üretimi
+- response.text JSON parse edilir, 200 döndürülür
+- lesson_complete rotasına ai_score öncelikli parametre eklenir
+
+### Plan'da Sorguladıklarım
+- Gemini'nin yanıtı bazen ```json bloğuna sarmasını sorguladım.
+  Ajan bunu handle etmemişti. `removeprefix("```json").removesuffix("```")`
+  ile temizleme adımı eklettirdim — bu olmadan json.loads her seferinde
+  patlayabilirdi.
+- Antigravity'nin terminal çalıştıramadığını bildiğimden pip install
+  adımını plandan çıkarttırdım, manuel kendim yaptım.
+
+### Üretilen Kodda Düzelttiklerim
+- CSRF muafiyeti eksikti: lesson_quiz bir API endpoint'i olduğu için
+  form tabanlı CSRF koruması onu engelliyordu. Tarayıcı konsolundan
+  test ederken 400 Bad Request aldım. @csrf.exempt decorator'ı
+  sonradan ekletmek zorunda kaldım. İlk plana dahil edilmesi gerekirdi.
+- Decorator sırası önemli: @main.route → @csrf.exempt → @login_required
+  sırası Antigravity tarafından doğru uygulandı.
+
+### Karşılaştığım Hatalar ve Çözümler
+- **Hata 1:** fetch('/lessons/1/quiz') → 400 Bad Request
+  **Neden:** CSRF token eksikliği. Flask-WTF tüm POST'ları koruyor.
+  **Çözüm:** @csrf.exempt decorator eklendi.
+
+- **Hata 2:** fetch konsol testinde CSRF token undefined geldi
+  **Neden:** Sayfada meta[name="csrf-token"] yoktu, input da boştu.
+  **Çözüm:** @csrf.exempt ile token gereksiz hale getirildi.
+
+- **Hata 3:** İlk testte Promise rejected — login yapılmamıştı
+  **Neden:** @login_required redirect döndürüyor, HTML geliyor,
+  JSON.parse HTML'i parse edemeyince SyntaxError veriyor.
+  **Çözüm:** Önce /login'e gidip giriş yapıldı, sonra test çalıştı.
+
+### ⚠️ Ajanın Yanlış/Eksik Bıraktığı — Yakaladım
+Prompt A planında Gemini'nin ```json bloğu döndürebileceği
+durumu yoktu. json.loads direkt response.text üzerinde çalışıyordu.
+Danışman Claude bunu fark etti, removeprefix/removesuffix ile
+temizleme adımı plana eklettirdim. Bu olmadan production'da
+rastgele JSON parse hataları alınacaktı.
+
+### Bu Oturumdan Öğrendiğim
+Flask-WTF'nin CSRF koruması sadece form submit'leri değil,
+tüm POST isteklerini etkiliyor. JSON API endpoint'leri için
+@csrf.exempt kullanmak gerekiyor — ama bu güvenlik açığı değil,
+çünkü bu endpoint zaten @login_required ile korunuyor.
+
+Gemini gibi LLM'ler her zaman saf JSON döndürmüyor. Response'u
+kullanmadan önce markdown işaretlerini temizlemek kritik.
+"AI çıktısına güven ama doğrula" prensibi burada da geçerli.
+
+### Sonraki Oturum İçin Notlar
+- Prompt B: lesson_detail.html Duolingo tarzına alınacak
+  (quiz kartı, animasyonlu feedback, otomatik puan)
+- Prompt C: Testler (conftest.py, test_models.py, test_auth.py)
+- 3 commit atılacak:
+  1. "Gemini AI quiz backend eklendi - Prompt A"
+  2. "lesson_detail Duolingo tarzına dönüştürüldü - Prompt B"
+  3. "Testler eklendi - Prompt C"
