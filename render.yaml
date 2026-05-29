@@ -3,7 +3,7 @@ services:
     name: cyberlearn-ai
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn run:app
+    startCommand: flask seed-db && gunicorn run:app
     envVars:
       - key: FLASK_APP
         value: run.py
