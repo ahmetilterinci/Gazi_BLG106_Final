@@ -201,7 +201,7 @@ için şimdilik kabul edildi. Teknik doğruluk ≠ iyi UX.
 
 
 
-## Oturum 3 — 27.05.2026 — (saat aralığını kendin ekle)
+## Oturum 3 — 27.05.2026 — ???
 
 ### Hedef
 "Döküman oku + kendine puan ver" sistemini tamamen kaldırıp Duolingo tarzı
@@ -331,70 +331,105 @@ Migration'da her zaman `server_default` kontrolü yapmak gerekiyor —
 
 
 
-## Oturum 4 — 29.05.2026
+## Oturum 4 — 29.05.2026 — 19:30-20:50
 
 ### Hedef
-Zorunlu son gereksinimi tamamlamak: Render'a canlı deploy.
-Ardından bonus özelliklere geçmek (API endpoint, profil/avatar, arama).
+Zorunlu son gereksinimi tamamlamak: Render.com'a canlı deploy.
+10. zorunlu maddeyi kapatıp -20 puan riskini ortadan kaldırmak.
 
 ### Kullandığım Mod ve Model
-- Mod: Plan
+- Mod: Plan (Antigravity) + Danışman Claude (claude.ai)
 - Model: Claude Sonnet 4.6
 - Görünüm: Manager View
 
-### Mevcut Durum (Oturum Başında)
+### Verdiğim Promptlar
+1. Prompt C — Render Deploy yapılandırması: gunicorn, render.yaml,
+   run.py FLASK_CONFIG güncellemesi, .gitignore *.db eklenmesi
+2. render.yaml buildCommand düzeltmesi: `flask db upgrade` kaldırıldı
+3. seed-db startCommand entegrasyonu: `sh -c 'flask seed-db; gunicorn run:app'`
+4. commands.py admin otomatik oluşturma: seed çalışması için kullanıcı bağımlılığı kaldırıldı
 
-| # | Gereksinim | Durum |
-|---|-----------|-------|
-| 1 | Application factory + blueprint | ✅ |
-| 2 | En az 4 sayfa, base template, template inheritance | ✅ |
-| 3 | Flask-WTF, 2 form, CSRF koruması | ✅ |
-| 4 | SQLAlchemy, 3 model, ilişkiler | ✅ |
-| 5 | Flask-Migrate, migration dosyaları | ✅ |
-| 6 | Flask-Login, kayıt/giriş/çıkış, şifre hash | ✅ |
-| 7 | 404/500 hata sayfaları | ✅ |
-| 8 | Pagination | ✅ |
-| 9 | Bootstrap/Tailwind, mobil uyumlu | ✅ |
-| 10 | Docker veya canlı deploy | ❌ **BUGÜN** |
+### Ajanın Önerdiği Plan (Prompt C)
+- requirements.txt'e gunicorn eklendi
+- run.py: `create_app("development")` hardcoded → `os.environ.get("FLASK_CONFIG", "development")`
+- render.yaml: yeni dosya, buildCommand + startCommand + envVars
+- .gitignore: *.db satırı eklendi
+- GEMINI_API_KEY için sync: false (dashboard'a manuel girilecek)
+- SECRET_KEY için generateValue: true (Render otomatik üretir)
 
-| Bonus | Puan | Durum |
-|-------|------|-------|
-| API endpoint /api/v1/ | +5 | ❌ YAPILACAK |
-| Kullanıcı profili + avatar | +4 | ❌ YAPILACAK |
-| Tam metin arama | +3 | ❌ YAPILACAK |
-| E-posta şifre sıfırlama | +5 | ❌ riskli |
-| Flask-Babel TR/EN | +3 | ❌ riskli |
+### Plan'da Sorguladıklarım
+- Ajan `FLASK_ENV` kullanmayı önerdi. Danışman Claude ile değerlendirdim:
+  Flask 3.x'te `FLASK_ENV` deprecated. `FLASK_CONFIG` kullanılması
+  gerektiğini tespit ettim, ajan planı revize etti.
+- render.yaml'daki buildCommand'da `flask db upgrade` vardı.
+  İlk deploy'da `table already exists` hatasına neden oldu.
+  Sorunun kaynağını tespit ettim: `db.create_all()` zaten tablolar
+  varsa atlıyor ama `flask db upgrade` çakışıyor. buildCommand'dan kaldırıldı.
+- `flask seed-db && gunicorn run:app` → Render'ın dashboard Start Command'ı
+  render.yaml'ı override ettiği için seed çalışmıyordu. Dashboard'dan
+  manuel girince çalıştı.
 
-**Toplam commit:** 12 | **Son commit:** "4 tip soru + öğrenme uyumu altyapısı - Prompt B ek3"
-**Teslime kalan süre:** ~60 saat
+### ⚠️ Ajanın Yanlış Önerisi — Yakaladım
+Danışman Claude ilk deploy hatasında çelişkili öneriler sundu:
+önce `db.create_all()` önerdi, sonra `flask db upgrade` kaldır dedi,
+sonra tekrar farklı bir şey söyledi. Bunları filtreleyip net olan
+adımı (buildCommand'dan upgrade'i kaldır + db.create_all() ekle)
+kendim belirledim ve uyguladım.
 
-### Oturum Planı
+### Üretilen Kodda Düzelttiklerim
+- commands.py'de `User.query.first()` yoksa seed duruyordu.
+  Her deploy'da veritabanı sıfırlandığı için kullanıcı hiç olmuyordu.
+  Admin kullanıcısını otomatik oluşturan kod eklendi:
+  `admin@cyberlearn.io / Admin1234!`
+- render.yaml startCommand dashboard'dan override edildiği için
+  seed çalışmıyordu. Settings → Deploy bölümünden manuel güncellendi.
 
-1. **Render Deploy** (Zorunlu — -20 puan riski) → Prompt C
-2. **API endpoint /api/v1/** (+5 puan) → Prompt D
-3. **Kullanıcı profili + avatar** (+4 puan) → Prompt E
-4. **Tam metin arama** (+3 puan) → Prompt F
+### Karşılaştığım Hatalar ve Çözümler
+- **Hata 1:** `table topic already exists`
+  **Neden:** render.yaml'da `flask db upgrade` hem migration hem
+  db.create_all() ile çakışıyordu.
+  **Çözüm:** buildCommand'dan `flask db upgrade` kaldırıldı.
 
-### ⚠️ Deploy Öncesi Açık Sorular
+- **Hata 2:** `flask seed-db` Render'da çalışmıyordu
+  **Neden:** render.yaml'daki startCommand dashboard tarafından override ediliyordu.
+  **Çözüm:** Render Settings → Deploy bölümünden manuel girildi.
 
-Antigravity'ye geçmeden önce netleştirilmesi gereken 3 nokta:
+- **Hata 3:** seed-db çalışıyor ama `❌ Önce kullanıcı oluşturun` hatası
+  **Neden:** Her deploy'da SQLite sıfırlanıyor, kullanıcı yok.
+  **Çözüm:** commands.py'e admin otomatik oluşturma eklendi.
 
-**1. Veritabanı stratejisi:**
-Render ücretsiz planında SQLite ephemeral storage'da çalışır — her deploy'da
-veriler sıfırlanır. İki seçenek:
-- **SQLite kalsın** — Hızlı deploy, demo için yeterli, veriler uçar
-- **PostgreSQL'e geç** — Render'ın ücretsiz Postgres'i, kalıcı veriler;
-  `psycopg2-binary` + `DATABASE_URL` değişikliği gerekir (~30 dk ekstra)
+- **Hata 4:** PowerShell `&&` operatörü desteklemiyor
+  **Neden:** Windows PowerShell sürümü. Render Linux ortamında çalışıyor,
+  lokal terminalde denemeye gerek yoktu.
+  **Çözüm:** Komutu direkt Render'a girildi.
 
-**2. Ortam değişkenleri:**
-Render dashboard'a girilmesi gereken değişkenler:
-`SECRET_KEY`, `GEMINI_API_KEY` ve varsa diğerleri.
-`.env` dosyasının içeriği kontrol edilmeli.
+### Bu Oturumdan Öğrendiğim
+Render'da render.yaml ile dashboard Settings aynı anda çalışırken
+dashboard öncelik kazanır. YAML'da tanımlı startCommand, dashboard'da
+dolu değilse geçerli olur — ama dashboard'da bir değer varsa YAML'ı ezer.
+Bu yüzden her ikisini de kontrol etmek gerekiyor.
 
-**3. `gunicorn`:**
-Render için `requirements.txt`'te `gunicorn` zorunlu.
-Şu an mevcut mu kontrol edilmeli.
+SQLite, üretim ortamında ephemeral storage ile kullanılmamalı.
+Her deploy'da veriler sıfırlanıyor — demo için kabul edilebilir
+ama gerçek bir uygulama için PostgreSQL zorunlu. Bir sonraki oturumda
+Render'ın ücretsiz PostgreSQL'i eklenecek.
 
----
+### Sonraki Oturum İçin Notlar
+- PostgreSQL ekle: kayıtlar kalıcı olsun (Render ücretsiz Postgres)
+- Bonus: API endpoint /api/v1/ (+5 puan)
+- Bonus: Kullanıcı profili + avatar (+4 puan)
+- Bonus: Tam metin arama (+3 puan)
+- Demo video + rapor.md hazırlanacak
+- Teslim: 01/06/2026 saat 13:00
 
-*Bu sorular yanıtlandıktan sonra Antigravity için Render deploy promptu hazırlanacak.*
+### Canlı URL
+https://gazi-blg106-final.onrender.com
+
+### Commit Geçmişi (Oturum 4)
+| #  | Mesaj |
+|----|-------|
+| 13 | Render deploy yapılandırması - Prompt C |
+| 14 | db.create_all ile Render SQLite uyumu |
+| 15 | render.yaml buildCommand düzeltildi |
+| 16 | seed-db startCommand sh ile düzeltildi |
+| 17 | seed-db admin kullanıcısı otomatik oluşturma |

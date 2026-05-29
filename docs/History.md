@@ -67,8 +67,6 @@
 
 Bu oturumda projenin tüm ders/öğrenme sistemi sıfırdan yeniden tasarlandı.
 
-### Yapılan Değişiklikler
-
 **Prompt A — Gemini AI Quiz Backend**
 - google-generativeai requirements.txt'e eklendi
 - POST /lessons/<id>/quiz rotası eklendi (csrf.exempt + login_required)
@@ -81,43 +79,16 @@ Bu oturumda projenin tüm ders/öğrenme sistemi sıfırdan yeniden tasarlandı.
 - Zigzag düğümler: tamamlandı (mor+check), aktif (parlayan), kilitli (gri)
 - SVG dönüş konnektörleri
 - routes.py index(): topic/lesson/progress verilerini çekiyor, kilit mantığı hesaplıyor
-- routes.py lesson_detail(): kilitli derse URL ile erişim engellendi (flash + redirect)
+- routes.py lesson_detail(): kilitli derse URL ile erişim engellendi
 - Kilit kuralı: Topic N açık olmak için Topic N-1 tamamen bitmeli
 
-**Prompt B ek — Duolingo Quiz v1→v2→v3 (Danışman Claude)**
-- "Döküman oku + kendine puan ver" sistemi tamamen kaldırıldı
-- lesson_detail.html: Başlat → Yükleniyor → Soru → Feedback → Devam akışı
-- lesson_quiz endpoint: içerik uzunluğuna göre 5-12 soru üretiyor
-- Her soruya hint (3-4 cümle öğretici açıklama) eklendi
-- Yanlış yapılan sorular sona ekleniyor, doğru yapana kadar tekrar geliyor
-- Tekrar turu ekranı + kutlama ekranı
-
-**Prompt B ek2 — 4 Tip Soru + Öğrenme Uyumu (Danışman Claude)**
-- UserProgress modeline wrong_count + attempts alanları eklendi
-- Migration: server_default='0' elle eklenerek flask db upgrade başarılı
+**Prompt B ek — Duolingo Quiz v1→v5 (Danışman Claude)**
 - 4 soru tipi: mcq, truefalse, fillblank, matching
-- Her tipten en az 1 soru zorunlu
-- Performans bazlı dağılım: yeni kullanıcı→mcq ağırlıklı, çok yanlış→kolay tipler
-- lesson_complete: wrong_count ve attempts güncelleniyor
-- Her tip için özel UI: eşleştirme tıkla-bağla, boşluk doldurma ___ animasyonu
-
-**Prompt B ek3 — Kalp Sistemi Kaldırıldı + Yeni Puan Sistemi (Danışman Claude)**
-- Kalp (can) sistemi tamamen kaldırıldı
-- Progress şeridine süre sayacı eklendi (0:00 formatı)
-- Başarı oranı %100'den başlar, her yanlışta (100/toplam_soru) kadar düşer
-- Puan formülü: doğruluk×0.7 + hız_bonusu×0.3 (hız: soru başına ortalama süre)
-- Sonuç ekranı: sadece Süre + Başarı Oranı barı (renkli, dinamik) + XP
-- Bar rengi: %80+ mor-yeşil, %50-79 sarı, <%50 kırmızı
-
-### Mevcut Dosya Durumu
-- `app/models.py`: UserProgress'e wrong_count + attempts eklendi
-- `app/main/routes.py`: index(), lesson_detail(), lesson_quiz(), lesson_complete() güncellendi
-- `templates/main/index.html`: izometrik öğrenme yolu
-- `templates/main/lesson_detail.html`: tam Duolingo deneyimi (v5 — son hal)
-
-### ⚠️ Test Edilmedi
-- 2. denemede soru dağılımının gerçekten değişip değişmediği test edilmedi
-- Teslim tarihi nedeniyle geçildi, AI günlüğüne not düşüldü
+- Her soruya hint (3-4 cümle öğretici açıklama)
+- Yanlış yapılan sorular sona ekleniyor, doğru yapana kadar tekrar geliyor
+- Puan formülü: doğruluk×0.7 + hız_bonusu×0.3
+- Sonuç ekranı: Süre + Başarı Oranı barı (renkli, dinamik) + XP
+- UserProgress modeline wrong_count + attempts eklendi + migration
 
 ### Commit Geçmişi
 | #  | Mesaj |
@@ -129,24 +100,48 @@ Bu oturumda projenin tüm ders/öğrenme sistemi sıfırdan yeniden tasarlandı.
 
 ---
 
+## Oturum 4 — 29.05.2026 ✅ TAMAMLANDI
+
+**Prompt C — Render Deploy (Antigravity + Danışman Claude)**
+- requirements.txt'e gunicorn eklendi
+- run.py: FLASK_CONFIG env'den okunuyor (FLASK_ENV deprecated, Flask 3.x)
+- render.yaml: yeni dosya — buildCommand, startCommand, envVars
+- .gitignore: *.db eklendi
+- db.create_all() run.py'e eklendi (flask db upgrade yerine)
+- render.yaml buildCommand'dan flask db upgrade kaldırıldı
+- startCommand: `sh -c 'flask seed-db; gunicorn run:app'`
+- commands.py: seed çalışması için admin kullanıcı otomatik oluşturma
+
+**Canlı URL:** https://gazi-blg106-final.onrender.com
+**Admin giriş:** admin@cyberlearn.io / Admin1234!
+
+⚠️ SQLite ephemeral — her deploy'da veriler sıfırlanır.
+Sonraki oturumda PostgreSQL eklenecek.
+
+### Commit Geçmişi
+| #  | Mesaj |
+|----|-------|
+| 13 | Render deploy yapılandırması - Prompt C |
+| 14 | db.create_all ile Render SQLite uyumu |
+| 15 | render.yaml buildCommand düzeltildi |
+| 16 | seed-db startCommand sh ile düzeltildi |
+| 17 | seed-db admin kullanıcısı otomatik oluşturma |
+
+---
+
 ## YAPILACAKLAR — Sonraki Oturum
 
-### ⚠️ Önemli Not
-**Site tasarımı tekrardan değiştirilecek.** Mevcut tasarım korunmayacak, yeni bir UI gelecek.
-
-### Zorunlu (önce bunlar)
-1. **Render Deploy** — GitHub repo bağla, environment variables ayarla, canlı URL al (-20 puan riski)
-
-### Bonus (sırasıyla)
-2. **API endpoint /api/v1/** — +5 puan, ~1 saat
-3. **Kullanıcı profili + avatar** — +4 puan, ~2-3 saat
-4. **Tam metin arama** — +3 puan, ~2-3 saat
-5. **Babel TR/EN** — +3 puan, riskli, en sona bırak
-6. **E-posta şifre sıfırlama** — +5 puan, e-posta servisi gerekiyor, riskli
+### Öncelik Sırası
+1. **PostgreSQL ekle** — kayıtlar kalıcı olsun, e-posta bonusu anlamlı hale gelir
+2. **API endpoint /api/v1/** — +5 puan
+3. **Kullanıcı profili + avatar** — +4 puan
+4. **Tam metin arama** — +3 puan
+5. **E-posta şifre sıfırlama** — +5 puan (PostgreSQL sonrası)
+6. **Flask-Babel TR/EN** — +3 puan, riskli, en sona
 
 ### Teslim: 01/06/2026 saat 13:00
 - Demo video
-- rapor.md
+- rapor.md (7 madde)
 - AI günlüğü son güncelleme
 - Son commit + push
 
@@ -164,7 +159,7 @@ Bu oturumda projenin tüm ders/öğrenme sistemi sıfırdan yeniden tasarlandı.
 | 7 | 404/500 hata sayfaları | ✅ |
 | 8 | Pagination | ✅ |
 | 9 | Bootstrap/Tailwind, mobil uyumlu | ✅ |
-| 10 | Docker veya canlı deploy | ❌ YAPILACAK |
+| 10 | Docker veya canlı deploy | ✅ Render |
 
 ## Bonus Durum
 | Bonus | Puan | Durum |
@@ -172,5 +167,14 @@ Bu oturumda projenin tüm ders/öğrenme sistemi sıfırdan yeniden tasarlandı.
 | API endpoint /api/v1/ | +5 | ❌ YAPILACAK |
 | Kullanıcı profili + avatar | +4 | ❌ YAPILACAK |
 | Tam metin arama | +3 | ❌ YAPILACAK |
-| E-posta şifre sıfırlama | +5 | ❌ riskli |
-| Flask-Babel TR/EN | +3 | ❌ riskli |
+| E-posta şifre sıfırlama | +5 | ❌ PostgreSQL sonrası |
+| Flask-Babel TR/EN | +3 | ❌ riskli, en sona |
+
+## Mevcut Dosya Durumu
+- `app/models.py`: User, Topic, Lesson, UserProgress (wrong_count + attempts)
+- `app/main/routes.py`: tüm rotalar + lesson_quiz (Gemini) + hata handler'ları
+- `app/commands.py`: flask seed-db (admin otomatik oluşturma dahil)
+- `run.py`: db.create_all() + FLASK_CONFIG env desteği
+- `render.yaml`: canlı deploy yapılandırması
+- `templates/main/index.html`: izometrik öğrenme yolu
+- `templates/main/lesson_detail.html`: Duolingo quiz v5
