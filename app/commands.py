@@ -25,8 +25,17 @@ def seed_db():
 
     admin = User.query.first()
     if not admin:
-        click.echo("❌ Önce bir kullanıcı kaydı oluşturun (/register), sonra seed-db çalıştırın.")
-        return
+        from werkzeug.security import generate_password_hash
+        from datetime import datetime, timezone
+        admin = User(
+            username="admin",
+            email="admin@cyberlearn.io",
+            password_hash=generate_password_hash("Admin1234!"),
+            created_at=datetime.now(timezone.utc),
+        )
+        db.session.add(admin)
+        db.session.flush()
+        click.echo("👤 Admin kullanıcısı oluşturuldu.")
 
     # ------------------------------------------------------------------ #
     # Konu 1: Ağ Güvenliği
