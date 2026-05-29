@@ -19,6 +19,7 @@ env/
 
 # Flask instance klasörü (SQLite DB ve geçici dosyalar)
 instance/
+*.db
 
 # Flask-Migrate (yönetilen, ama instance verisi değil)
 # migrations/  ← Bu satırı AÇMAYIN; migrations commit'lenmeli
