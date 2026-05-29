@@ -96,21 +96,18 @@
     text-align: right;
   }
 
-  .duo-hearts {
-    display: flex;
-    gap: .3rem;
+  /* Süre göstergesi */
+  .duo-timer {
+    font-family: var(--mono);
+    font-size: .72rem;
+    color: var(--txt3);
     flex-shrink: 0;
-  }
-
-  .heart {
-    font-size: .9rem;
-    transition: all .3s;
-  }
-
-  .heart.lost {
-    filter: grayscale(1);
-    opacity: .28;
-    transform: scale(.85);
+    background: rgba(110, 91, 255, .07);
+    border: 1px solid var(--edge);
+    border-radius: 6px;
+    padding: .2rem .55rem;
+    min-width: 44px;
+    text-align: center;
   }
 
   /* ── EKRANLAR ── */
@@ -889,6 +886,46 @@
     padding: .6rem 1.6rem;
   }
 
+  .complete-rate {
+    width: 100%;
+    max-width: 320px;
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 14px;
+    padding: 1rem 1.4rem;
+  }
+
+  .complete-rate-label {
+    font-size: .72rem;
+    color: var(--txt3);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-family: var(--mono);
+    margin-bottom: .5rem;
+  }
+
+  .complete-rate-bar {
+    height: 10px;
+    background: rgba(110, 91, 255, .1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: .4rem;
+  }
+
+  .complete-rate-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    transition: width 1s cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .complete-rate-pct {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--a);
+  }
+
   .complete-actions {
     display: flex;
     flex-direction: column;
@@ -958,11 +995,7 @@
       <div class="duo-pbar-fill" id="duo-pbar"></div>
     </div>
     <span class="duo-pbar-label" id="duo-pbar-label">–</span>
-    <div class="duo-hearts" id="duo-hearts">
-      <span class="heart" id="h1">❤️</span>
-      <span class="heart" id="h2">❤️</span>
-      <span class="heart" id="h3">❤️</span>
-    </div>
+    <span class="duo-timer" id="duo-timer">0:00</span>
   </div>
 
   {% if current_user.is_authenticated %}
@@ -1007,7 +1040,7 @@
     <div class="loading-center">
       <div class="duo-spinner"></div>
       <div class="loading-text">
-        Hazırlan, Sana Özel Sorular Hazırlanıyor...
+        Gemini sorular hazırlıyor
         <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
       </div>
     </div>
@@ -1094,15 +1127,17 @@
       <div class="complete-trophy">🏆</div>
       <h2 class="complete-title">Ders<br><span>Tamamlandı!</span></h2>
       <div class="complete-stats">
-        <div class="cstat"><span class="cstat-n g" id="st-correct">0</span>
-          <div class="cstat-l">Doğru</div>
+        <div class="cstat"><span class="cstat-n" style="color:var(--w)" id="st-time">0:00</span>
+          <div class="cstat-l">Süre</div>
         </div>
-        <div class="cstat"><span class="cstat-n r" id="st-wrong">0</span>
-          <div class="cstat-l">Yanlış</div>
+      </div>
+      <!-- Başarı oranı barı -->
+      <div class="complete-rate">
+        <div class="complete-rate-label">Başarı Oranı</div>
+        <div class="complete-rate-bar">
+          <div class="complete-rate-fill" id="rate-fill" style="width:100%"></div>
         </div>
-        <div class="cstat"><span class="cstat-n" id="st-total">0</span>
-          <div class="cstat-l">Toplam</div>
-        </div>
+        <div class="complete-rate-pct" id="rate-pct">%100</div>
       </div>
       <div class="complete-xp" id="complete-xp">+0 XP</div>
       <div class="complete-actions">
@@ -1137,7 +1172,6 @@
     'use strict';
 
     const LETTERS = ['A', 'B', 'C', 'D'];
-    const MAX_WRONG = 3;
 
     const csrfToken = document.getElementById('csrf-token')?.value;
     const lessonId = document.getElementById('lesson-id')?.value;
@@ -1150,7 +1184,7 @@
     const btnFinish = document.getElementById('btn-finish');
     const pbar = document.getElementById('duo-pbar');
     const pbarLabel = document.getElementById('duo-pbar-label');
-    const hearts = ['h1', 'h2', 'h3'].map(id => document.getElementById(id));
+    const timerEl = document.getElementById('duo-timer');
 
     let questions = [];
     let queue = [];
@@ -1160,14 +1194,19 @@
     let totalQ = 0;
     let totalCorrect = 0;
     let totalWrong = 0;
-    let wrongCount = 0;
     let inReview = false;
+    let accuracyPct = 100; // gerçek zamanlı başarı oranı
 
-    // Eşleştirme durumu
+    // Süre takibi
+    let startTime = null;
+    let timerInterval = null;
+
+    // Eşleştirme
     let matchSelected = null;
     let matchPairs = [];
     let matchDone = 0;
     let matchWrong = false;
+    let matchPenaltyApplied = false;
 
     /* ── EKRAN ── */
     function show(id) {
@@ -1190,8 +1229,45 @@
         : `${Math.max(0, done)}/${total}`;
     }
 
-    function updateHearts() {
-      hearts.forEach((h, i) => h.classList.toggle('lost', i >= MAX_WRONG - wrongCount));
+    /* ── SÜRE ── */
+    function startTimer() {
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const m = Math.floor(elapsed / 60);
+        const s = elapsed % 60;
+        timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      return Math.floor((Date.now() - startTime) / 1000);
+    }
+
+    function formatTime(secs) {
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    /* ── PUAN FORMÜLÜ ──
+       Başarı oranı %70 ağırlık, hız bonusu %30 ağırlık.
+       Hız bonusu: soru başına ort. süre
+         ≤ 20sn → 100
+         ≤ 40sn → 70
+         ≤ 60sn → 40
+         > 60sn → 10
+    */
+    function calcScore(correct, total, elapsedSecs) {
+      const accuracy = total > 0 ? correct / total : 0;
+      const avgPerQ = total > 0 ? elapsedSecs / total : 999;
+      let speedBonus = 10;
+      if (avgPerQ <= 20) speedBonus = 100;
+      else if (avgPerQ <= 40) speedBonus = 70;
+      else if (avgPerQ <= 60) speedBonus = 40;
+      const score = Math.round(accuracy * 70 + (speedBonus / 100) * 30);
+      return Math.max(10, Math.min(100, score));
     }
 
     /* ── BAŞLAT ── */
@@ -1213,11 +1289,12 @@
         totalQ = questions.length;
         totalCorrect = 0;
         totalWrong = 0;
-        wrongCount = 0;
         inReview = false;
         answered = false;
+        accuracyPct = 100;
 
-        updateHearts();
+        startTimer();
+        updateProgress();
         nextQuestion();
       } catch (err) {
         show('screen-start');
@@ -1243,7 +1320,7 @@
       show('screen-question');
     }
 
-    /* ── TİP ROZET ── */
+    /* ── TİP META ── */
     const TYPE_META = {
       mcq: { label: 'Çoktan Seçmeli', icon: 'bi-list-check' },
       truefalse: { label: 'Doğru / Yanlış', icon: 'bi-toggles' },
@@ -1252,19 +1329,16 @@
     };
 
     function renderQuestion(q) {
-      // Tüm alanları gizle
       ['q-mcq-area', 'q-tf-area', 'q-fill-area', 'q-match-area'].forEach(id => {
         document.getElementById(id).style.display = 'none';
       });
       document.getElementById('duo-feedback').className = 'duo-feedback';
       document.getElementById('btn-next-wrap').style.display = 'none';
 
-      // Tip rozeti
       const meta = TYPE_META[q.type] || { label: 'Soru', icon: 'bi-question-circle' };
       document.getElementById('q-type-label').textContent = meta.label;
       document.querySelector('#q-type-badge i').className = `bi ${meta.icon}`;
 
-      // Hint
       const hintEl = document.getElementById('duo-hint');
       const hintTx = document.getElementById('hint-text');
       if (q.hint) {
@@ -1278,7 +1352,7 @@
       else if (q.type === 'truefalse') renderTF(q);
       else if (q.type === 'fillblank') renderFill(q);
       else if (q.type === 'matching') renderMatch(q);
-      else renderMCQ(q); // fallback
+      else renderMCQ(q);
     }
 
     /* ── MCQ ── */
@@ -1318,7 +1392,6 @@
       falseBtn.disabled = false;
       trueBtn.className = 'tf-btn tf-true';
       falseBtn.className = 'tf-btn tf-false';
-
       trueBtn.onclick = () => handleTF(true, q);
       falseBtn.onclick = () => handleTF(false, q);
     }
@@ -1345,10 +1418,8 @@
     function renderFill(q) {
       document.getElementById('q-fill-area').style.display = 'block';
       const sentEl = document.getElementById('fill-sentence');
-      // ___ → span.fill-blank
       sentEl.innerHTML = q.sentence.replace(/___/g,
         '<span class="fill-blank" id="fill-blank-span"></span>');
-
       const cont = document.getElementById('fill-options');
       cont.innerHTML = '';
       q.options.forEach((opt, i) => {
@@ -1369,12 +1440,9 @@
       const isRight = idx === q.correct_index;
       btns[idx].classList.add(isRight ? 'opt-ok' : 'opt-err');
       if (!isRight) btns[q.correct_index].classList.add('opt-ok');
-
-      // Boşluğu doldur
       const blankEl = document.getElementById('fill-blank-span');
       if (blankEl) {
-        const correctText = q.options[q.correct_index].replace(/^[A-D]\)\s*/, '');
-        blankEl.textContent = correctText;
+        blankEl.textContent = q.options[q.correct_index].replace(/^[A-D]\)\s*/, '');
         blankEl.classList.add(isRight ? 'filled' : 'wrong-fill');
       }
       showFeedback(isRight, q.explanation, q);
@@ -1385,12 +1453,11 @@
       document.getElementById('q-match-area').style.display = 'block';
       document.getElementById('match-instruction').textContent =
         q.instruction || 'Terimleri tanımlarıyla eşleştir';
-
       matchSelected = null;
       matchPairs = [...q.pairs];
       matchDone = 0;
       matchWrong = false;
-
+      matchPenaltyApplied = false;
       updateMatchProgress(q.pairs.length);
 
       const leftCont = document.getElementById('match-left');
@@ -1398,7 +1465,6 @@
       leftCont.innerHTML = '';
       rightCont.innerHTML = '';
 
-      // Sol (terms) — karışık değil
       q.pairs.forEach((pair, i) => {
         const el = document.createElement('div');
         el.className = 'match-item left-item';
@@ -1408,7 +1474,6 @@
         leftCont.appendChild(el);
       });
 
-      // Sağ (definitions) — karıştırılmış
       const shuffled = [...q.pairs.map((p, i) => ({ ...p, origIdx: i }))]
         .sort(() => Math.random() - 0.5);
       shuffled.forEach(pair => {
@@ -1416,14 +1481,14 @@
         el.className = 'match-item right-item';
         el.textContent = pair.right;
         el.dataset.origIdx = pair.origIdx;
-        el.addEventListener('click', () => selectRight(el));
+        el.addEventListener('click', () => selectRight(el, q));
         rightCont.appendChild(el);
       });
     }
 
     function updateMatchProgress(total) {
-      const p = document.getElementById('match-progress');
-      p.innerHTML = `<span>${matchDone}</span>/${total} eşleşti`;
+      document.getElementById('match-progress').innerHTML =
+        `<span>${matchDone}</span>/${total} eşleşti`;
     }
 
     function selectLeft(el, idx) {
@@ -1433,15 +1498,12 @@
       el.classList.add('selected-left');
     }
 
-    function selectRight(el) {
+    function selectRight(el, q) {
       if (matchSelected === null) return;
       if (el.classList.contains('matched-ok') || el.classList.contains('disabled-match')) return;
-
       const rightIdx = parseInt(el.dataset.origIdx);
       const isRight = rightIdx === matchSelected;
-
-      const leftItems = document.querySelectorAll('#match-left .match-item');
-      const leftEl = leftItems[matchSelected];
+      const leftEl = document.querySelectorAll('#match-left .match-item')[matchSelected];
 
       if (isRight) {
         leftEl.classList.remove('selected-left');
@@ -1449,29 +1511,22 @@
         el.classList.add('matched-ok', 'disabled-match');
         matchDone++;
         updateMatchProgress(matchPairs.length);
-
         if (matchDone === matchPairs.length) {
-          // Tüm eşleşmeler tamam
           answered = true;
-          const wasWrong = matchWrong;
-          showFeedback(!wasWrong, wasWrong ? 'Bazı eşleştirmeleri yanlış yaptın ama sonunda tamamladın.' : 'Tüm eşleştirmeleri doğru yaptın!', currentQ);
+          showFeedback(!matchWrong,
+            matchWrong
+              ? 'Bazı eşleştirmeleri yanlış yaptın ama sonunda tamamladın.'
+              : 'Tüm eşleştirmeleri doğru yaptın!',
+            q);
         }
       } else {
-        // Yanlış eşleştirme — kısa titreşim
         leftEl.classList.remove('selected-left');
         el.classList.add('matched-err');
         setTimeout(() => el.classList.remove('matched-err'), 600);
         matchWrong = true;
         matchSelected = null;
-        // Yanlış sayacı
-        if (!matchPenaltyApplied) {
-          matchPenaltyApplied = true;
-          // Sonunda feedback'te "yanlış" olarak işle
-        }
       }
     }
-
-    let matchPenaltyApplied = false;
 
     /* ── FEEDBACK ── */
     function showFeedback(isRight, explanation, q) {
@@ -1490,15 +1545,18 @@
         fbIcon.textContent = '❌';
         fbTitle.textContent = 'Yanlış!';
         totalWrong++;
-        wrongCount = Math.min(wrongCount + 1, MAX_WRONG);
-        updateHearts();
         wrongQueue.push(q);
+        // Her yanlışta başarı oranını düşür (toplam soruya göre dinamik düşüş)
+        const penalty = totalQ > 0 ? Math.round(100 / totalQ) : 10;
+        accuracyPct = Math.max(0, accuracyPct - penalty);
       }
 
       fbExpl.textContent = explanation || '';
       document.getElementById('btn-next-wrap').style.display = 'block';
-      document.getElementById('btn-next-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      matchPenaltyApplied = false;
+      setTimeout(() => {
+        document.getElementById('btn-next-wrap')
+          .scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 200);
     }
 
     btnNext.addEventListener('click', nextQuestion);
@@ -1516,15 +1574,30 @@
 
     /* ── TAMAMLANDI ── */
     function showComplete() {
-      const score = Math.max(10, Math.round(totalCorrect / Math.max(1, totalQ) * 100));
-      document.getElementById('st-correct').textContent = totalCorrect;
-      document.getElementById('st-wrong').textContent = totalWrong;
-      document.getElementById('st-total').textContent = totalQ;
+      const elapsedSecs = stopTimer();
+      const score = calcScore(totalCorrect, totalQ, elapsedSecs);
+
+      document.getElementById('st-time').textContent = formatTime(elapsedSecs);
       document.getElementById('complete-xp').textContent = `+${score} XP`;
+
+      // Başarı oranı barı — zaten gerçek zamanlı düşmüş değeri göster
+      document.getElementById('rate-pct').textContent = `%${accuracyPct}`;
+      // Bar rengi: %80+ yeşil, %50-79 sarı, <%50 kırmızı
+      const fillEl = document.getElementById('rate-fill');
+      fillEl.style.background = accuracyPct >= 80
+        ? 'linear-gradient(90deg,var(--p),var(--a))'
+        : accuracyPct >= 50
+          ? 'linear-gradient(90deg,#ffb84d,#ff8c4b)'
+          : 'linear-gradient(90deg,var(--r),#ff8c4b)';
+      setTimeout(() => { fillEl.style.width = accuracyPct + '%'; }, 300);
+
       pbar.style.width = '100%';
       pbarLabel.textContent = `${totalQ}/${totalQ}`;
+      timerEl.textContent = formatTime(elapsedSecs);
+
       btnFinish.dataset.score = score;
       btnFinish.dataset.wrong = totalWrong;
+      btnFinish.dataset.elapsed = elapsedSecs;
       show('screen-complete');
     }
 
@@ -1534,11 +1607,13 @@
       btnFinish.innerHTML = '<i class="bi bi-hourglass-split"></i> Kaydediliyor...';
       const form = document.createElement('form');
       form.method = 'POST'; form.action = completeUrl; form.style.display = 'none';
-      [['csrf_token', csrfToken], ['ai_score', btnFinish.dataset.score], ['wrong_count', btnFinish.dataset.wrong]]
+      [['csrf_token', csrfToken],
+      ['ai_score', btnFinish.dataset.score],
+      ['wrong_count', btnFinish.dataset.wrong]]
         .forEach(([n, v]) => {
-          const i = document.createElement('input');
-          i.type = 'hidden'; i.name = n; i.value = v;
-          form.appendChild(i);
+          const inp = document.createElement('input');
+          inp.type = 'hidden'; inp.name = n; inp.value = v;
+          form.appendChild(inp);
         });
       document.body.appendChild(form);
       form.submit();

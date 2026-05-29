@@ -322,3 +322,79 @@ Migration'da her zaman `server_default` kontrolü yapmak gerekiyor —
 | 10 | Duolingo quiz v1 eklendi - lesson_detail yenilendi |
 | 11 | Quiz çoklu soru + hint sistemi - Prompt B ek2 |
 | 12 | 4 tip soru + öğrenme uyumu altyapısı - Prompt B ek3 |
+
+
+
+
+
+
+
+
+
+## Oturum 4 — 29.05.2026
+
+### Hedef
+Zorunlu son gereksinimi tamamlamak: Render'a canlı deploy.
+Ardından bonus özelliklere geçmek (API endpoint, profil/avatar, arama).
+
+### Kullandığım Mod ve Model
+- Mod: Plan
+- Model: Claude Sonnet 4.6
+- Görünüm: Manager View
+
+### Mevcut Durum (Oturum Başında)
+
+| # | Gereksinim | Durum |
+|---|-----------|-------|
+| 1 | Application factory + blueprint | ✅ |
+| 2 | En az 4 sayfa, base template, template inheritance | ✅ |
+| 3 | Flask-WTF, 2 form, CSRF koruması | ✅ |
+| 4 | SQLAlchemy, 3 model, ilişkiler | ✅ |
+| 5 | Flask-Migrate, migration dosyaları | ✅ |
+| 6 | Flask-Login, kayıt/giriş/çıkış, şifre hash | ✅ |
+| 7 | 404/500 hata sayfaları | ✅ |
+| 8 | Pagination | ✅ |
+| 9 | Bootstrap/Tailwind, mobil uyumlu | ✅ |
+| 10 | Docker veya canlı deploy | ❌ **BUGÜN** |
+
+| Bonus | Puan | Durum |
+|-------|------|-------|
+| API endpoint /api/v1/ | +5 | ❌ YAPILACAK |
+| Kullanıcı profili + avatar | +4 | ❌ YAPILACAK |
+| Tam metin arama | +3 | ❌ YAPILACAK |
+| E-posta şifre sıfırlama | +5 | ❌ riskli |
+| Flask-Babel TR/EN | +3 | ❌ riskli |
+
+**Toplam commit:** 12 | **Son commit:** "4 tip soru + öğrenme uyumu altyapısı - Prompt B ek3"
+**Teslime kalan süre:** ~60 saat
+
+### Oturum Planı
+
+1. **Render Deploy** (Zorunlu — -20 puan riski) → Prompt C
+2. **API endpoint /api/v1/** (+5 puan) → Prompt D
+3. **Kullanıcı profili + avatar** (+4 puan) → Prompt E
+4. **Tam metin arama** (+3 puan) → Prompt F
+
+### ⚠️ Deploy Öncesi Açık Sorular
+
+Antigravity'ye geçmeden önce netleştirilmesi gereken 3 nokta:
+
+**1. Veritabanı stratejisi:**
+Render ücretsiz planında SQLite ephemeral storage'da çalışır — her deploy'da
+veriler sıfırlanır. İki seçenek:
+- **SQLite kalsın** — Hızlı deploy, demo için yeterli, veriler uçar
+- **PostgreSQL'e geç** — Render'ın ücretsiz Postgres'i, kalıcı veriler;
+  `psycopg2-binary` + `DATABASE_URL` değişikliği gerekir (~30 dk ekstra)
+
+**2. Ortam değişkenleri:**
+Render dashboard'a girilmesi gereken değişkenler:
+`SECRET_KEY`, `GEMINI_API_KEY` ve varsa diğerleri.
+`.env` dosyasının içeriği kontrol edilmeli.
+
+**3. `gunicorn`:**
+Render için `requirements.txt`'te `gunicorn` zorunlu.
+Şu an mevcut mu kontrol edilmeli.
+
+---
+
+*Bu sorular yanıtlandıktan sonra Antigravity için Render deploy promptu hazırlanacak.*
