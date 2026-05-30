@@ -538,6 +538,78 @@ def lesson_new(id: int):
 
 
 # ---------------------------------------------------------------------------
+# Public REST API — v1
+# ---------------------------------------------------------------------------
+
+@main.route("/api/v1/topics")
+def api_topics():
+    """GET /api/v1/topics — Tüm topic'leri JSON olarak döndür."""
+    topics = (
+        Topic.query
+        .order_by(Topic.order, Topic.id)
+        .all()
+    )
+    return jsonify([
+        {
+            "id": t.id,
+            "title": t.title,
+            "description": t.description,
+            "icon": t.icon,
+            "order": t.order,
+        }
+        for t in topics
+    ])
+
+
+@main.route("/api/v1/topics/<int:id>")
+def api_topic_detail(id: int):
+    """GET /api/v1/topics/<id> — Tek topic + dersleri JSON olarak döndür."""
+    topic = db.session.get(Topic, id)
+    if topic is None:
+        return jsonify({"error": "Not found"}), 404
+
+    lessons = (
+        Lesson.query
+        .filter_by(topic_id=topic.id)
+        .order_by(Lesson.order, Lesson.id)
+        .all()
+    )
+    return jsonify({
+        "id": topic.id,
+        "title": topic.title,
+        "description": topic.description,
+        "icon": topic.icon,
+        "order": topic.order,
+        "lessons": [
+            {
+                "id": l.id,
+                "title": l.title,
+                "difficulty": l.difficulty,
+                "order": l.order,
+            }
+            for l in lessons
+        ],
+    })
+
+
+@main.route("/api/v1/lessons/<int:id>")
+def api_lesson_detail(id: int):
+    """GET /api/v1/lessons/<id> — Tek ders JSON olarak döndür."""
+    lesson = db.session.get(Lesson, id)
+    if lesson is None:
+        return jsonify({"error": "Not found"}), 404
+
+    return jsonify({
+        "id": lesson.id,
+        "title": lesson.title,
+        "content": lesson.content,
+        "difficulty": lesson.difficulty,
+        "order": lesson.order,
+        "topic_id": lesson.topic_id,
+    })
+
+
+# ---------------------------------------------------------------------------
 # Hata Handler'ları
 # ---------------------------------------------------------------------------
 
