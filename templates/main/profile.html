@@ -1,0 +1,581 @@
+{% extends "base.html" %}
+
+{% block title %}{{ current_user.username }} — Profil · CyberLearn.io{% endblock %}
+{% block meta_description %}{{ current_user.username }} kullanıcısının CyberLearn.io profil sayfası.{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ── Layout ── */
+  .profile-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem 5rem;
+  }
+
+  /* Breadcrumb — topic_form.html ile aynı */
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .78rem;
+    color: var(--txt3);
+    margin-bottom: 2rem;
+    font-family: var(--mono);
+    flex-wrap: wrap;
+  }
+  .breadcrumb-nav a { color: var(--txt2); text-decoration: none; transition: color .2s; }
+  .breadcrumb-nav a:hover { color: var(--p); }
+  .breadcrumb-sep { font-size: .65rem; }
+
+  /* Page header */
+  .form-page-header { margin-bottom: 2rem; }
+  .form-page-label {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--p);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: .4rem;
+  }
+  .form-page-header h1 {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  /* ── Avatar Hero ── */
+  .avatar-hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    opacity: .6;
+  }
+  .avatar-circle {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 3px solid var(--edge);
+    transition: border-color .3s;
+  }
+  .avatar-circle:hover { border-color: var(--p); }
+  .avatar-initials {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--p), var(--a));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -.04em;
+    box-shadow: 0 0 32px rgba(110,91,255,.35);
+  }
+  .avatar-meta { flex: 1; min-width: 0; }
+  .avatar-username {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: .2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .avatar-email {
+    font-family: var(--mono);
+    font-size: .75rem;
+    color: var(--txt3);
+    margin-bottom: .6rem;
+  }
+  .avatar-bio {
+    font-size: .85rem;
+    color: var(--txt2);
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .avatar-bio.empty { color: var(--txt3); }
+
+  /* ── Stats ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: border-color .25s, transform .25s;
+  }
+  .stat-card:hover {
+    border-color: var(--edge-h);
+    transform: translateY(-2px);
+  }
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .stat-icon.accent { background: rgba(0,245,196,.12); color: var(--a); }
+  .stat-icon.purple { background: rgba(110,91,255,.12); color: var(--p); }
+  .stat-val {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: .15rem;
+  }
+  .stat-lbl {
+    font-size: .72rem;
+    color: var(--txt3);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  /* ── Form card — topic_form.html ile aynı ── */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-section-title {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--p);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: 1.4rem;
+  }
+  .field-group:last-of-type { margin-bottom: 0; }
+  .field-label {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--txt2);
+    font-family: var(--mono);
+    letter-spacing: .03em;
+  }
+  .field-input,
+  .field-textarea {
+    width: 100%;
+    padding: .65rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--edge);
+    border-radius: 10px;
+    color: var(--txt);
+    font-family: var(--sans);
+    font-size: .88rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .field-input:focus,
+  .field-textarea:focus {
+    border-color: var(--p);
+    box-shadow: 0 0 0 3px rgba(110,91,255,.12);
+  }
+  .field-textarea { resize: vertical; min-height: 80px; }
+  .field-input.is-invalid,
+  .field-textarea.is-invalid { border-color: rgba(255,61,107,.5); }
+  .field-error {
+    font-size: .75rem;
+    color: var(--r);
+    font-family: var(--mono);
+  }
+  .field-hint {
+    font-size: .73rem;
+    color: var(--txt3);
+  }
+
+  /* Actions */
+  .form-actions {
+    display: flex;
+    gap: .75rem;
+    margin-top: 1.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* ── Avatar tool row ── */
+  .avatar-url-row {
+    display: flex;
+    gap: .6rem;
+    align-items: flex-start;
+  }
+  .avatar-url-row .field-input { flex: 1; }
+  .avatar-preview-box {
+    margin-top: 1rem;
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    padding: .85rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--edge);
+    border-radius: 10px;
+  }
+  .avatar-preview-box.visible { display: flex; }
+  .avatar-preview-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--edge);
+  }
+  .avatar-preview-txt {
+    font-size: .8rem;
+    color: var(--txt2);
+  }
+  .dicebear-row {
+    display: flex;
+    gap: .6rem;
+    flex-wrap: wrap;
+    margin-top: .8rem;
+  }
+
+  /* cl-btn-danger (kırmızı outline) */
+  .cl-btn-danger {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .7rem 1.6rem;
+    background: transparent;
+    border: 1px solid rgba(255,61,107,.4);
+    border-radius: 10px;
+    color: var(--r);
+    font-size: .875rem;
+    font-weight: 600;
+    font-family: var(--sans);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .25s;
+  }
+  .cl-btn-danger:hover {
+    background: rgba(255,61,107,.08);
+    border-color: var(--r);
+    color: var(--r);
+  }
+
+  /* Char counter */
+  .char-counter {
+    font-family: var(--mono);
+    font-size: .7rem;
+    color: var(--txt3);
+    text-align: right;
+  }
+  .char-counter.warn { color: var(--w); }
+  .char-counter.danger { color: var(--r); }
+
+  @media (max-width: 600px) {
+    .profile-wrap { padding: 2rem 1rem 4rem; }
+    .avatar-hero { flex-direction: column; text-align: center; gap: 1.25rem; }
+    .avatar-hero .avatar-meta { text-align: center; }
+    .stats-row { grid-template-columns: 1fr; }
+    .form-card { padding: 1.25rem; }
+    .avatar-url-row { flex-direction: column; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-wrap">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb-nav cl-reveal" aria-label="Konum">
+    <a href="{{ url_for('main.index') }}"><i class="bi bi-house-door"></i></a>
+    <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
+    <span>Profil</span>
+  </nav>
+
+  <!-- Page header -->
+  <header class="form-page-header cl-reveal">
+    <div class="form-page-label"><i class="bi bi-person-circle"></i> Hesap</div>
+    <h1>Profilim</h1>
+  </header>
+
+  <!-- ── Avatar Hero ── -->
+  <section class="avatar-hero cl-reveal" aria-label="Profil özeti">
+    {% if current_user.avatar_url %}
+      <img
+        id="hero-avatar-img"
+        src="{{ current_user.avatar_url }}"
+        alt="{{ current_user.username }} avatarı"
+        class="avatar-circle"
+        onerror="this.style.display='none'; document.getElementById('hero-avatar-initials').style.display='flex';"
+      />
+      <div id="hero-avatar-initials" class="avatar-initials" style="display:none;" aria-hidden="true">
+        {{ current_user.username[:2].upper() }}
+      </div>
+    {% else %}
+      <div class="avatar-initials" aria-label="{{ current_user.username }} baş harfleri">
+        {{ current_user.username[:2].upper() }}
+      </div>
+    {% endif %}
+
+    <div class="avatar-meta">
+      <div class="avatar-username">{{ current_user.username }}</div>
+      <div class="avatar-email">{{ current_user.email }}</div>
+      {% if current_user.bio %}
+        <div class="avatar-bio">"{{ current_user.bio }}"</div>
+      {% else %}
+        <div class="avatar-bio empty">Henüz bir bio eklenmedi.</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ── İstatistikler ── -->
+  <div class="stats-row cl-reveal" role="region" aria-label="Öğrenme istatistikleri">
+    <div class="stat-card">
+      <div class="stat-icon accent"><i class="bi bi-check-circle-fill"></i></div>
+      <div>
+        <div class="stat-val" id="stat-completed">{{ total_completed }}</div>
+        <div class="stat-lbl">Tamamlanan Ders</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple"><i class="bi bi-star-fill"></i></div>
+      <div>
+        <div class="stat-val" id="stat-score">{{ total_score }}</div>
+        <div class="stat-lbl">Toplam Puan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Avatar Güncelleme Kartı ── -->
+  <div class="form-card cl-reveal">
+    <div class="card-section-title">
+      <i class="bi bi-image"></i> Avatar Güncelle
+    </div>
+
+    <form method="POST" action="{{ url_for('main.profile_avatar') }}" id="form-avatar" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="field-group">
+        <label class="field-label" for="field-avatar-url">Avatar URL</label>
+        <div class="avatar-url-row">
+          <input
+            type="url"
+            id="field-avatar-url"
+            name="avatar_url"
+            class="field-input"
+            placeholder="https://api.dicebear.com/7.x/bottts/svg?seed=..."
+            value="{{ current_user.avatar_url or '' }}"
+            maxlength="512"
+            autocomplete="off"
+          />
+          <button type="button" class="cl-btn-ghost" id="btn-preview" style="white-space:nowrap;">
+            <i class="bi bi-eye"></i> Önizle
+          </button>
+        </div>
+        <span class="field-hint">Herhangi bir resim URL'si veya aşağıdaki butonla üret.</span>
+
+        <!-- Anlık önizleme kutusu -->
+        <div class="avatar-preview-box" id="avatar-preview-box" role="status" aria-live="polite">
+          <img id="avatar-preview-img" src="" alt="Önizleme" class="avatar-preview-img" />
+          <span class="avatar-preview-txt">Önizleme — Kaydetmek için "Avatar Güncelle"ye bas.</span>
+        </div>
+
+        <!-- Dicebear hızlı üret -->
+        <div class="dicebear-row">
+          <button type="button" class="cl-btn-ghost" id="btn-dicebear-bottts" style="font-size:.8rem;padding:.5rem 1rem;">
+            <i class="bi bi-robot"></i> Bottts Robot
+          </button>
+          <button type="button" class="cl-btn-ghost" id="btn-dicebear-pixel" style="font-size:.8rem;padding:.5rem 1rem;">
+            <i class="bi bi-grid-3x3-gap"></i> Pixel Art
+          </button>
+          <button type="button" class="cl-btn-ghost" id="btn-dicebear-shapes" style="font-size:.8rem;padding:.5rem 1rem;">
+            <i class="bi bi-pentagon"></i> Shapes
+          </button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="cl-btn-primary" id="btn-avatar-save">
+          <i class="bi bi-cloud-arrow-up"></i> Avatar Güncelle
+        </button>
+        {% if current_user.avatar_url %}
+        <button type="button" class="cl-btn-danger" id="btn-avatar-clear">
+          <i class="bi bi-trash"></i> Avatarı Temizle
+        </button>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- ── Profil Bilgileri Kartı ── -->
+  <div class="form-card cl-reveal">
+    <div class="card-section-title">
+      <i class="bi bi-pencil-square"></i> Profil Bilgileri
+    </div>
+
+    <form method="POST" action="{{ url_for('main.profile') }}" id="form-profile" novalidate>
+      {{ form.hidden_tag() }}
+
+      <!-- Bio -->
+      <div class="field-group">
+        <label class="field-label" for="field-bio">Hakkımda</label>
+        {{ form.bio(
+            class="field-textarea" + (" is-invalid" if form.bio.errors else ""),
+            id="field-bio"
+        ) }}
+        <div class="char-counter" id="bio-counter" aria-live="polite">
+          <span id="bio-len">{{ (current_user.bio or '')|length }}</span> / 256
+        </div>
+        {% for err in form.bio.errors %}
+          <span class="field-error" role="alert">{{ err }}</span>
+        {% endfor %}
+      </div>
+
+      <!-- Avatar URL (profil formu — hidden, avatar formu üstte işler) -->
+      <input type="hidden" name="avatar_url" value="{{ current_user.avatar_url or '' }}" />
+
+      <div class="form-actions">
+        <button type="submit" class="cl-btn-primary" id="btn-profile-save">
+          <i class="bi bi-check-lg"></i> Profili Kaydet
+        </button>
+        <a href="{{ url_for('main.index') }}" class="cl-btn-ghost">
+          <i class="bi bi-x-lg"></i> İptal
+        </a>
+      </div>
+    </form>
+  </div>
+
+</div><!-- /.profile-wrap -->
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  'use strict';
+
+  /* ── Yardımcılar ── */
+  const $ = id => document.getElementById(id);
+  const avatarInput   = $('field-avatar-url');
+  const previewBox    = $('avatar-preview-box');
+  const previewImg    = $('avatar-preview-img');
+  const heroImg       = $('hero-avatar-img');
+  const heroInitials  = $('hero-avatar-initials');
+  const bioTextarea   = $('field-bio');
+  const bioLen        = $('bio-len');
+  const bioCounter    = $('bio-counter');
+  const clearBtn      = $('btn-avatar-clear');
+
+  /* ── Önizle butonu ── */
+  $('btn-preview').addEventListener('click', () => {
+    const url = avatarInput.value.trim();
+    if (!url) return;
+    previewImg.src = url;
+    previewBox.classList.add('visible');
+  });
+
+  /* ── Input değişince canlı önizleme (debounce 600ms) ── */
+  let debounce;
+  avatarInput.addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => {
+      const url = avatarInput.value.trim();
+      if (url) {
+        previewImg.src = url;
+        previewBox.classList.add('visible');
+      } else {
+        previewBox.classList.remove('visible');
+      }
+    }, 600);
+  });
+
+  /* ── Dicebear butonları ── */
+  function randomSeed() {
+    return Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  }
+  function setDicebear(style) {
+    const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${randomSeed()}`;
+    avatarInput.value = url;
+    previewImg.src = url;
+    previewBox.classList.add('visible');
+  }
+
+  $('btn-dicebear-bottts').addEventListener('click', () => setDicebear('bottts'));
+  $('btn-dicebear-pixel').addEventListener('click',  () => setDicebear('pixel-art'));
+  $('btn-dicebear-shapes').addEventListener('click', () => setDicebear('shapes'));
+
+  /* ── Avatarı Temizle ── */
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      avatarInput.value = '';
+      previewBox.classList.remove('visible');
+      document.querySelector('#form-avatar').submit();
+    });
+  }
+
+  /* ── Profil formunun hidden avatar alanını senkronize et ── */
+  $('btn-avatar-save') && $('form-avatar').addEventListener('submit', () => {
+    /* avatar form zaten kendi action'ına POST eder — normal davran */
+  });
+
+  /* ── Bio karakter sayacı ── */
+  if (bioTextarea && bioLen && bioCounter) {
+    function updateBioCounter() {
+      const len = bioTextarea.value.length;
+      bioLen.textContent = len;
+      bioCounter.className = 'char-counter' +
+        (len > 230 ? (len >= 256 ? ' danger' : ' warn') : '');
+    }
+    bioTextarea.addEventListener('input', updateBioCounter);
+    updateBioCounter();
+  }
+
+  /* ── Hero avatar önizleme senkronizasyonu ── */
+  previewImg.addEventListener('load', () => {
+    if (heroImg) {
+      heroImg.src = previewImg.src;
+      heroImg.style.display = '';
+      if (heroInitials) heroInitials.style.display = 'none';
+    }
+  });
+
+})();
+</script>
+{% endblock %}

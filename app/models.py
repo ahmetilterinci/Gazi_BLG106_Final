@@ -43,6 +43,8 @@ class User(UserMixin, db.Model):
         String(120), unique=True, nullable=False, index=True
     )
     password_hash: Mapped[str] = mapped_column(String(256), nullable=False)
+    avatar_url: Mapped[Optional[str]] = mapped_column(String(512), nullable=True)
+    bio: Mapped[Optional[str]] = mapped_column(String(256), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         nullable=False,

@@ -22,7 +22,7 @@ from flask_login import current_user, login_required
 
 from app import db, csrf
 from app.main import main
-from app.main.forms import LessonForm, TopicForm
+from app.main.forms import LessonForm, ProfileForm, TopicForm
 from app.models import Lesson, Topic, UserProgress
 
 
@@ -535,6 +535,61 @@ def lesson_new(id: int):
         form=form,
         topic=topic,
     )
+
+
+# ---------------------------------------------------------------------------
+# Kullanıcı Profili
+# ---------------------------------------------------------------------------
+
+@main.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    """Kullanıcı profil sayfası — bio ve avatar düzenleme + istatistikler."""
+    from app.models import User  # noqa: PLC0415
+
+    form = ProfileForm(obj=current_user)
+
+    if form.validate_on_submit():
+        current_user.bio = form.bio.data or None
+        current_user.avatar_url = form.avatar_url.data or None
+        db.session.commit()
+        flash("✅ Profilin başarıyla güncellendi.", "success")
+        return redirect(url_for("main.profile"))
+
+    if form.errors:
+        flash("⚠️ Formda hatalar var, lütfen kontrol et.", "danger")
+
+    # İstatistikler
+    completed_lessons = UserProgress.query.filter_by(
+        user_id=current_user.id,
+        is_completed=True,
+    ).all()
+    total_completed = len(completed_lessons)
+    total_score = sum(p.score or 0 for p in completed_lessons)
+
+    return render_template(
+        "main/profile.html",
+        title=f"{current_user.username} — Profil",
+        form=form,
+        total_completed=total_completed,
+        total_score=total_score,
+    )
+
+
+@main.route("/profile/avatar", methods=["POST"])
+@login_required
+def profile_avatar():
+    """Sadece avatar_url günceller — profile.html'deki ayrı form action'ı."""
+    avatar_url = request.form.get("avatar_url", "").strip()
+    if avatar_url:
+        current_user.avatar_url = avatar_url
+        db.session.commit()
+        flash("🎨 Avatar güncellendi.", "success")
+    else:
+        current_user.avatar_url = None
+        db.session.commit()
+        flash("Avatar temizlendi.", "success")
+    return redirect(url_for("main.profile"))
 
 
 # ---------------------------------------------------------------------------
