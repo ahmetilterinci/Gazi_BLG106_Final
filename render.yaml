@@ -2,7 +2,7 @@ services:
   - type: web
     name: cyberlearn-ai
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && flask db upgrade
     startCommand: "sh -c 'flask seed-db; gunicorn run:app'"
     envVars:
       - key: FLASK_APP
@@ -13,3 +13,11 @@ services:
         generateValue: true
       - key: GEMINI_API_KEY
         sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cyberlearn-db
+          property: connectionString
+
+databases:
+  - name: cyberlearn-db
+    plan: free

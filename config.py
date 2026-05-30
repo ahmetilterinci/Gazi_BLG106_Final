@@ -32,9 +32,10 @@ class ProductionConfig(Config):
     """Üretim ortamı ayarları."""
 
     DEBUG: bool = False
-    SQLALCHEMY_DATABASE_URI: str = os.environ.get(
-        "DATABASE_URL", "sqlite:///cyberlearn_prod.db"
-    )
+    _db_url: str = os.environ.get("DATABASE_URL", "sqlite:///cyberlearn_prod.db")
+    if _db_url.startswith("postgres://"):
+        _db_url = _db_url.replace("postgres://", "postgresql+psycopg2://", 1)
+    SQLALCHEMY_DATABASE_URI: str = _db_url
 
 
 # create_app(config_name) çağrısında kullanılacak sözlük
