@@ -17,8 +17,12 @@ depends_on = None
 
 
 def upgrade():
-    pass
+    with op.batch_alter_table('user', schema=None) as batch_op:
+        batch_op.add_column(sa.Column('avatar_url', sa.String(length=512), nullable=True))
+        batch_op.add_column(sa.Column('bio', sa.String(length=256), nullable=True))
 
 
 def downgrade():
-    pass
+    with op.batch_alter_table('user', schema=None) as batch_op:
+        batch_op.drop_column('bio')
+        batch_op.drop_column('avatar_url')
