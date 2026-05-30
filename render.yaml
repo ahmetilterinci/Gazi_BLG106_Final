@@ -2,7 +2,7 @@ services:
   - type: web
     name: cyberlearn-ai
     runtime: python
-    buildCommand: pip install -r requirements.txt && flask db upgrade
+    buildCommand: pip install -r requirements.txt
     startCommand: "sh -c 'flask seed-db; gunicorn run:app'"
     envVars:
       - key: FLASK_APP
