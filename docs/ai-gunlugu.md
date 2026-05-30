@@ -433,3 +433,69 @@ https://gazi-blg106-final.onrender.com
 | 15 | render.yaml buildCommand düzeltildi |
 | 16 | seed-db startCommand sh ile düzeltildi |
 | 17 | seed-db admin kullanıcısı otomatik oluşturma |
+
+
+
+
+## Oturum 5 — 30.05.2026 — 16:33-devam ediyor
+
+### Hedef
+PostgreSQL ile kalıcı veri depolama sağlamak ve bonus özellikleri eklemek.
+
+### Kullandığım Mod ve Model
+- Mod: Plan (Antigravity) + Danışman Claude (claude.ai)
+- Model: Claude Sonnet 4.6
+- Görünüm: Manager View
+
+### Verdiğim Promptlar
+1. PostgreSQL entegrasyonu: psycopg2-binary, config.py dönüşüm, render.yaml güncelleme
+2. API endpoint /api/v1/: 3 endpoint, routes.py'e eklendi
+
+### Ajanın Önerdiği Plan
+- render.yaml'da fromDatabase ile DATABASE_URL otomatik inject edilecekti
+- API endpoint'leri routes.py sonuna eklendi, SQLAlchemy 2.x stili
+
+### Plan'da Sorguladıklarım
+- render.yaml'daki fromDatabase bloğu DATABASE_URL'yi web servisine otomatik
+  inject etmedi. Danışman Claude ile tespit edildi, manuel eklendi.
+- flask db upgrade build'de çalışmıyordu — migration sıra sorunu.
+  db.create_all() + stamp() kombinasyonuna geçildi.
+- Start Command'da flask db upgrade && flask seed-db sırası tartışıldı,
+  && ile seed'in upgrade'e bağımlı olması sağlandı.
+
+### ⚠️ Ajanın Yanlış Önerisi — Yakaladım
+render.yaml'daki `fromDatabase: name: cyberlearn-db` bloğu Render'ın
+bağımsız oluşturulan PostgreSQL instance'ını web servisine otomatik
+bağlamadı. Danışman Claude bu durumu önceden belirtmemişti.
+Manuel DATABASE_URL girişiyle çözüldü.
+
+### Karşılaştığım Hatalar ve Çözümler
+- **Hata 1:** relation "user" does not exist
+  **Neden:** flask db upgrade PostgreSQL'de migration sırasını çözemedi
+  **Çözüm:** db.create_all() + stamp() ile tablolar direkt oluşturuldu
+
+- **Hata 2:** password authentication failed
+  **Neden:** DATABASE_URL value'ya örnek şifre girilmişti
+  **Çözüm:** Render'dan gerçek connection string kopyalanarak düzeltildi
+
+- **Hata 3:** /api/v1/topics 404
+  **Neden:** Deploy henüz tamamlanmamıştı
+  **Çözüm:** Beklendi, deploy sonrası çalıştı
+
+### Bu Oturumdan Öğrendiğim
+Render'da render.yaml ile dashboard Settings çakıştığında dashboard kazanır.
+fromDatabase bloğu sadece aynı render.yaml'da tanımlanan servislerle
+otomatik çalışır — ayrı oluşturulan instance'lar manuel bağlanmalı.
+
+### Sonraki Oturum İçin Notlar
+- Kullanıcı profili + avatar (+4 puan) — Danışman Claude yapacak
+- Tam metin arama (+3 puan)
+- E-posta şifre sıfırlama (+5 puan)
+- Flask-Babel TR/EN (+3 puan) — riskli, en sona
+
+### Commit Geçmişi (Oturum 5)
+| #  | Mesaj |
+|----|-------|
+| 18 | PostgreSQL desteği eklendi - Oturum 5 |
+| 19 | PostgreSQL db.create_all fix - Oturum 5 |
+| 20 | API endpoint /api/v1/ eklendi - bonus +5 |

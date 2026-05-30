@@ -178,3 +178,28 @@ Sonraki oturumda PostgreSQL eklenecek.
 - `render.yaml`: canlı deploy yapılandırması
 - `templates/main/index.html`: izometrik öğrenme yolu
 - `templates/main/lesson_detail.html`: Duolingo quiz v5
+
+
+## Oturum 5 — 30.05.2026 ✅ DEVAM EDİYOR
+
+**PostgreSQL Geçişi**
+- requirements.txt'e psycopg2-binary eklendi
+- config.py ProductionConfig: postgres:// → postgresql+psycopg2:// otomatik dönüşüm
+- run.py: db.create_all() + stamp() ile tablo oluşturma
+- render.yaml: buildCommand'dan flask db upgrade kaldırıldı
+- Render dashboard'da DATABASE_URL manuel eklendi
+- Start Command: sh -c 'flask db upgrade && flask seed-db; gunicorn run:app'
+- ⚠️ render.yaml fromDatabase otomatik inject etmedi — manuel çözüldü
+
+**API Endpoint /api/v1/ (+5 puan)**
+- GET /api/v1/topics
+- GET /api/v1/topics/<id>
+- GET /api/v1/lessons/<id>
+- routes.py sonuna eklendi, public erişim
+
+### Commit Geçmişi
+| #  | Mesaj |
+|----|-------|
+| 18 | PostgreSQL desteği eklendi - Oturum 5 |
+| 19 | PostgreSQL db.create_all fix - Oturum 5 |
+| 20 | API endpoint /api/v1/ eklendi - bonus +5 |
