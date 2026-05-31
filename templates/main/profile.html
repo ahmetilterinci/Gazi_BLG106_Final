@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}{{ current_user.username }} — Profil · CyberLearn.io{% endblock %}
-{% block meta_description %}{{ current_user.username }} kullanıcısının CyberLearn.io profil sayfası.{% endblock %}
+{% block title %}{{ current_user.username }} — {{ _('Profil') }} · CyberLearn.io{% endblock %}
+{% block meta_description %}{{ current_user.username }} {{ _('kullanıcısının CyberLearn.io profil sayfası.') }}{%
+endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── Layout ── */
   .profile-wrap {
     max-width: 800px;
     margin: 0 auto;
     padding: 3.5rem 2rem 6rem;
   }
 
-  /* Breadcrumb */
   .breadcrumb-nav {
     display: flex;
     align-items: center;
@@ -38,7 +37,6 @@
     font-size: .65rem;
   }
 
-  /* Page header */
   .form-page-header {
     margin-bottom: 2rem;
   }
@@ -60,7 +58,6 @@
     line-height: 1.2;
   }
 
-  /* ── Avatar Hero ── */
   .avatar-hero {
     background: var(--surface);
     border: 1px solid var(--edge);
@@ -82,9 +79,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(110, 91, 255, .25) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 50%, rgba(0, 245, 196, .15) 0%, transparent 60%);
+    background: radial-gradient(ellipse at 20% 50%, rgba(110, 91, 255, .25) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(0, 245, 196, .15) 0%, transparent 60%);
   }
 
   .avatar-hero-banner::after {
@@ -98,13 +93,10 @@
     opacity: .5;
   }
 
-  /* Dekoratif grid çizgileri */
   .banner-grid {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(110, 91, 255, .08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(110, 91, 255, .08) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(110, 91, 255, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(110, 91, 255, .08) 1px, transparent 1px);
     background-size: 28px 28px;
   }
 
@@ -225,7 +217,6 @@
     font-size: .75rem;
   }
 
-  /* ── Stats ── */
   .stats-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -327,7 +318,6 @@
     letter-spacing: .08em;
   }
 
-  /* ── Form card ── */
   .form-card {
     background: var(--surface);
     border: 1px solid var(--edge);
@@ -418,7 +408,6 @@
     color: var(--txt3);
   }
 
-  /* Char counter */
   .char-counter {
     font-size: .72rem;
     font-family: var(--mono);
@@ -435,7 +424,6 @@
     color: var(--r);
   }
 
-  /* Actions */
   .form-actions {
     display: flex;
     gap: .75rem;
@@ -444,7 +432,6 @@
     align-items: center;
   }
 
-  /* ── Avatar araçları ── */
   .avatar-url-row {
     display: flex;
     gap: .6rem;
@@ -496,7 +483,6 @@
     font-family: var(--mono);
   }
 
-  /* Dicebear butonları */
   .dicebear-row {
     display: flex;
     gap: .5rem;
@@ -529,7 +515,6 @@
     font-size: .85rem;
   }
 
-  /* Danger zone */
   .danger-zone {
     background: rgba(255, 61, 107, .04);
     border: 1px solid rgba(255, 61, 107, .2);
@@ -597,21 +582,18 @@
 {% block content %}
 <div class="profile-wrap">
 
-  <!-- Breadcrumb -->
-  <nav class="breadcrumb-nav cl-reveal" aria-label="Konum">
+  <nav class="breadcrumb-nav cl-reveal" aria-label="{{ _('Konum') }}">
     <a href="{{ url_for('main.index') }}"><i class="bi bi-house-door"></i></a>
     <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
-    <span>Profil</span>
+    <span>{{ _('Profil') }}</span>
   </nav>
 
-  <!-- Page header -->
   <header class="form-page-header cl-reveal">
-    <div class="form-page-label"><i class="bi bi-person-circle"></i> Hesabım</div>
-    <h1>Profil & Avatar</h1>
+    <div class="form-page-label"><i class="bi bi-person-circle"></i> {{ _('Hesabım') }}</div>
+    <h1>{{ _('Profil & Avatar') }}</h1>
   </header>
 
-  <!-- ── Avatar Hero ── -->
-  <section class="avatar-hero cl-reveal" aria-label="Profil özeti">
+  <section class="avatar-hero cl-reveal" aria-label="{{ _('Profil özeti') }}">
     <div class="avatar-hero-banner">
       <div class="banner-grid"></div>
     </div>
@@ -619,19 +601,20 @@
       <div class="avatar-wrapper">
         <div class="avatar-ring">
           {% if current_user.avatar_url %}
-          <img id="hero-avatar-img" src="{{ current_user.avatar_url }}" alt="{{ current_user.username }} avatarı"
-            class="avatar-circle"
+          <img id="hero-avatar-img" src="{{ current_user.avatar_url }}"
+            alt="{{ current_user.username }} {{ _('avatarı') }}" class="avatar-circle"
             onerror="this.style.display='none'; document.getElementById('hero-avatar-initials').style.display='flex';" />
           <div id="hero-avatar-initials" class="avatar-initials" style="display:none;" aria-hidden="true">
             {{ current_user.username[:2].upper() }}
           </div>
           {% else %}
-          <div id="hero-avatar-initials" class="avatar-initials" aria-label="{{ current_user.username }} baş harfleri">
+          <div id="hero-avatar-initials" class="avatar-initials"
+            aria-label="{{ current_user.username }} {{ _('baş harfleri') }}">
             {{ current_user.username[:2].upper() }}
           </div>
           {% endif %}
         </div>
-        <div class="avatar-online-dot" title="Aktif"></div>
+        <div class="avatar-online-dot" title="{{ _('Aktif') }}"></div>
       </div>
 
       <div class="avatar-meta">
@@ -641,122 +624,104 @@
         {% if current_user.bio %}
         <div class="avatar-bio">"{{ current_user.bio }}"</div>
         {% else %}
-        <div class="avatar-bio empty"><i class="bi bi-pencil-square" style="font-size:.75rem;"></i> Bio henüz eklenmedi.
-        </div>
+        <div class="avatar-bio empty"><i class="bi bi-pencil-square" style="font-size:.75rem;"></i> {{ _('Bio henüz
+          eklenmedi.') }}</div>
         {% endif %}
         <div class="avatar-join-badge">
           <i class="bi bi-calendar3"></i>
-          {{ current_user.created_at.strftime('%d %b %Y') }} tarihinde katıldı
+          {{ current_user.created_at.strftime('%d %b %Y') }} {{ _('tarihinde katıldı') }}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── İstatistikler ── -->
-  <div class="stats-row cl-reveal" role="region" aria-label="Öğrenme istatistikleri">
+  <div class="stats-row cl-reveal" role="region" aria-label="{{ _('Öğrenme istatistikleri') }}">
     <div class="stat-card green">
       <div class="stat-top">
         <div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div>
       </div>
       <div class="stat-val">{{ total_completed }}</div>
-      <div class="stat-lbl">Tamamlanan Ders</div>
+      <div class="stat-lbl">{{ _('Tamamlanan Ders') }}</div>
     </div>
     <div class="stat-card purple">
       <div class="stat-top">
         <div class="stat-icon purple"><i class="bi bi-star-fill"></i></div>
       </div>
       <div class="stat-val">{{ total_score }}</div>
-      <div class="stat-lbl">Toplam Puan</div>
+      <div class="stat-lbl">{{ _('Toplam Puan') }}</div>
     </div>
     <div class="stat-card red">
       <div class="stat-top">
         <div class="stat-icon red"><i class="bi bi-lightning-fill"></i></div>
       </div>
       <div class="stat-val">
-        {% if total_completed > 0 %}
-        {{ (total_score / total_completed) | round(0) | int }}
-        {% else %}—{% endif %}
+        {% if total_completed > 0 %}{{ (total_score / total_completed) | round(0) | int }}{% else %}—{% endif %}
       </div>
-      <div class="stat-lbl">Ort. Puan</div>
+      <div class="stat-lbl">{{ _('Ort. Puan') }}</div>
     </div>
   </div>
 
-  <!-- ── Avatar Güncelleme Kartı ── -->
   <div class="form-card cl-reveal">
     <div class="card-section-title">
-      <i class="bi bi-image-fill"></i> Avatar Güncelle
+      <i class="bi bi-image-fill"></i> {{ _('Avatar Güncelle') }}
     </div>
-
     <form method="POST" action="{{ url_for('main.profile_avatar') }}" id="form-avatar" novalidate>
       {{ form.hidden_tag() }}
-
       <div class="field-group">
         <label class="field-label" for="field-avatar-url">
           <span>Avatar URL</span>
-          <span class="field-hint" style="font-size:.7rem;">PNG, JPG veya SVG</span>
+          <span class="field-hint" style="font-size:.7rem;">PNG, JPG {{ _('veya') }} SVG</span>
         </label>
         <div class="avatar-url-row">
           <input type="url" id="field-avatar-url" name="avatar_url" class="field-input"
             placeholder="https://api.dicebear.com/7.x/bottts/svg?seed=..." value="{{ current_user.avatar_url or '' }}"
             maxlength="512" autocomplete="off" />
           <button type="button" class="cl-btn-ghost" id="btn-preview">
-            <i class="bi bi-eye"></i> Önizle
+            <i class="bi bi-eye"></i> {{ _('Önizle') }}
           </button>
         </div>
-
-        <!-- Anlık önizleme -->
         <div class="avatar-preview-box" id="avatar-preview-box" role="status" aria-live="polite">
-          <img id="avatar-preview-img" src="" alt="Önizleme" class="avatar-preview-img" />
+          <img id="avatar-preview-img" src="" alt="{{ _('Önizleme') }}" class="avatar-preview-img" />
           <div class="avatar-preview-info">
-            <div class="avatar-preview-title">Önizleme</div>
-            <div class="avatar-preview-sub">Kaydetmek için "Güncelle"ye bas</div>
+            <div class="avatar-preview-title">{{ _('Önizleme') }}</div>
+            <div class="avatar-preview-sub">{{ _('Kaydetmek için "Güncelle"ye bas') }}</div>
           </div>
         </div>
-
-        <!-- Dicebear seçenekleri -->
         <div class="dicebear-row">
-          <button type="button" class="dicebear-btn" id="btn-dicebear-bottts">
-            <i class="bi bi-robot"></i> Bottts Robot
-          </button>
-          <button type="button" class="dicebear-btn" id="btn-dicebear-pixel">
-            <i class="bi bi-grid-3x3-gap-fill"></i> Pixel Art
-          </button>
-          <button type="button" class="dicebear-btn" id="btn-dicebear-shapes">
-            <i class="bi bi-pentagon-fill"></i> Shapes
-          </button>
-          <button type="button" class="dicebear-btn" id="btn-dicebear-adventurer">
-            <i class="bi bi-person-bounding-box"></i> Adventurer
-          </button>
+          <button type="button" class="dicebear-btn" id="btn-dicebear-bottts"><i class="bi bi-robot"></i> Bottts
+            Robot</button>
+          <button type="button" class="dicebear-btn" id="btn-dicebear-pixel"><i class="bi bi-grid-3x3-gap-fill"></i>
+            Pixel Art</button>
+          <button type="button" class="dicebear-btn" id="btn-dicebear-shapes"><i class="bi bi-pentagon-fill"></i>
+            Shapes</button>
+          <button type="button" class="dicebear-btn" id="btn-dicebear-adventurer"><i
+              class="bi bi-person-bounding-box"></i> Adventurer</button>
         </div>
-        <span class="field-hint" style="margin-top:.25rem;">Rastgele üret butonları her tıkta farklı avatar
-          oluşturur.</span>
+        <span class="field-hint" style="margin-top:.25rem;">{{ _('Rastgele üret butonları her tıkta farklı avatar
+          oluşturur.') }}</span>
       </div>
-
       <div class="form-actions">
         <button type="submit" class="cl-btn-primary">
-          <i class="bi bi-cloud-arrow-up"></i> Avatarı Güncelle
+          <i class="bi bi-cloud-arrow-up"></i> {{ _('Avatarı Güncelle') }}
         </button>
         {% if current_user.avatar_url %}
         <button type="button" class="cl-btn-ghost" id="btn-avatar-clear">
-          <i class="bi bi-x-circle"></i> Temizle
+          <i class="bi bi-x-circle"></i> {{ _('Temizle') }}
         </button>
         {% endif %}
       </div>
     </form>
   </div>
 
-  <!-- ── Profil Bilgileri Kartı ── -->
   <div class="form-card cl-reveal">
     <div class="card-section-title">
-      <i class="bi bi-pencil-square"></i> Profil Bilgileri
+      <i class="bi bi-pencil-square"></i> {{ _('Profil Bilgileri') }}
     </div>
-
     <form method="POST" action="{{ url_for('main.profile') }}" id="form-profile" novalidate>
       {{ form.hidden_tag() }}
-
       <div class="field-group">
         <label class="field-label" for="field-bio">
-          <span>Hakkımda</span>
+          <span>{{ _('Hakkımda') }}</span>
           <span id="bio-counter" class="char-counter" aria-live="polite">
             <span id="bio-len">{{ (current_user.bio or '')|length }}</span> / 256
           </span>
@@ -764,49 +729,45 @@
         {{ form.bio(
         class="field-textarea" + (" is-invalid" if form.bio.errors else ""),
         id="field-bio",
-        placeholder="Kendini kısaca tanıt..."
+        placeholder=_("Kendini kısaca tanıt...")
         ) }}
         {% for err in form.bio.errors %}
         <span class="field-error" role="alert">{{ err }}</span>
         {% endfor %}
       </div>
-
       <input type="hidden" name="avatar_url" value="{{ current_user.avatar_url or '' }}" />
-
       <div class="form-actions">
         <button type="submit" class="cl-btn-primary">
-          <i class="bi bi-check-lg"></i> Kaydet
+          <i class="bi bi-check-lg"></i> {{ _('Kaydet') }}
         </button>
         <a href="{{ url_for('main.index') }}" class="cl-btn-ghost">
-          <i class="bi bi-x-lg"></i> İptal
+          <i class="bi bi-x-lg"></i> {{ _('İptal') }}
         </a>
       </div>
     </form>
   </div>
 
-  <!-- ── Danger Zone ── -->
   {% if current_user.avatar_url %}
   <div class="danger-zone cl-reveal">
-    <div class="danger-zone-title"><i class="bi bi-exclamation-triangle-fill"></i> Tehlikeli Alan</div>
-    <div class="danger-zone-desc">Bu işlemler geri alınamaz.</div>
+    <div class="danger-zone-title"><i class="bi bi-exclamation-triangle-fill"></i> {{ _('Tehlikeli Alan') }}</div>
+    <div class="danger-zone-desc">{{ _('Bu işlemler geri alınamaz.') }}</div>
     <form method="POST" action="{{ url_for('main.profile_avatar') }}" id="form-clear-avatar" novalidate>
       {{ form.hidden_tag() }}
       <input type="hidden" name="avatar_url" value="" />
       <button type="submit" class="cl-btn-danger">
-        <i class="bi bi-trash3"></i> Avatarı Sıfırla
+        <i class="bi bi-trash3"></i> {{ _('Avatarı Sıfırla') }}
       </button>
     </form>
   </div>
   {% endif %}
 
-</div><!-- /.profile-wrap -->
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
   (function () {
     'use strict';
-
     const $ = id => document.getElementById(id);
     const avatarInput = $('field-avatar-url');
     const previewBox = $('avatar-preview-box');
@@ -817,38 +778,26 @@
     const bioCounter = $('bio-counter');
     const clearBtn = $('btn-avatar-clear');
 
-    /* Önizle butonu */
     $('btn-preview').addEventListener('click', () => {
       const url = avatarInput.value.trim();
       if (!url) return;
-      previewImg.src = url;
-      previewBox.classList.add('visible');
+      previewImg.src = url; previewBox.classList.add('visible');
     });
 
-    /* Canlı önizleme — 600ms debounce */
     let debounce;
     avatarInput.addEventListener('input', () => {
       clearTimeout(debounce);
       debounce = setTimeout(() => {
         const url = avatarInput.value.trim();
-        if (url) {
-          previewImg.src = url;
-          previewBox.classList.add('visible');
-        } else {
-          previewBox.classList.remove('visible');
-        }
+        if (url) { previewImg.src = url; previewBox.classList.add('visible'); }
+        else { previewBox.classList.remove('visible'); }
       }, 600);
     });
 
-    /* Dicebear üret */
-    function randomSeed() {
-      return Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-    }
+    function randomSeed() { return Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
     function setDicebear(style) {
       const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${randomSeed()}`;
-      avatarInput.value = url;
-      previewImg.src = url;
-      previewBox.classList.add('visible');
+      avatarInput.value = url; previewImg.src = url; previewBox.classList.add('visible');
     }
 
     $('btn-dicebear-bottts').addEventListener('click', () => setDicebear('bottts'));
@@ -856,44 +805,27 @@
     $('btn-dicebear-shapes').addEventListener('click', () => setDicebear('shapes'));
     $('btn-dicebear-adventurer').addEventListener('click', () => setDicebear('adventurer'));
 
-    /* Temizle (üst buton) */
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        avatarInput.value = '';
-        previewBox.classList.remove('visible');
-      });
-    }
+    if (clearBtn) { clearBtn.addEventListener('click', () => { avatarInput.value = ''; previewBox.classList.remove('visible'); }); }
 
-    /* Hero avatar senkron */
     previewImg.addEventListener('load', () => {
       const heroImg = $('hero-avatar-img');
-      if (heroImg) {
-        heroImg.src = previewImg.src;
-        heroImg.style.display = '';
-        if (heroInitials) heroInitials.style.display = 'none';
-      } else if (heroInitials) {
-        /* initials varsa yeni img oluştur */
+      if (heroImg) { heroImg.src = previewImg.src; heroImg.style.display = ''; if (heroInitials) heroInitials.style.display = 'none'; }
+      else if (heroInitials) {
         const img = document.createElement('img');
-        img.id = 'hero-avatar-img';
-        img.src = previewImg.src;
-        img.alt = 'avatar';
-        img.className = 'avatar-circle';
+        img.id = 'hero-avatar-img'; img.src = previewImg.src; img.alt = 'avatar'; img.className = 'avatar-circle';
         heroInitials.replaceWith(img);
       }
     });
 
-    /* Bio karakter sayacı */
     if (bioTextarea && bioLen && bioCounter) {
       function updateCounter() {
         const len = bioTextarea.value.length;
         bioLen.textContent = len;
-        bioCounter.className = 'char-counter' +
-          (len >= 256 ? ' danger' : len > 220 ? ' warn' : '');
+        bioCounter.className = 'char-counter' + (len >= 256 ? ' danger' : len > 220 ? ' warn' : '');
       }
       bioTextarea.addEventListener('input', updateCounter);
       updateCounter();
     }
-
   })();
 </script>
 {% endblock %}

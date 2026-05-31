@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Giriş Yap — CyberLearn.io{% endblock %}
-{% block meta_description %}CyberLearn.io hesabına giriş yap ve siber güvenlik öğrenimine devam et.{% endblock %}
+{% block title %}{{ _('Giriş Yap') }} — CyberLearn.io{% endblock %}
+{% block meta_description %}{{ _('CyberLearn.io hesabına giriş yap ve siber güvenlik öğrenimine devam et.') }}{%
+endblock %}
 
-{# ═══════════════════════════════════════════
-EXTRA CSS — base.html'in design token'larını
-kullanan auth sayfası stilleri
-═══════════════════════════════════════════ #}
 {% block extra_css %}
 <style>
-  /* ── AUTH PAGE LAYOUT ── */
   .auth-page {
     min-height: calc(100vh - var(--nav-h));
     display: flex;
@@ -19,7 +15,6 @@ kullanan auth sayfası stilleri
     position: relative;
   }
 
-  /* Arka plan süslemesi — base orb'larıyla aynı dil */
   .auth-page::before {
     content: '';
     position: absolute;
@@ -34,7 +29,6 @@ kullanan auth sayfası stilleri
     z-index: 0;
   }
 
-  /* ── AUTH CARD ── */
   .auth-card {
     position: relative;
     z-index: 2;
@@ -46,10 +40,7 @@ kullanan auth sayfası stilleri
     padding: 2.75rem 2.25rem;
     backdrop-filter: blur(28px) saturate(180%);
     -webkit-backdrop-filter: blur(28px) saturate(180%);
-    box-shadow: 0 0 0 1px rgba(110, 91, 255, .06),
-      0 24px 64px rgba(0, 0, 0, .55),
-      0 0 80px rgba(110, 91, 255, .05);
-    /* Üst şerit — base.html .cl-card::before ile aynı efekt */
+    box-shadow: 0 0 0 1px rgba(110, 91, 255, .06), 0 24px 64px rgba(0, 0, 0, .55), 0 0 80px rgba(110, 91, 255, .05);
     overflow: hidden;
   }
 
@@ -64,7 +55,6 @@ kullanan auth sayfası stilleri
     opacity: .7;
   }
 
-  /* ── HEADER ── */
   .auth-icon-wrap {
     width: 56px;
     height: 56px;
@@ -97,7 +87,6 @@ kullanan auth sayfası stilleri
     margin-bottom: 2rem;
   }
 
-  /* ── FORM ELEMENTS ── */
   .auth-label {
     display: block;
     font-size: .78rem;
@@ -151,7 +140,6 @@ kullanan auth sayfası stilleri
     gap: .25rem;
   }
 
-  /* ── INPUT GROUP (şifre göster/gizle) ── */
   .auth-input-group {
     position: relative;
   }
@@ -179,7 +167,6 @@ kullanan auth sayfası stilleri
     color: var(--txt);
   }
 
-  /* ── REMEMBER ME ── */
   .auth-check-wrap {
     display: flex;
     align-items: center;
@@ -201,7 +188,6 @@ kullanan auth sayfası stilleri
     user-select: none;
   }
 
-  /* ── SUBMIT BUTTON — base .cl-btn-primary ile aynı dil ── */
   .auth-submit {
     display: flex;
     align-items: center;
@@ -248,26 +234,6 @@ kullanan auth sayfası stilleri
     transform: translateY(0);
   }
 
-  /* ── DIVIDER ── */
-  .auth-divider {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    margin: 1.25rem 0;
-    color: var(--txt3);
-    font-size: .72rem;
-    font-family: var(--mono);
-  }
-
-  .auth-divider::before,
-  .auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--edge);
-  }
-
-  /* ── FOOTER LINK ── */
   .auth-footer-text {
     text-align: center;
     font-size: .78rem;
@@ -287,7 +253,6 @@ kullanan auth sayfası stilleri
     color: var(--a);
   }
 
-  /* ── SECURITY BADGE ── */
   .auth-security-badge {
     display: flex;
     align-items: center;
@@ -304,7 +269,6 @@ kullanan auth sayfası stilleri
     font-size: .75rem;
   }
 
-  /* ── SPACING HELPERS ── */
   .auth-field {
     margin-bottom: 1.1rem;
   }
@@ -313,7 +277,6 @@ kullanan auth sayfası stilleri
     margin-bottom: 0;
   }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 480px) {
     .auth-card {
       padding: 2rem 1.25rem;
@@ -326,35 +289,24 @@ kullanan auth sayfası stilleri
 </style>
 {% endblock %}
 
-
-{# ═══════════════════════════════════════════
-CONTENT
-═══════════════════════════════════════════ #}
 {% block content %}
 <div class="auth-page">
   <div class="auth-card cl-reveal">
 
-    {# — İkon + Başlık — #}
     <div class="auth-icon-wrap" aria-hidden="true">🔐</div>
-    <h1 class="auth-title">Tekrar Hoş Geldin</h1>
-    <p class="auth-sub">Hesabına giriş yap, öğrenmeye devam et.</p>
+    <h1 class="auth-title">{{ _('Tekrar Hoş Geldin') }}</h1>
+    <p class="auth-sub">{{ _('Hesabına giriş yap, öğrenmeye devam et.') }}</p>
 
-    {# — Form — #}
-    <form id="login-form" method="POST" action="{{ url_for('auth.login') }}" novalidate aria-label="Giriş formu">
+    <form id="login-form" method="POST" action="{{ url_for('auth.login') }}" novalidate
+      aria-label="{{ _('Giriş formu') }}">
       {{ form.hidden_tag() }}
 
-      {# E-posta #}
       <div class="auth-field">
         <label for="email" class="auth-label">
           <i class="bi bi-envelope" aria-hidden="true"></i>{{ form.email.label.text }}
         </label>
-        {{ form.email(
-        id="email",
-        class="auth-input" + (" is-invalid" if form.email.errors else ""),
-        placeholder="ornek@eposta.com",
-        autocomplete="email",
-        inputmode="email"
-        ) }}
+        {{ form.email(id="email", class="auth-input" + (" is-invalid" if form.email.errors else ""),
+        placeholder=_("ornek@eposta.com"), autocomplete="email", inputmode="email") }}
         {% for error in form.email.errors %}
         <div class="auth-error" role="alert">
           <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
@@ -362,20 +314,15 @@ CONTENT
         {% endfor %}
       </div>
 
-      {# Şifre #}
       <div class="auth-field">
         <label for="password" class="auth-label">
           <i class="bi bi-lock" aria-hidden="true"></i>{{ form.password.label.text }}
         </label>
         <div class="auth-input-group">
-          {{ form.password(
-          id="password",
-          class="auth-input" + (" is-invalid" if form.password.errors else ""),
-          placeholder="Şifrenizi girin",
-          autocomplete="current-password"
-          ) }}
-          <button class="auth-eye-btn" type="button" id="toggle-password" aria-label="Şifreyi göster ya da gizle"
-            aria-pressed="false">
+          {{ form.password(id="password", class="auth-input" + (" is-invalid" if form.password.errors else ""),
+          placeholder=_("Şifrenizi girin"), autocomplete="current-password") }}
+          <button class="auth-eye-btn" type="button" id="toggle-password"
+            aria-label="{{ _('Şifreyi göster ya da gizle') }}" aria-pressed="false">
             <i class="bi bi-eye" id="toggle-icon" aria-hidden="true"></i>
           </button>
         </div>
@@ -386,51 +333,39 @@ CONTENT
         {% endfor %}
       </div>
 
-      {# Beni Hatırla #}
       <div class="auth-field">
         <div class="auth-check-wrap">
-          {{ form.remember(
-          id="remember",
-          class="auth-check"
-          ) }}
-          <label class="auth-check-label" for="remember">
-            {{ form.remember.label.text }}
-          </label>
+          {{ form.remember(id="remember", class="auth-check") }}
+          <label class="auth-check-label" for="remember">{{ form.remember.label.text }}</label>
         </div>
       </div>
 
-      {# Gönder #}
-      <button type="submit" id="login-submit" class="auth-submit" aria-label="Giriş yap">
+      <button type="submit" id="login-submit" class="auth-submit" aria-label="{{ _('Giriş yap') }}">
         <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
-        Giriş Yap
+        {{ _('Giriş Yap') }}
       </button>
     </form>
 
-    {# Kayıt linki #}
     <p class="auth-footer-text">
-      Henüz hesabın yok mu?
-      <a href="{{ url_for('auth.register') }}" class="auth-link">Kayıt Ol</a>
+      {{ _('Henüz hesabın yok mu?') }}
+      <a href="{{ url_for('auth.register') }}" class="auth-link">{{ _('Kayıt Ol') }}</a>
     </p>
 
-    {# Güvenlik rozeti #}
-    <div class="auth-security-badge" aria-label="Güvenlik bilgisi">
+    <div class="auth-security-badge" aria-label="{{ _('Güvenlik bilgisi') }}">
       <i class="bi bi-shield-check" aria-hidden="true"></i>
-      CSRF korumalı &bull; Şifreler hash'li saklanır
+      {{ _('CSRF korumalı') }} &bull; {{ _('Şifreler hash\'li saklanır') }}
     </div>
 
   </div>
 </div>
 {% endblock %}
 
-
 {% block extra_js %}
 <script>
   (function () {
-    /* Şifre göster / gizle */
     const btn = document.getElementById('toggle-password');
     const fld = document.getElementById('password');
     const ico = document.getElementById('toggle-icon');
-
     if (btn && fld) {
       btn.addEventListener('click', function () {
         const hidden = fld.type === 'password';
@@ -439,13 +374,11 @@ CONTENT
         btn.setAttribute('aria-pressed', String(hidden));
       });
     }
-
-    /* Submit buton yükleniyor animasyonu */
     const form = document.getElementById('login-form');
     const submit = document.getElementById('login-submit');
     if (form && submit) {
       form.addEventListener('submit', function () {
-        submit.innerHTML = '<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Giriş yapılıyor…';
+        submit.innerHTML = '<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> {{ _("Giriş yapılıyor…") }}';
         submit.disabled = true;
       });
     }

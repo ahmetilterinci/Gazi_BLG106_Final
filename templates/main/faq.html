@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}S.S.S. — CyberLearn.io{% endblock %}
+{% block title %}{{ _('S.S.S.') }} — CyberLearn.io{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -48,7 +48,6 @@
         line-height: 1.8;
     }
 
-    /* Kategori başlığı */
     .faq-category {
         font-family: var(--mono);
         font-size: .68rem;
@@ -63,7 +62,6 @@
         border-bottom: 1px solid var(--edge);
     }
 
-    /* Accordion */
     .faq-item {
         background: var(--surface);
         border: 1px solid var(--edge);
@@ -170,113 +168,118 @@
 <div class="static-wrap">
 
     <div class="static-hero cl-reveal">
-        <div class="static-hero-badge"><i class="bi bi-question-circle"></i> S.S.S.</div>
-        <h1>Sık Sorulan <span class="cl-glow-text">Sorular</span></h1>
-        <p>Merak ettiğin her şeyi burada bulabilirsin. Bulamazsan <a href="{{ url_for('main.contact') }}"
-                style="color:var(--p)">bize yaz</a>.</p>
+        <div class="static-hero-badge"><i class="bi bi-question-circle"></i> {{ _('S.S.S.') }}</div>
+        <h1>{{ _('Sık Sorulan') }} <span class="cl-glow-text">{{ _('Sorular') }}</span></h1>
+        <p>{{ _('Merak ettiğin her şeyi burada bulabilirsin. Bulamazsan') }} <a href="{{ url_for('main.contact') }}"
+                style="color:var(--p)">{{ _('bize yaz') }}</a>.</p>
     </div>
 
-    <!-- Platform -->
-    <div class="faq-category cl-reveal"><i class="bi bi-grid-3x3-gap"></i> Platform</div>
+    <div class="faq-category cl-reveal"><i class="bi bi-grid-3x3-gap"></i> {{ _('Platform') }}</div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">CyberLearn.io tamamen ücretsiz mi?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
-        <div class="faq-a">
-            <p>Evet, şu an tüm içerikler ve özellikler tamamen ücretsizdir. Kayıt ol ve hemen öğrenmeye başla.</p>
-        </div>
-    </div>
-
-    <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Başlamak için siber güvenlik bilgisi gerekiyor mu?</span><span
+        <div class="faq-q"><span class="faq-q-text">{{ _('CyberLearn.io tamamen ücretsiz mi?') }}</span><span
                 class="faq-icon"><i class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>Hayır. Platform sıfırdan başlayanlar için tasarlandı. İlk dünya temel ağ kavramlarını adım adım öğretir.
-                Önce kolay dersleri tamamlamadan ileri konulara geçemezsin — bu sayede sağlam bir temel kuruyorsun.</p>
+            <p>{{ _('Evet, şu an tüm içerikler ve özellikler tamamen ücretsizdir. Kayıt ol ve hemen öğrenmeye başla.')
+                }}</p>
         </div>
     </div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Dünya sistemi nasıl çalışıyor?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
+        <div class="faq-q"><span class="faq-q-text">{{ _('Başlamak için siber güvenlik bilgisi gerekiyor mu?')
+                }}</span><span class="faq-icon"><i class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>Her "dünya" bir konu alanını temsil eder (örn. Ağ Güvenliği, Kriptografi). Bir dünyanın tüm derslerini
-                tamamlamadan bir sonraki dünya kilitli kalır. Bu sıralı yapı kalıcı öğrenmeyi destekler.</p>
+            <p>{{ _('Hayır. Platform sıfırdan başlayanlar için tasarlandı. İlk dünya temel ağ kavramlarını adım adım
+                öğretir. Önce kolay dersleri tamamlamadan ileri konulara geçemezsin — bu sayede sağlam bir temel
+                kuruyorsun.') }}</p>
         </div>
     </div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Mobil cihazdan kullanabilir miyim?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
-        <div class="faq-a">
-            <p>Evet, platform tamamen mobil uyumludur. Telefon veya tabletinden tarayıcı üzerinden erişebilirsin.</p>
-        </div>
-    </div>
-
-    <!-- AI Quiz -->
-    <div class="faq-category cl-reveal" style="margin-top:2rem"><i class="bi bi-robot"></i> AI Quiz Sistemi</div>
-
-    <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Sorular her seferinde farklı mı oluyor?</span><span
+        <div class="faq-q"><span class="faq-q-text">{{ _('Dünya sistemi nasıl çalışıyor?') }}</span><span
                 class="faq-icon"><i class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>Evet. Her quiz oturumunda Gemini AI ders içeriğini analiz ederek yeni sorular üretir. Aynı soruyu iki kez
-                görme ihtimalin çok düşüktür.</p>
+            <p>{{ _('Her "dünya" bir konu alanını temsil eder (örn. Ağ Güvenliği, Kriptografi). Bir dünyanın tüm
+                derslerini tamamlamadan bir sonraki dünya kilitli kalır. Bu sıralı yapı kalıcı öğrenmeyi destekler.') }}
+            </p>
         </div>
     </div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Çok yanlış yaparsam ne olur?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
+        <div class="faq-q"><span class="faq-q-text">{{ _('Mobil cihazdan kullanabilir miyim?') }}</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>AI önceki denemelerindeki hata sayısını analiz eder. Çok yanlış yaparsan bir sonraki quiz daha kolay
-                tipte sorular içerecek şekilde ayarlanır. Zorluk seviyesi performansına göre dinamik olarak değişir.</p>
+            <p>{{ _('Evet, platform tamamen mobil uyumludur. Telefon veya tabletinden tarayıcı üzerinden
+                erişebilirsin.') }}</p>
+        </div>
+    </div>
+
+    <div class="faq-category cl-reveal" style="margin-top:2rem"><i class="bi bi-robot"></i> {{ _('AI Quiz Sistemi') }}
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">{{ _('Sorular her seferinde farklı mı oluyor?') }}</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>{{ _('Evet. Her quiz oturumunda Gemini AI ders içeriğini analiz ederek yeni sorular üretir. Aynı soruyu
+                iki kez görme ihtimalin çok düşüktür.') }}</p>
         </div>
     </div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Hangi soru tipleri var?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
+        <div class="faq-q"><span class="faq-q-text">{{ _('Çok yanlış yaparsam ne olur?') }}</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>4 farklı soru tipi var: çoktan seçmeli (MCQ), doğru/yanlış, boşluk doldurma ve eşleştirme. Her tip farklı
-                bir öğrenme becerisi hedefler.</p>
-        </div>
-    </div>
-
-    <!-- Hesap -->
-    <div class="faq-category cl-reveal" style="margin-top:2rem"><i class="bi bi-person-circle"></i> Hesap & Profil</div>
-
-    <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Şifremi unutursam ne yapmalıyım?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
-        <div class="faq-a">
-            <p>Giriş sayfasındaki "Şifremi Unuttum" bağlantısından e-posta adresine sıfırlama linki gönderebilirsin.</p>
+            <p>{{ _('AI önceki denemelerindeki hata sayısını analiz eder. Çok yanlış yaparsan bir sonraki quiz daha
+                kolay tipte sorular içerecek şekilde ayarlanır. Zorluk seviyesi performansına göre dinamik olarak
+                değişir.') }}</p>
         </div>
     </div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">Avatar nasıl değiştirebilirim?</span><span class="faq-icon"><i
+        <div class="faq-q"><span class="faq-q-text">{{ _('Hangi soru tipleri var?') }}</span><span class="faq-icon"><i
                     class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>Profil sayfandan (<a href="{{ url_for('main.profile') }}">buradan erişebilirsin</a>) avatar URL'si
-                girebilir ya da "Rastgele Üret" butonuyla otomatik avatar oluşturabilirsin.</p>
+            <p>{{ _('4 farklı soru tipi var: çoktan seçmeli (MCQ), doğru/yanlış, boşluk doldurma ve eşleştirme. Her tip
+                farklı bir öğrenme becerisi hedefler.') }}</p>
+        </div>
+    </div>
+
+    <div class="faq-category cl-reveal" style="margin-top:2rem"><i class="bi bi-person-circle"></i> {{ _('Hesap &
+        Profil') }}</div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">{{ _('Şifremi unutursam ne yapmalıyım?') }}</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>{{ _('Giriş sayfasındaki "Şifremi Unuttum" bağlantısından e-posta adresine sıfırlama linki
+                gönderebilirsin.') }}</p>
         </div>
     </div>
 
     <div class="faq-item cl-reveal">
-        <div class="faq-q"><span class="faq-q-text">İlerleme kaydediliyor mu?</span><span class="faq-icon"><i
-                    class="bi bi-plus"></i></span></div>
+        <div class="faq-q"><span class="faq-q-text">{{ _('Avatar nasıl değiştirebilirim?') }}</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
         <div class="faq-a">
-            <p>Evet. Tamamladığın her ders, aldığın puanlar ve deneme sayıların hesabına bağlı olarak kalıcı şekilde
-                kaydedilir.</p>
+            <p>{{ _('Profil sayfandan') }} (<a href="{{ url_for('main.profile') }}">{{ _('buradan erişebilirsin')
+                    }}</a>) {{ _('avatar URL\'si girebilir ya da "Rastgele Üret" butonuyla otomatik avatar
+                oluşturabilirsin.') }}</p>
         </div>
     </div>
 
-    <!-- Alt CTA -->
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">{{ _('İlerleme kaydediliyor mu?') }}</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>{{ _('Evet. Tamamladığın her ders, aldığın puanlar ve deneme sayıların hesabına bağlı olarak kalıcı
+                şekilde kaydedilir.') }}</p>
+        </div>
+    </div>
+
     <div class="faq-cta cl-reveal">
-        <p>Burada cevabını bulamadın mı?</p>
+        <p>{{ _('Burada cevabını bulamadın mı?') }}</p>
         <a href="{{ url_for('main.contact') }}" class="cl-btn-primary">
-            <i class="bi bi-envelope"></i> Bize Ulaş
+            <i class="bi bi-envelope"></i> {{ _('Bize Ulaş') }}
         </a>
     </div>
 

@@ -1,16 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Kayıt Ol — CyberLearn.io{% endblock %}
-{% block meta_description %}CyberLearn.io'ya kayıt ol, AI destekli siber güvenlik eğitimine ücretsiz başla.{% endblock
-%}
+{% block title %}{{ _('Kayıt Ol') }} — CyberLearn.io{% endblock %}
+{% block meta_description %}{{ _('CyberLearn.io\'ya kayıt ol, AI destekli siber güvenlik eğitimine ücretsiz başla.')
+}}{% endblock %}
 
-{# ═══════════════════════════════════════════
-EXTRA CSS — login.html ile tamamen ortak dil
-(Aynı auth-* class'ları kullanılıyor)
-═══════════════════════════════════════════ #}
 {% block extra_css %}
 <style>
-  /* ── AUTH PAGE LAYOUT ── */
   .auth-page {
     min-height: calc(100vh - var(--nav-h));
     display: flex;
@@ -34,7 +29,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     z-index: 0;
   }
 
-  /* ── AUTH CARD ── */
   .auth-card {
     position: relative;
     z-index: 2;
@@ -46,13 +40,10 @@ EXTRA CSS — login.html ile tamamen ortak dil
     padding: 2.75rem 2.25rem;
     backdrop-filter: blur(28px) saturate(180%);
     -webkit-backdrop-filter: blur(28px) saturate(180%);
-    box-shadow: 0 0 0 1px rgba(0, 245, 196, .04),
-      0 24px 64px rgba(0, 0, 0, .55),
-      0 0 80px rgba(0, 245, 196, .04);
+    box-shadow: 0 0 0 1px rgba(0, 245, 196, .04), 0 24px 64px rgba(0, 0, 0, .55), 0 0 80px rgba(0, 245, 196, .04);
     overflow: hidden;
   }
 
-  /* Kayıt kartı için accent rengi — yeşil üst şerit */
   .auth-card::before {
     content: '';
     position: absolute;
@@ -64,7 +55,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     opacity: .7;
   }
 
-  /* ── HEADER ── */
   .auth-icon-wrap {
     width: 56px;
     height: 56px;
@@ -97,7 +87,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     margin-bottom: 2rem;
   }
 
-  /* ── FORM ELEMENTS ── */
   .auth-label {
     display: block;
     font-size: .78rem;
@@ -151,7 +140,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     gap: .25rem;
   }
 
-  /* ── INPUT GROUP ── */
   .auth-input-group {
     position: relative;
   }
@@ -179,7 +167,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     color: var(--txt);
   }
 
-  /* ── ŞİFRE GÜÇ GÖSTERGESİ ── */
   .pw-strength {
     margin-top: .45rem;
     display: flex;
@@ -216,7 +203,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     transition: color .3s;
   }
 
-  /* ── SUBMIT BUTTON ── */
   .auth-submit {
     display: flex;
     align-items: center;
@@ -263,7 +249,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     transform: translateY(0);
   }
 
-  /* ── FOOTER LINK ── */
   .auth-footer-text {
     text-align: center;
     font-size: .78rem;
@@ -283,7 +268,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     color: var(--p);
   }
 
-  /* ── GÜVENLİK ROZET ── */
   .auth-security-badge {
     display: flex;
     align-items: center;
@@ -300,7 +284,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     font-size: .75rem;
   }
 
-  /* ── SPACING ── */
   .auth-field {
     margin-bottom: 1.1rem;
   }
@@ -309,7 +292,6 @@ EXTRA CSS — login.html ile tamamen ortak dil
     margin-bottom: 0;
   }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 480px) {
     .auth-card {
       padding: 2rem 1.25rem;
@@ -322,35 +304,25 @@ EXTRA CSS — login.html ile tamamen ortak dil
 </style>
 {% endblock %}
 
-
-{# ═══════════════════════════════════════════
-CONTENT
-═══════════════════════════════════════════ #}
 {% block content %}
 <div class="auth-page">
   <div class="auth-card cl-reveal">
 
-    {# — İkon + Başlık — #}
     <div class="auth-icon-wrap" aria-hidden="true">🚀</div>
-    <h1 class="auth-title">Hesap Oluştur</h1>
-    <p class="auth-sub">Siber güvenlik yolculuğuna <span class="cl-glow-text">ücretsiz</span> başla.</p>
+    <h1 class="auth-title">{{ _('Hesap Oluştur') }}</h1>
+    <p class="auth-sub">{{ _('Siber güvenlik yolculuğuna') }} <span class="cl-glow-text">{{ _('ücretsiz') }}</span> {{
+      _('başla.') }}</p>
 
-    {# — Form — #}
-    <form id="register-form" method="POST" action="{{ url_for('auth.register') }}" novalidate aria-label="Kayıt formu">
+    <form id="register-form" method="POST" action="{{ url_for('auth.register') }}" novalidate
+      aria-label="{{ _('Kayıt formu') }}">
       {{ form.hidden_tag() }}
 
-      {# Kullanıcı Adı #}
       <div class="auth-field">
         <label for="username" class="auth-label">
           <i class="bi bi-person" aria-hidden="true"></i>{{ form.username.label.text }}
         </label>
-        {{ form.username(
-        id="username",
-        class="auth-input" + (" is-invalid" if form.username.errors else ""),
-        placeholder="kullanici_adi",
-        autocomplete="username",
-        spellcheck="false"
-        ) }}
+        {{ form.username(id="username", class="auth-input" + (" is-invalid" if form.username.errors else ""),
+        placeholder=_("kullanici_adi"), autocomplete="username", spellcheck="false") }}
         {% for error in form.username.errors %}
         <div class="auth-error" role="alert">
           <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
@@ -358,18 +330,12 @@ CONTENT
         {% endfor %}
       </div>
 
-      {# E-posta #}
       <div class="auth-field">
         <label for="email" class="auth-label">
           <i class="bi bi-envelope" aria-hidden="true"></i>{{ form.email.label.text }}
         </label>
-        {{ form.email(
-        id="email",
-        class="auth-input" + (" is-invalid" if form.email.errors else ""),
-        placeholder="ornek@eposta.com",
-        autocomplete="email",
-        inputmode="email"
-        ) }}
+        {{ form.email(id="email", class="auth-input" + (" is-invalid" if form.email.errors else ""),
+        placeholder=_("ornek@eposta.com"), autocomplete="email", inputmode="email") }}
         {% for error in form.email.errors %}
         <div class="auth-error" role="alert">
           <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
@@ -377,24 +343,18 @@ CONTENT
         {% endfor %}
       </div>
 
-      {# Şifre #}
       <div class="auth-field">
         <label for="password" class="auth-label">
           <i class="bi bi-lock" aria-hidden="true"></i>{{ form.password.label.text }}
         </label>
         <div class="auth-input-group">
-          {{ form.password(
-          id="password",
-          class="auth-input" + (" is-invalid" if form.password.errors else ""),
-          placeholder="En az 8 karakter",
-          autocomplete="new-password"
-          ) }}
-          <button class="auth-eye-btn" type="button" id="toggle-password" aria-label="Şifreyi göster ya da gizle"
-            aria-pressed="false">
+          {{ form.password(id="password", class="auth-input" + (" is-invalid" if form.password.errors else ""),
+          placeholder=_("En az 8 karakter"), autocomplete="new-password") }}
+          <button class="auth-eye-btn" type="button" id="toggle-password"
+            aria-label="{{ _('Şifreyi göster ya da gizle') }}" aria-pressed="false">
             <i class="bi bi-eye" id="toggle-icon" aria-hidden="true"></i>
           </button>
         </div>
-        {# Şifre güç göstergesi #}
         <div class="pw-strength" aria-hidden="true">
           <div class="pw-bar" id="pw-bar1"></div>
           <div class="pw-bar" id="pw-bar2"></div>
@@ -408,17 +368,12 @@ CONTENT
         {% endfor %}
       </div>
 
-      {# Şifre Tekrar #}
       <div class="auth-field">
         <label for="confirm" class="auth-label">
           <i class="bi bi-lock-fill" aria-hidden="true"></i>{{ form.confirm.label.text }}
         </label>
-        {{ form.confirm(
-        id="confirm",
-        class="auth-input" + (" is-invalid" if form.confirm.errors else ""),
-        placeholder="Şifreyi tekrar girin",
-        autocomplete="new-password"
-        ) }}
+        {{ form.confirm(id="confirm", class="auth-input" + (" is-invalid" if form.confirm.errors else ""),
+        placeholder=_("Şifreyi tekrar girin"), autocomplete="new-password") }}
         {% for error in form.confirm.errors %}
         <div class="auth-error" role="alert">
           <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>{{ error }}
@@ -426,38 +381,33 @@ CONTENT
         {% endfor %}
       </div>
 
-      {# Gönder #}
-      <button type="submit" id="register-submit" class="auth-submit" style="margin-top: 1.1rem;" aria-label="Kayıt ol">
+      <button type="submit" id="register-submit" class="auth-submit" style="margin-top:1.1rem;"
+        aria-label="{{ _('Kayıt ol') }}">
         <i class="bi bi-person-plus" aria-hidden="true"></i>
-        Kayıt Ol
+        {{ _('Kayıt Ol') }}
       </button>
     </form>
 
-    {# Giriş linki #}
     <p class="auth-footer-text">
-      Zaten hesabın var mı?
-      <a href="{{ url_for('auth.login') }}" class="auth-link">Giriş Yap</a>
+      {{ _('Zaten hesabın var mı?') }}
+      <a href="{{ url_for('auth.login') }}" class="auth-link">{{ _('Giriş Yap') }}</a>
     </p>
 
-    {# Güvenlik rozeti #}
-    <div class="auth-security-badge" aria-label="Güvenlik bilgisi">
+    <div class="auth-security-badge" aria-label="{{ _('Güvenlik bilgisi') }}">
       <i class="bi bi-shield-check" aria-hidden="true"></i>
-      CSRF korumalı &bull; Ücretsiz &bull; Kredi kartı yok
+      {{ _('CSRF korumalı') }} &bull; {{ _('Ücretsiz') }} &bull; {{ _('Kredi kartı yok') }}
     </div>
 
   </div>
 </div>
 {% endblock %}
 
-
 {% block extra_js %}
 <script>
   (function () {
-    /* ── Şifre göster / gizle ── */
     const btn = document.getElementById('toggle-password');
     const fld = document.getElementById('password');
     const ico = document.getElementById('toggle-icon');
-
     if (btn && fld) {
       btn.addEventListener('click', function () {
         const hidden = fld.type === 'password';
@@ -466,16 +416,9 @@ CONTENT
         btn.setAttribute('aria-pressed', String(hidden));
       });
     }
-
-    /* ── Şifre güç göstergesi ── */
     const pwInput = document.getElementById('password');
-    const bars = [
-      document.getElementById('pw-bar1'),
-      document.getElementById('pw-bar2'),
-      document.getElementById('pw-bar3'),
-    ];
+    const bars = [document.getElementById('pw-bar1'), document.getElementById('pw-bar2'), document.getElementById('pw-bar3')];
     const label = document.getElementById('pw-label');
-
     function pwStrength(val) {
       let score = 0;
       if (val.length >= 8) score++;
@@ -486,34 +429,25 @@ CONTENT
       if (score <= 2) return 1;
       return 2;
     }
-
     const levels = [
-      { cls: 'active-weak', lbl: 'Zayıf', color: 'var(--r)' },
-      { cls: 'active-medium', lbl: 'Orta', color: 'var(--w)' },
-      { cls: 'active-strong', lbl: 'Güçlü', color: 'var(--a)' },
+      { cls: 'active-weak', lbl: '{{ _("Zayıf") }}', color: 'var(--r)' },
+      { cls: 'active-medium', lbl: '{{ _("Orta") }}', color: 'var(--w)' },
+      { cls: 'active-strong', lbl: '{{ _("Güçlü") }}', color: 'var(--a)' },
     ];
-
     if (pwInput && bars[0]) {
       pwInput.addEventListener('input', function () {
         const val = pwInput.value;
         const level = val ? pwStrength(val) : -1;
-
-        bars.forEach((b, i) => {
-          b.className = 'pw-bar';
-          if (level >= 0 && i <= level) b.classList.add(levels[level].cls);
-        });
-
+        bars.forEach((b, i) => { b.className = 'pw-bar'; if (level >= 0 && i <= level) b.classList.add(levels[level].cls); });
         label.textContent = level >= 0 ? levels[level].lbl : '';
         label.style.color = level >= 0 ? levels[level].color : '';
       });
     }
-
-    /* ── Submit yükleniyor ── */
     const form = document.getElementById('register-form');
     const submit = document.getElementById('register-submit');
     if (form && submit) {
       form.addEventListener('submit', function () {
-        submit.innerHTML = '<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> Kayıt yapılıyor…';
+        submit.innerHTML = '<i class="bi bi-arrow-repeat spin" aria-hidden="true"></i> {{ _("Kayıt yapılıyor…") }}';
         submit.disabled = true;
       });
     }

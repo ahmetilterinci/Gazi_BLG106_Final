@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}404 — Sayfa Bulunamadı{% endblock %}
-{% block meta_description %}Aradığınız sayfa bulunamadı — CyberLearn AI{% endblock %}
+{% block title %}404 — {{ _('Sayfa Bulunamadı') }}{% endblock %}
+{% block meta_description %}{{ _('Aradığınız sayfa bulunamadı') }} — CyberLearn AI{% endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── ERROR PAGE LAYOUT ── */
   .error-page {
     min-height: calc(100vh - var(--nav-h));
     display: flex;
@@ -16,7 +15,6 @@
     overflow: hidden;
   }
 
-  /* Arka plan orb'ları — base.html ile aynı dil */
   .error-page::before {
     content: '';
     position: absolute;
@@ -60,20 +58,44 @@
     }
   }
 
-  /* ── CONTENT WRAPPER ── */
   .error-content {
     position: relative;
     z-index: 2;
     text-align: center;
     max-width: 520px;
     width: 100%;
+    animation: errorReveal .7s cubic-bezier(.22, 1, .36, 1) both;
   }
 
-  /* ── GLITCH NUMBER ── */
+  @keyframes errorReveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .error-number-wrap {
     position: relative;
     display: inline-block;
     margin-bottom: 2rem;
+    animation: numberDrop .8s cubic-bezier(.34, 1.56, .64, 1) both;
+  }
+
+  @keyframes numberDrop {
+    from {
+      opacity: 0;
+      transform: scale(.7) translateY(-20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 
   .error-number {
@@ -103,7 +125,6 @@
     }
   }
 
-  /* Glitch effect katmanları */
   .error-number::before,
   .error-number::after {
     content: '404';
@@ -180,7 +201,6 @@
     }
   }
 
-  /* Sayı altındaki dekoratif çizgi */
   .error-divider {
     display: flex;
     align-items: center;
@@ -221,7 +241,6 @@
     }
   }
 
-  /* ── TERMINAL BADGE ── */
   .error-terminal {
     display: inline-flex;
     align-items: center;
@@ -258,7 +277,6 @@
     }
   }
 
-  /* ── TEXT ── */
   .error-title {
     font-family: var(--display);
     font-size: clamp(1.4rem, 4vw, 1.9rem);
@@ -278,7 +296,6 @@
     margin-right: auto;
   }
 
-  /* ── CARD CONTAINER ── */
   .error-card {
     background: rgba(13, 13, 34, .6);
     border: 1px solid var(--edge);
@@ -286,12 +303,22 @@
     padding: 2.25rem 2rem;
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    box-shadow:
-      0 0 0 1px rgba(110, 91, 255, .05),
-      0 24px 64px rgba(0, 0, 0, .5),
-      0 0 60px rgba(110, 91, 255, .04);
+    box-shadow: 0 0 0 1px rgba(110, 91, 255, .05), 0 24px 64px rgba(0, 0, 0, .5), 0 0 60px rgba(110, 91, 255, .04);
     position: relative;
     overflow: hidden;
+    animation: cardSlide .65s .15s cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  @keyframes cardSlide {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .error-card::before {
@@ -305,7 +332,6 @@
     opacity: .6;
   }
 
-  /* ── BUTTONS ── */
   .error-actions {
     display: flex;
     justify-content: center;
@@ -324,10 +350,10 @@
     color: #fff;
     font-size: .85rem;
     font-weight: 700;
-    font-family: var(--sans, 'Inter', sans-serif);
+    font-family: var(--sans);
     text-decoration: none;
     cursor: pointer;
-    transition: transform .2s, box-shadow .2s, opacity .2s;
+    transition: transform .2s, box-shadow .2s;
     box-shadow: 0 0 24px rgba(110, 91, 255, .3);
     position: relative;
     overflow: hidden;
@@ -352,7 +378,6 @@
     transform: translateY(-2px);
     box-shadow: 0 0 36px rgba(110, 91, 255, .5);
     color: #fff;
-    opacity: .95;
   }
 
   .btn-err-ghost {
@@ -366,7 +391,7 @@
     color: var(--txt2);
     font-size: .85rem;
     font-weight: 600;
-    font-family: var(--sans, 'Inter', sans-serif);
+    font-family: var(--sans);
     text-decoration: none;
     cursor: pointer;
     transition: all .2s;
@@ -378,7 +403,6 @@
     background: rgba(110, 91, 255, .07);
   }
 
-  /* ── QUICK LINKS ── */
   .error-links {
     margin-top: 1.75rem;
     padding-top: 1.5rem;
@@ -413,7 +437,7 @@
     color: var(--txt2);
     text-decoration: none;
     transition: all .2s;
-    font-family: var(--sans, 'Inter', sans-serif);
+    font-family: var(--sans);
   }
 
   .error-link-pill:hover {
@@ -423,15 +447,10 @@
     transform: translateY(-1px);
   }
 
-  /* ── SCAN LINES (ambient effect) ── */
   .error-scanlines {
     position: absolute;
     inset: 0;
-    background-image: repeating-linear-gradient(0deg,
-        transparent,
-        transparent 2px,
-        rgba(110, 91, 255, .012) 2px,
-        rgba(110, 91, 255, .012) 4px);
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(110, 91, 255, .012) 2px, rgba(110, 91, 255, .012) 4px);
     pointer-events: none;
     border-radius: 18px;
     z-index: 0;
@@ -442,56 +461,6 @@
     z-index: 1;
   }
 
-  /* ── ENTRANCE ANIMATIONS ── */
-  .error-content {
-    animation: errorReveal .7s cubic-bezier(.22, 1, .36, 1) both;
-  }
-
-  @keyframes errorReveal {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .error-number-wrap {
-    animation: numberDrop .8s cubic-bezier(.34, 1.56, .64, 1) both;
-  }
-
-  @keyframes numberDrop {
-    from {
-      opacity: 0;
-      transform: scale(.7) translateY(-20px);
-    }
-
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  .error-card {
-    animation: cardSlide .65s .15s cubic-bezier(.22, 1, .36, 1) both;
-  }
-
-  @keyframes cardSlide {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* ── RESPONSIVE ── */
   @media (max-width: 480px) {
     .error-card {
       padding: 1.75rem 1.25rem;
@@ -513,64 +482,46 @@
 {% block content %}
 <section class="error-page">
   <div class="error-content">
-
-    <!-- Büyük 404 numarası -->
     <div class="error-number-wrap">
       <span class="error-number">404</span>
     </div>
-
-    <!-- Dekoratif ayırıcı -->
     <div class="error-divider">
       <span class="error-divider-line"></span>
       <span class="error-divider-dot"></span>
       <span class="error-divider-line right"></span>
     </div>
-
-    <!-- Kart -->
     <div class="error-card">
       <div class="error-scanlines"></div>
-
-      <!-- Terminal badge -->
       <div class="error-terminal">
         <span class="error-terminal-dot"></span>
         <span>error_code: PAGE_NOT_FOUND</span>
       </div>
-
-      <h1 class="error-title">Sayfa Bulunamadı</h1>
-
-      <p class="error-desc">
-        Aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir.
-        Endişelenmeyin — doğru yola döndürelim.
-      </p>
-
+      <h1 class="error-title">{{ _('Sayfa Bulunamadı') }}</h1>
+      <p class="error-desc">{{ _('Aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir. Endişelenmeyin —
+        doğru yola döndürelim.') }}</p>
       <div class="error-actions">
         <a href="{{ url_for('main.index') }}" class="btn-err-primary">
-          <i class="bi bi-house-door"></i>
-          Ana Sayfaya Dön
+          <i class="bi bi-house-door"></i> {{ _('Ana Sayfaya Dön') }}
         </a>
         <a href="javascript:history.back()" class="btn-err-ghost">
-          <i class="bi bi-arrow-left"></i>
-          Geri Git
+          <i class="bi bi-arrow-left"></i> {{ _('Geri Git') }}
         </a>
       </div>
-
-      <!-- Hızlı linkler -->
       <div class="error-links">
-        <p class="error-links-label">Nereye gitmek istiyordunuz?</p>
+        <p class="error-links-label">{{ _('Nereye gitmek istiyordunuz?') }}</p>
         <div class="error-link-pills">
           <a href="{{ url_for('main.topics') }}" class="error-link-pill">
-            <i class="bi bi-grid-3x3-gap"></i> Dersler
+            <i class="bi bi-grid-3x3-gap"></i> {{ _('Dersler') }}
           </a>
           <a href="{{ url_for('auth.login') }}" class="error-link-pill">
-            <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+            <i class="bi bi-box-arrow-in-right"></i> {{ _('Giriş Yap') }}
           </a>
           <a href="{{ url_for('auth.register') }}" class="error-link-pill">
-            <i class="bi bi-person-plus"></i> Kayıt Ol
+            <i class="bi bi-person-plus"></i> {{ _('Kayıt Ol') }}
           </a>
         </div>
       </div>
     </div>
-
   </div>
 </section>
 {% endblock %}

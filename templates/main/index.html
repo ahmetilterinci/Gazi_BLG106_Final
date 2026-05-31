@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}CyberLearn.io — Siber Güvenliği Oyun Gibi Öğren{% endblock %}
-{% block meta_description %}Duolingo tarzı AI destekli siber güvenlik öğrenme platformu. Ağ güvenliği, kriptografi, etik
-hacking ve daha fazlası.{% endblock %}
+{% block title %}CyberLearn.io — {{ _('Siber Güvenliği Oyun Gibi Öğren') }}{% endblock %}
+{% block meta_description %}{{ _('Duolingo tarzı AI destekli siber güvenlik öğrenme platformu. Ağ güvenliği,
+kriptografi, etik hacking ve daha fazlası.') }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -920,9 +920,7 @@ hacking ve daha fazlası.{% endblock %}
     font-weight: 300
   }
 
-  /* ════════════════════════════════════════════════════
-     ─── ÖĞRENME YOLU (authenticated) ───
-  ════════════════════════════════════════════════════ */
+  /* ─── ÖĞRENME YOLU (authenticated) ─── */
   .path-page {
     position: relative;
     z-index: 2;
@@ -930,7 +928,6 @@ hacking ve daha fazlası.{% endblock %}
     padding: 3rem 1.5rem 6rem;
   }
 
-  /* Üst başlık */
   .path-top {
     max-width: 860px;
     margin: 0 auto 3rem;
@@ -940,8 +937,6 @@ hacking ve daha fazlası.{% endblock %}
     gap: 1.5rem;
     flex-wrap: wrap;
   }
-
-  .path-top-left {}
 
   .path-welcome {
     font-family: var(--mono);
@@ -1007,14 +1002,12 @@ hacking ve daha fazlası.{% endblock %}
     margin-top: .3rem;
   }
 
-  /* ─── DÜNYA BLOĞU ─── */
   .world-block {
     max-width: 860px;
     margin: 0 auto 4rem;
     position: relative;
   }
 
-  /* Dünya başlık bandı */
   .world-header {
     display: flex;
     align-items: center;
@@ -1121,7 +1114,6 @@ hacking ve daha fazlası.{% endblock %}
     flex-shrink: 0;
   }
 
-  /* ─── PATH CONTAINER ─── */
   .path-container {
     background: var(--surface);
     border: 1px solid var(--edge);
@@ -1138,7 +1130,6 @@ hacking ve daha fazlası.{% endblock %}
     user-select: none;
   }
 
-  /* ─── İZOMETRİK YOL ─── */
   .iso-track {
     display: flex;
     flex-direction: column;
@@ -1147,7 +1138,6 @@ hacking ve daha fazlası.{% endblock %}
     position: relative;
   }
 
-  /* Her satır: ders düğümleri + konnektörler */
   .track-row {
     display: flex;
     align-items: center;
@@ -1163,7 +1153,6 @@ hacking ve daha fazlası.{% endblock %}
     justify-content: flex-start;
   }
 
-  /* Düğüm sarmalayıcı */
   .node-wrap {
     display: flex;
     flex-direction: column;
@@ -1173,7 +1162,6 @@ hacking ve daha fazlası.{% endblock %}
     width: 90px;
   }
 
-  /* Düğüm çemberi */
   .lesson-node {
     width: 72px;
     height: 72px;
@@ -1200,13 +1188,11 @@ hacking ve daha fazlası.{% endblock %}
     box-shadow: 0 0 0 6px rgba(110, 91, 255, .15), 0 8px 32px rgba(0, 0, 0, .4);
   }
 
-  /* Tamamlandı */
   .lesson-node.done {
     background: rgba(110, 91, 255, .15);
     border-color: var(--p);
   }
 
-  /* Aktif (şimdiki ders) */
   .lesson-node.active {
     background: rgba(110, 91, 255, .2);
     border-color: var(--p);
@@ -1226,13 +1212,11 @@ hacking ve daha fazlası.{% endblock %}
     }
   }
 
-  /* Kilitli */
   .lesson-node.locked-node {
     opacity: .45;
     filter: grayscale(.6);
   }
 
-  /* Check ikonları */
   .node-check {
     position: absolute;
     bottom: -2px;
@@ -1265,7 +1249,6 @@ hacking ve daha fazlası.{% endblock %}
     color: var(--txt3);
   }
 
-  /* Düğüm etiketi */
   .node-label {
     font-size: .72rem;
     color: var(--txt2);
@@ -1280,7 +1263,6 @@ hacking ve daha fazlası.{% endblock %}
     font-weight: 500;
   }
 
-  /* ─── SVG CONNECTOR ─── */
   .conn-wrap {
     flex: 1;
     display: flex;
@@ -1303,11 +1285,9 @@ hacking ve daha fazlası.{% endblock %}
     box-shadow: 0 0 6px rgba(110, 91, 255, .3);
   }
 
-  /* ─── DÖNÜŞ KONNEKTÖRÜ ─── */
   .turn-row {
     display: flex;
     justify-content: var(--turn-align, center);
-    padding: 0 0 0 0;
     height: 52px;
     position: relative;
   }
@@ -1316,7 +1296,6 @@ hacking ve daha fazlası.{% endblock %}
     overflow: visible;
   }
 
-  /* ─── KİLİT OVERLAY (locked world üstünde) ─── */
   .world-lock-overlay {
     position: absolute;
     inset: 0;
@@ -1344,8 +1323,6 @@ hacking ve daha fazlası.{% endblock %}
     font-size: 1.4rem;
   }
 
-  .lock-bubble-text {}
-
   .lock-bubble-text strong {
     display: block;
     font-family: var(--display);
@@ -1361,7 +1338,6 @@ hacking ve daha fazlası.{% endblock %}
     font-family: var(--mono);
   }
 
-  /* ─── TAMAMLANDI BANNER ─── */
   .world-complete-banner {
     display: flex;
     align-items: center;
@@ -1383,7 +1359,6 @@ hacking ve daha fazlası.{% endblock %}
     font-family: var(--mono);
   }
 
-  /* ─── MOBILE ─── */
   @media(max-width:640px) {
     .path-page {
       padding: 2rem 1rem 4rem;
@@ -1477,11 +1452,8 @@ hacking ve daha fazlası.{% endblock %}
 {% block content %}
 
 {% if current_user.is_authenticated %}
-{# ════════════════════════════════════════════════════
-AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
-════════════════════════════════════════════════════ #}
+{# ── AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU ── #}
 
-{# Toplam istatistikler #}
 {% set total_completed = namespace(n=0) %}
 {% set total_lessons = namespace(n=0) %}
 {% for wd in topics_with_data %}
@@ -1494,23 +1466,22 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
   <div class="h-orb orb-a" style="opacity:.35;pointer-events:none"></div>
   <div class="h-orb orb-b" style="opacity:.25;pointer-events:none"></div>
 
-  <!-- Üst başlık -->
   <div class="path-top cl-reveal">
     <div class="path-top-left">
-      <div class="path-welcome"><i class="bi bi-map"></i> Öğrenme Yolun</div>
-      <h1 class="path-title">Merhaba, <span>{{ current_user.username }}</span>! 👋</h1>
+      <div class="path-welcome"><i class="bi bi-map"></i> {{ _('Öğrenme Yolun') }}</div>
+      <h1 class="path-title">{{ _('Merhaba,') }} <span>{{ current_user.username }}</span>! 👋</h1>
       <p class="path-subtitle">
         {% if total_lessons.n > 0 %}
-        {{ total_completed.n }}/{{ total_lessons.n }} ders tamamlandı — devam et!
+        {{ total_completed.n }}/{{ total_lessons.n }} {{ _('ders tamamlandı — devam et!') }}
         {% else %}
-        Yolculuğuna başlamak için ilk derse gir.
+        {{ _('Yolculuğuna başlamak için ilk derse gir.') }}
         {% endif %}
       </p>
     </div>
     <div class="path-top-stats">
       <div class="pstat">
         <span class="pstat-n">{{ total_completed.n }}</span>
-        <div class="pstat-l">Tamamlanan</div>
+        <div class="pstat-l">{{ _('Tamamlanan') }}</div>
       </div>
       <div class="pstat">
         <span class="pstat-n" style="color:var(--a)">{{ total_xp }}</span>
@@ -1518,12 +1489,11 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
       </div>
       <div class="pstat">
         <span class="pstat-n" style="color:var(--w)">{{ topics_with_data | length }}</span>
-        <div class="pstat-l">Dünya</div>
+        <div class="pstat-l">{{ _('Dünya') }}</div>
       </div>
     </div>
   </div>
 
-  {# ─── Her Dünya ─── #}
   {% for wd in topics_with_data %}
   {% set topic = wd.topic %}
   {% set lessons = wd.lessons %}
@@ -1536,12 +1506,10 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
 
   <div class="world-block {{ 'locked' if is_locked else '' }} cl-reveal"
     style="transition-delay:{{ loop.index0 * 0.08 }}s">
-
-    {# Başlık bandı #}
     <div class="world-header">
       <div class="world-icon">{{ topic.icon or '📘' }}</div>
       <div class="world-info">
-        <div class="world-num">Dünya {{ loop.index }}</div>
+        <div class="world-num">{{ _('Dünya') }} {{ loop.index }}</div>
         <div class="world-name">{{ topic.title }}</div>
         <div class="world-prog-row">
           <div class="world-prog-bar">
@@ -1552,29 +1520,26 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
       </div>
       {% if is_locked %}
       <div class="world-lock-badge">
-        <i class="bi bi-lock-fill" style="font-size:.8rem"></i> Kilitli
+        <i class="bi bi-lock-fill" style="font-size:.8rem"></i> {{ _('Kilitli') }}
       </div>
       {% elif world_done %}
       <div class="world-lock-badge"
         style="color:var(--a);border-color:rgba(0,245,196,.2);background:rgba(0,245,196,.06)">
-        <i class="bi bi-check-circle-fill" style="font-size:.8rem"></i> Tamamlandı
+        <i class="bi bi-check-circle-fill" style="font-size:.8rem"></i> {{ _('Tamamlandı') }}
       </div>
       {% endif %}
     </div>
 
-    {# Ders yolu #}
     <div class="path-container" style="position:relative">
-
-      {# Kilitli overlay #}
       {% if is_locked %}
       <div class="world-lock-overlay">
         <div class="lock-bubble">
           <div class="lock-bubble-icon">🔒</div>
           <div class="lock-bubble-text">
-            <strong>Bu dünya kilitli</strong>
+            <strong>{{ _('Bu dünya kilitli') }}</strong>
             <span>
               {% if loop.index > 1 %}
-              "{{ topics_with_data[loop.index0 - 1].topic.title }}" dünyasını tamamla
+              "{{ topics_with_data[loop.index0 - 1].topic.title }}" {{ _('dünyasını tamamla') }}
               {% endif %}
             </span>
           </div>
@@ -1582,7 +1547,6 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
       </div>
       {% endif %}
 
-      {# İzometrik ders yolu — 3'lü gruplar, sağ-sol zigzag #}
       <div class="iso-track">
         {% set chunk_size = 3 %}
         {% set chunks = [] %}
@@ -1594,7 +1558,6 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
         {% set row_idx = loop.index0 %}
         {% set is_right_row = (row_idx % 2 == 0) %}
 
-        {# Dönüş konnektörü (ilk satır hariç) #}
         {% if row_idx > 0 %}
         {% set prev_is_right = ((row_idx - 1) % 2 == 0) %}
         <div class="turn-row" style="--turn-align:{{ 'flex-end' if prev_is_right else 'flex-start' }}">
@@ -1611,17 +1574,13 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
         </div>
         {% endif %}
 
-        {# Ders satırı #}
         <div class="track-row {{ 'row-right' if not is_right_row else 'row-left' }}">
           {% set display_chunk = chunk if is_right_row else chunk | reverse | list %}
           {% for lesson in display_chunk %}
           {% set prog = pmap.get(lesson.id) %}
           {% set is_done = prog and prog.is_completed %}
-
-          {# Bu ders aktif mi? (ilk tamamlanmamış ders) #}
           {% set is_active = namespace(v=false) %}
           {% if not is_locked %}
-          {# lesson'ın global sırasını bul #}
           {% for all_l in lessons %}
           {% if all_l.id == lesson.id %}
           {% set prev_done = namespace(ok=true) %}
@@ -1639,7 +1598,6 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
           {% endfor %}
           {% endif %}
 
-          {# Bağlantı çizgisi (son düğüm hariç) #}
           {% if not loop.last %}
           <div class="conn-wrap">
             <div class="conn-line {{ 'done' if is_done else '' }}"></div>
@@ -1667,72 +1625,64 @@ AUTHENTICATED — İZOMETRİK ÖĞRENME YOLU
             <span class="node-label {{ 'active-label' if is_active.v and not is_locked else '' }}">{{ lesson.title
               }}</span>
           </div>
-
           {% endfor %}
         </div>
         {% endfor %}
+      </div>
+    </div>
 
-      </div>{# /iso-track #}
-    </div>{# /path-container #}
-
-    {# Tamamlandı banner #}
     {% if world_done %}
     <div class="world-complete-banner">
       <span class="wcb-icon">🎉</span>
-      <span class="wcb-text">Bu dünya tamamlandı! Bir sonraki dünya seni bekliyor.</span>
+      <span class="wcb-text">{{ _('Bu dünya tamamlandı! Bir sonraki dünya seni bekliyor.') }}</span>
     </div>
     {% endif %}
-
-  </div>{# /world-block #}
+  </div>
   {% endfor %}
 
-  {# Hiç konu yoksa #}
   {% if not topics_with_data %}
   <div style="text-align:center;padding:5rem 2rem;color:var(--txt2)">
     <div style="font-size:3rem;margin-bottom:1rem">🗺️</div>
-    <h2 style="font-family:var(--display);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.5rem">Henüz içerik
-      yok</h2>
-    <p style="font-size:.9rem;margin-bottom:1.5rem">Yönetici henüz ders eklememiş.</p>
-    <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost"><i class="bi bi-grid"></i> Konulara Bak</a>
+    <h2 style="font-family:var(--display);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.5rem">{{ _('Henüz
+      içerik yok') }}</h2>
+    <p style="font-size:.9rem;margin-bottom:1.5rem">{{ _('Yönetici henüz ders eklememiş.') }}</p>
+    <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost"><i class="bi bi-grid"></i> {{ _('Konulara Bak') }}</a>
   </div>
   {% endif %}
-
 </div>
 
 {% else %}
-{# ════════════════════════════════════════════════════
-ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
-════════════════════════════════════════════════════ #}
+{# ── ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA ── #}
 <div id="scroll-bar"></div>
 
-<!-- HERO -->
 <section id="s-hero">
   <div class="hero-grid"></div>
   <div class="h-orb orb-a"></div>
   <div class="h-orb orb-b"></div>
   <div class="h-orb orb-c"></div>
   <div class="hero-inner">
-    <div class="hero-badge"><span class="badge-dot"></span> Yapay Zeka Destekli Öğrenme Platformu</div>
-    <h1 class="hero-h1">Siber Güvenliği<span class="line2">Oyun Gibi Öğren</span></h1>
-    <p class="hero-sub">Duolingo'nun bağımlılık yapıcı öğrenme modeliyle siber güvenliği birleştiren AI destekli
-      platform. Ağ güvenliği, kriptografi, etik hacking — adım adım, sahne sahne.</p>
+    <div class="hero-badge"><span class="badge-dot"></span> {{ _('Yapay Zeka Destekli Öğrenme Platformu') }}</div>
+    <h1 class="hero-h1">{{ _('Siber Güvenliği') }}<span class="line2">{{ _('Oyun Gibi Öğren') }}</span></h1>
+    <p class="hero-sub">{{ _("Duolingo'nun bağımlılık yapıcı öğrenme modeliyle siber güvenliği birleştiren AI destekli
+      platform. Ağ güvenliği, kriptografi, etik hacking — adım adım, sahne sahne.") }}</p>
     <div class="hero-cta">
-      <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i> Ücretsiz
-        Başla</a>
-      <a href="{{ url_for('auth.login') }}" class="cl-btn-ghost"><i class="bi bi-box-arrow-in-right"></i> Giriş Yap</a>
+      <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i> {{
+        _('Ücretsiz Başla') }}</a>
+      <a href="{{ url_for('auth.login') }}" class="cl-btn-ghost"><i class="bi bi-box-arrow-in-right"></i> {{ _('Giriş
+        Yap') }}</a>
     </div>
     <div class="hero-stats">
       <div class="hs-item"><span class="hs-num" data-target="12400" data-sfx="+">0</span>
-        <div class="hs-lbl">Aktif Kullanıcı</div>
+        <div class="hs-lbl">{{ _('Aktif Kullanıcı') }}</div>
       </div>
       <div class="hs-item"><span class="hs-num" data-target="48" data-sfx="">0</span>
-        <div class="hs-lbl">Ders Modülü</div>
+        <div class="hs-lbl">{{ _('Ders Modülü') }}</div>
       </div>
       <div class="hs-item"><span class="hs-num" data-target="98700" data-sfx="+">0</span>
-        <div class="hs-lbl">Tamamlanan Ders</div>
+        <div class="hs-lbl">{{ _('Tamamlanan Ders') }}</div>
       </div>
       <div class="hs-item"><span class="hs-num" data-target="99" data-sfx="%">0</span>
-        <div class="hs-lbl">Memnuniyet</div>
+        <div class="hs-lbl">{{ _('Memnuniyet') }}</div>
       </div>
     </div>
   </div>
@@ -1746,26 +1696,26 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
 
 <div class="scene-div"></div>
 
-<!-- FEATURES -->
 <section id="s-features">
   <div class="cl-section">
     <div class="cl-reveal">
-      <div class="sec-badge"><i class="bi bi-stars"></i> Neden CyberLearn.io?</div>
-      <h2 class="sec-title">Her şey bir arada,<br>hiçbir şey eksik değil.</h2>
-      <p class="sec-sub">Sıkıcı dersler değil, gerçek sahne simülasyonları. AI'ın sana özel hazırladığı öğrenme yolu.
-      </p>
+      <div class="sec-badge"><i class="bi bi-stars"></i> {{ _('Neden CyberLearn.io?') }}</div>
+      <h2 class="sec-title">{{ _('Her şey bir arada,') }}<br>{{ _('hiçbir şey eksik değil.') }}</h2>
+      <p class="sec-sub">{{ _('Sıkıcı dersler değil, gerçek sahne simülasyonları. AI\'ın sana özel hazırladığı öğrenme
+        yolu.') }}</p>
     </div>
     <div class="feat-grid">
       <div class="feat-hero cl-reveal" style="transition-delay:.1s">
         <div class="feat-hero-orb"></div>
         <div>
-          <div class="feat-tag">Ana Özellik</div>
-          <h3 class="feat-title" style="font-size:1.4rem;margin-bottom:.8rem">🤖 Yapay Zeka Destekli<br>Kişisel Öğretmen
-          </h3>
-          <p class="feat-desc" style="font-size:.9rem;margin-bottom:1.4rem">AI seviyeni analiz eder, zayıf noktalarını
-            tespit eder ve sana özel bir öğrenme yolu oluşturur. Her soru, her görev — senin için.</p>
+          <div class="feat-tag">{{ _('Ana Özellik') }}</div>
+          <h3 class="feat-title" style="font-size:1.4rem;margin-bottom:.8rem">🤖 {{ _('Yapay Zeka Destekli') }}<br>{{
+            _('Kişisel Öğretmen') }}</h3>
+          <p class="feat-desc" style="font-size:.9rem;margin-bottom:1.4rem">{{ _('AI seviyeni analiz eder, zayıf
+            noktalarını tespit eder ve sana özel bir öğrenme yolu oluşturur. Her soru, her görev — senin için.') }}</p>
           <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"
-            style="font-size:.82rem;padding:.6rem 1.2rem"><i class="bi bi-arrow-right-circle"></i> Hemen Dene</a>
+            style="font-size:.82rem;padding:.6rem 1.2rem"><i class="bi bi-arrow-right-circle"></i> {{ _('Hemen Dene')
+            }}</a>
         </div>
         <div class="terminal" id="hero-terminal">
           <div class="term-bar">
@@ -1787,20 +1737,23 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
       <div class="feat-sm cl-reveal" style="transition-delay:.2s">
         <div class="feat-icon" style="background:linear-gradient(135deg,#6e5bff,#9d6fff)">🎮</div>
         <div class="feat-tag">Gamification</div>
-        <h3 class="feat-title">Oyna ve Öğren</h3>
-        <p class="feat-desc">XP kazan, rozet topla, liderlik tablosunda yüksel. Her tamamlanan ders bir zafer.</p>
+        <h3 class="feat-title">{{ _('Oyna ve Öğren') }}</h3>
+        <p class="feat-desc">{{ _('XP kazan, rozet topla, liderlik tablosunda yüksel. Her tamamlanan ders bir zafer.')
+          }}</p>
       </div>
       <div class="feat-sm cl-reveal" style="transition-delay:.3s">
         <div class="feat-icon" style="background:linear-gradient(135deg,#00f5c4,#00b894)">💻</div>
-        <div class="feat-tag">Gerçek Senaryolar</div>
-        <h3 class="feat-title">CTF Tarzı Pratik</h3>
-        <p class="feat-desc">Gerçek saldırı ve savunma simülasyonları. Sadece teori değil, uygulamalı öğrenme.</p>
+        <div class="feat-tag">{{ _('Gerçek Senaryolar') }}</div>
+        <h3 class="feat-title">{{ _('CTF Tarzı Pratik') }}</h3>
+        <p class="feat-desc">{{ _('Gerçek saldırı ve savunma simülasyonları. Sadece teori değil, uygulamalı öğrenme.')
+          }}</p>
       </div>
       <div class="feat-sm cl-reveal" style="transition-delay:.4s">
         <div class="feat-icon" style="background:linear-gradient(135deg,#ff3d6b,#c9184a)">🏆</div>
-        <div class="feat-tag">Sertifika</div>
-        <h3 class="feat-title">Kanıtlanmış Yetkinlik</h3>
-        <p class="feat-desc">OSCP, CISSP, CompTIA uyumlu müfredat. Tamamla, sertifika al, kariyerini inşa et.</p>
+        <div class="feat-tag">{{ _('Sertifika') }}</div>
+        <h3 class="feat-title">{{ _('Kanıtlanmış Yetkinlik') }}</h3>
+        <p class="feat-desc">{{ _('OSCP, CISSP, CompTIA uyumlu müfredat. Tamamla, sertifika al, kariyerini inşa et.') }}
+        </p>
       </div>
     </div>
   </div>
@@ -1808,33 +1761,32 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
 
 <div class="scene-div"></div>
 
-<!-- HOW IT WORKS -->
 <section id="s-how">
   <div class="cl-section">
     <div class="cl-reveal" style="text-align:center">
-      <div class="sec-badge" style="margin:0 auto .9rem"><i class="bi bi-map"></i> Nasıl Çalışır?</div>
-      <h2 class="sec-title" style="text-align:center">4 adımda uzman ol.</h2>
+      <div class="sec-badge" style="margin:0 auto .9rem"><i class="bi bi-map"></i> {{ _('Nasıl Çalışır?') }}</div>
+      <h2 class="sec-title" style="text-align:center">{{ _('4 adımda uzman ol.') }}</h2>
     </div>
     <div class="how-grid">
       <div class="how-step cl-reveal step-active" style="transition-delay:.1s">
         <div class="how-num">01</div>
-        <h4 class="how-step-title">Kayıt Ol</h4>
-        <p class="how-step-desc">Ücretsiz hesap oluştur. Kredi kartı yok, taahhüt yok.</p>
+        <h4 class="how-step-title">{{ _('Kayıt Ol') }}</h4>
+        <p class="how-step-desc">{{ _('Ücretsiz hesap oluştur. Kredi kartı yok, taahhüt yok.') }}</p>
       </div>
       <div class="how-step cl-reveal" style="transition-delay:.2s">
         <div class="how-num">02</div>
-        <h4 class="how-step-title">Seviyeni Belirle</h4>
-        <p class="how-step-desc">AI kısa bir test ile mevcut bilgi seviyeni ölçer.</p>
+        <h4 class="how-step-title">{{ _('Seviyeni Belirle') }}</h4>
+        <p class="how-step-desc">{{ _('AI kısa bir test ile mevcut bilgi seviyeni ölçer.') }}</p>
       </div>
       <div class="how-step cl-reveal" style="transition-delay:.3s">
         <div class="how-num">03</div>
-        <h4 class="how-step-title">Öğren & Pratik Yap</h4>
-        <p class="how-step-desc">Kişisel yolunu takip et, CTF görevlerini çöz.</p>
+        <h4 class="how-step-title">{{ _('Öğren & Pratik Yap') }}</h4>
+        <p class="how-step-desc">{{ _('Kişisel yolunu takip et, CTF görevlerini çöz.') }}</p>
       </div>
       <div class="how-step cl-reveal" style="transition-delay:.4s">
         <div class="how-num">04</div>
-        <h4 class="how-step-title">Sertifika Al</h4>
-        <p class="how-step-desc">Tamamladıkça rozet ve sertifika kazan.</p>
+        <h4 class="how-step-title">{{ _('Sertifika Al') }}</h4>
+        <p class="how-step-desc">{{ _('Tamamladıkça rozet ve sertifika kazan.') }}</p>
       </div>
     </div>
   </div>
@@ -1842,34 +1794,34 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
 
 <div class="scene-div"></div>
 
-<!-- TOPICS PREVIEW -->
 <section id="s-topics">
   <div class="cl-section">
     <div class="cl-reveal"
       style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem">
       <div>
-        <div class="sec-badge"><i class="bi bi-journal-code"></i> Müfredat</div>
-        <h2 class="sec-title" style="margin-bottom:.5rem">Neden öğreneceğimi<br>bilmeden öğrenmem.</h2>
-        <p class="sec-sub">Her konu, gerçek dünya senaryolarıyla destekleniyor.</p>
+        <div class="sec-badge"><i class="bi bi-journal-code"></i> {{ _('Müfredat') }}</div>
+        <h2 class="sec-title" style="margin-bottom:.5rem">{{ _('Neden öğreneceğimi') }}<br>{{ _('bilmeden öğrenmem.') }}
+        </h2>
+        <p class="sec-sub">{{ _('Her konu, gerçek dünya senaryolarıyla destekleniyor.') }}</p>
       </div>
-      <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost" style="flex-shrink:0">Tüm Dersler <i
+      <a href="{{ url_for('main.topics') }}" class="cl-btn-ghost" style="flex-shrink:0">{{ _('Tüm Dersler') }} <i
           class="bi bi-arrow-right"></i></a>
     </div>
     <div class="topics-grid">
       {% set topics_preview = [
-      {'emoji':'🌐','name':'Ağ Güvenliği','lessons':12,'diff':'easy','lbl':'Başlangıç','bar':85},
-      {'emoji':'🔐','name':'Kriptografi','lessons':9,'diff':'med','lbl':'Orta','bar':60},
-      {'emoji':'🕵️','name':'Etik Hacking','lessons':15,'diff':'hard','lbl':'İleri','bar':40},
-      {'emoji':'🛡️','name':'Güvenlik Duvarları','lessons':8,'diff':'easy','lbl':'Başlangıç','bar':70},
-      {'emoji':'🔍','name':'OSINT','lessons':11,'diff':'med','lbl':'Orta','bar':55},
-      {'emoji':'🦠','name':'Malware Analizi','lessons':10,'diff':'hard','lbl':'İleri','bar':30},
+      {'emoji':'🌐','name':_('Ağ Güvenliği'),'lessons':12,'diff':'easy','lbl':_('Başlangıç'),'bar':85},
+      {'emoji':'🔐','name':_('Kriptografi'),'lessons':9,'diff':'med','lbl':_('Orta'),'bar':60},
+      {'emoji':'🕵️','name':_('Etik Hacking'),'lessons':15,'diff':'hard','lbl':_('İleri'),'bar':40},
+      {'emoji':'🛡️','name':_('Güvenlik Duvarları'),'lessons':8,'diff':'easy','lbl':_('Başlangıç'),'bar':70},
+      {'emoji':'🔍','name':'OSINT','lessons':11,'diff':'med','lbl':_('Orta'),'bar':55},
+      {'emoji':'🦠','name':_('Malware Analizi'),'lessons':10,'diff':'hard','lbl':_('İleri'),'bar':30},
       ] %}
       {% for t in topics_preview %}
       <a href="{{ url_for('auth.register') }}" class="topic-card cl-reveal"
         style="transition-delay:{{ loop.index0 * 0.08 }}s;--bw:{{ t.bar }}%">
         <span class="topic-emoji">{{ t.emoji }}</span>
         <div class="topic-name">{{ t.name }}</div>
-        <div class="topic-meta">{{ t.lessons }} ders modülü</div>
+        <div class="topic-meta">{{ t.lessons }} {{ _('ders modülü') }}</div>
         <div class="topic-track">
           <div class="topic-fill"></div>
         </div>
@@ -1881,25 +1833,24 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
   </div>
 </section>
 
-<!-- STATS -->
 <section id="s-stats">
   <div class="stats-inner">
     <div class="stats-row">
       <div class="stat-box cl-reveal" style="transition-delay:.1s"><span class="stat-n" data-target="12400"
           data-sfx="+">0</span>
-        <div class="stat-l">Aktif Kullanıcı</div>
+        <div class="stat-l">{{ _('Aktif Kullanıcı') }}</div>
       </div>
       <div class="stat-box cl-reveal" style="transition-delay:.2s"><span class="stat-n" data-target="48"
           data-sfx="">0</span>
-        <div class="stat-l">Ders Modülü</div>
+        <div class="stat-l">{{ _('Ders Modülü') }}</div>
       </div>
       <div class="stat-box cl-reveal" style="transition-delay:.3s"><span class="stat-n" data-target="98700"
           data-sfx="+">0</span>
-        <div class="stat-l">Tamamlanan Ders</div>
+        <div class="stat-l">{{ _('Tamamlanan Ders') }}</div>
       </div>
       <div class="stat-box cl-reveal" style="transition-delay:.4s"><span class="stat-n" data-target="99"
           data-sfx="%">0</span>
-        <div class="stat-l">Memnuniyet</div>
+        <div class="stat-l">{{ _('Memnuniyet') }}</div>
       </div>
     </div>
   </div>
@@ -1907,17 +1858,18 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
 
 <div class="scene-div"></div>
 
-<!-- CTA -->
 <section id="s-cta">
   <div class="cta-orb"></div>
   <div class="cta-inner cl-reveal">
-    <div class="sec-badge" style="margin:0 auto 1.5rem"><i class="bi bi-rocket-takeoff"></i> Hazır mısın?</div>
-    <h2 class="cta-h2">Siber savunmanın<br><span class="cl-glow-text">bir sonraki nesli</span> ol.</h2>
-    <p class="cta-sub">Ücretsiz başla. Kredi kartı yok. İlk dersin 5 dakika içinde seni bekliyor.</p>
+    <div class="sec-badge" style="margin:0 auto 1.5rem"><i class="bi bi-rocket-takeoff"></i> {{ _('Hazır mısın?') }}
+    </div>
+    <h2 class="cta-h2">{{ _('Siber savunmanın') }}<br><span class="cl-glow-text">{{ _('bir sonraki nesli') }}</span> {{
+      _('ol.') }}</h2>
+    <p class="cta-sub">{{ _('Ücretsiz başla. Kredi kartı yok. İlk dersin 5 dakika içinde seni bekliyor.') }}</p>
     <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-      <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i> Şimdi Başla —
-        Ücretsiz</a>
-      <a href="{{ url_for('auth.login') }}" class="cl-btn-ghost">Zaten hesabım var</a>
+      <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i> {{ _('Şimdi
+        Başla — Ücretsiz') }}</a>
+      <a href="{{ url_for('auth.login') }}" class="cl-btn-ghost">{{ _('Zaten hesabım var') }}</a>
     </div>
   </div>
 </section>
@@ -1928,14 +1880,9 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
 {% block extra_js %}
 <script>
   (function () {
-    /* SCROLL BAR */
     const sb = document.getElementById('scroll-bar');
     if (sb) addEventListener('scroll', () => { const p = scrollY / (document.body.scrollHeight - innerHeight) * 100; sb.style.width = Math.min(p, 100) + '%' }, { passive: true });
-
-    /* COUNT UP */
     function countUp(el) { const target = parseInt(el.dataset.target), sfx = el.dataset.sfx || ''; let v = 0; const step = target / 112; const t = setInterval(() => { v = Math.min(v + step, target); el.textContent = Math.floor(v).toLocaleString('tr') + sfx; if (v >= target) clearInterval(t) }, 16); }
-
-    /* REVEAL OBSERVER */
     const revObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -1946,14 +1893,10 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
       });
     }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.cl-reveal,.cl-reveal-left,.cl-reveal-right,.topic-card').forEach(el => revObs.observe(el));
-
-    /* STATS OBSERVER */
     const statObs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (!e.isIntersecting) return; e.target.querySelectorAll('[data-target]').forEach(countUp); statObs.unobserve(e.target); });
     }, { threshold: .25 });
     document.querySelectorAll('.stats-row,.hero-stats').forEach(el => statObs.observe(el));
-
-    /* HOW STEPS */
     const howObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -1963,12 +1906,8 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
     }, { threshold: .25 });
     const howEl = document.getElementById('s-how');
     if (howEl) howObs.observe(howEl);
-
-    /* PARALLAX ORBS */
     const orbs = document.querySelectorAll('.h-orb');
     addEventListener('scroll', () => { const y = scrollY; orbs.forEach((o, i) => o.style.transform = `translateY(${y * (i + 1) * .14}px)`); }, { passive: true });
-
-    /* TERMINAL LOOP */
     const term = document.getElementById('hero-terminal');
     if (term) {
       const tls = term.querySelectorAll('.tl');
@@ -1978,16 +1917,10 @@ ANONİM — HERO + FEATURES + HOW + TOPICS + STATS + CTA
         setTimeout(() => tls.forEach((l, i) => { l.style.animation = `tla .4s ${i * .8}s ease forwards` }), 50);
       }, 10000);
     }
-
-    /* PROGRESS BAR ANİMASYON (authenticated yol) */
     const progFills = document.querySelectorAll('.world-prog-fill');
     if (progFills.length) {
       const po = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          /* width zaten style'da set edildi, transition halledecek */
-          po.unobserve(e.target);
-        });
+        entries.forEach(e => { if (!e.isIntersecting) return; po.unobserve(e.target); });
       }, { threshold: .3 });
       progFills.forEach(f => po.observe(f));
     }

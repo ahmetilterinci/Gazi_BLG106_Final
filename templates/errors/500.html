@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}500 — Sunucu Hatası{% endblock %}
-{% block meta_description %}Beklenmedik bir sunucu hatası oluştu — CyberLearn AI{% endblock %}
+{% block title %}500 — {{ _('Sunucu Hatası') }}{% endblock %}
+{% block meta_description %}{{ _('Beklenmedik bir sunucu hatası oluştu') }} — CyberLearn AI{% endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── ERROR PAGE LAYOUT ── */
   .error-page {
     min-height: calc(100vh - var(--nav-h));
     display: flex;
@@ -16,7 +15,6 @@
     overflow: hidden;
   }
 
-  /* 500 için kırmızı/turuncu orb'lar */
   .error-page::before {
     content: '';
     position: absolute;
@@ -60,7 +58,6 @@
     }
   }
 
-  /* ── CONTENT WRAPPER ── */
   .error-content {
     position: relative;
     z-index: 2;
@@ -82,7 +79,6 @@
     }
   }
 
-  /* ── 500 NUMBER — kırmızı/turuncu gradient ── */
   .error-number-wrap {
     position: relative;
     display: inline-block;
@@ -131,7 +127,6 @@
     }
   }
 
-  /* Glitch efektleri — kırmızı tonları */
   .error-number::before,
   .error-number::after {
     content: '500';
@@ -208,7 +203,6 @@
     }
   }
 
-  /* Dekoratif ayırıcı — kırmızı renk */
   .error-divider {
     display: flex;
     align-items: center;
@@ -249,7 +243,6 @@
     }
   }
 
-  /* ── TERMINAL BADGE ── */
   .error-terminal {
     display: inline-flex;
     align-items: center;
@@ -286,7 +279,6 @@
     }
   }
 
-  /* ── TEXT ── */
   .error-title {
     font-family: var(--display);
     font-size: clamp(1.4rem, 4vw, 1.9rem);
@@ -306,7 +298,6 @@
     margin-right: auto;
   }
 
-  /* ── CARD ── */
   .error-card {
     background: rgba(13, 13, 34, .6);
     border: 1px solid rgba(239, 68, 68, .15);
@@ -314,10 +305,7 @@
     padding: 2.25rem 2rem;
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    box-shadow:
-      0 0 0 1px rgba(239, 68, 68, .05),
-      0 24px 64px rgba(0, 0, 0, .5),
-      0 0 60px rgba(239, 68, 68, .04);
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, .05), 0 24px 64px rgba(0, 0, 0, .5), 0 0 60px rgba(239, 68, 68, .04);
     position: relative;
     overflow: hidden;
     animation: cardSlide .65s .15s cubic-bezier(.22, 1, .36, 1) both;
@@ -335,7 +323,6 @@
     }
   }
 
-  /* Üst şerit — kırmızı/turuncu gradient */
   .error-card::before {
     content: '';
     position: absolute;
@@ -347,15 +334,10 @@
     opacity: .65;
   }
 
-  /* Scan lines */
   .error-scanlines {
     position: absolute;
     inset: 0;
-    background-image: repeating-linear-gradient(0deg,
-        transparent,
-        transparent 2px,
-        rgba(239, 68, 68, .012) 2px,
-        rgba(239, 68, 68, .012) 4px);
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(239, 68, 68, .012) 2px, rgba(239, 68, 68, .012) 4px);
     pointer-events: none;
     border-radius: 18px;
     z-index: 0;
@@ -366,7 +348,6 @@
     z-index: 1;
   }
 
-  /* ── STATUS INDICATOR ── */
   .error-status {
     display: flex;
     align-items: center;
@@ -399,7 +380,6 @@
     }
   }
 
-  /* ── BUTTONS ── */
   .error-actions {
     display: flex;
     justify-content: center;
@@ -418,10 +398,10 @@
     color: #fff;
     font-size: .85rem;
     font-weight: 700;
-    font-family: var(--sans, 'Inter', sans-serif);
+    font-family: var(--sans);
     text-decoration: none;
     cursor: pointer;
-    transition: transform .2s, box-shadow .2s, opacity .2s;
+    transition: transform .2s, box-shadow .2s;
     box-shadow: 0 0 24px rgba(110, 91, 255, .3);
     position: relative;
     overflow: hidden;
@@ -459,7 +439,7 @@
     color: var(--txt2);
     font-size: .85rem;
     font-weight: 600;
-    font-family: var(--sans, 'Inter', sans-serif);
+    font-family: var(--sans);
     text-decoration: none;
     cursor: pointer;
     transition: all .2s;
@@ -471,7 +451,6 @@
     background: rgba(239, 68, 68, .06);
   }
 
-  /* ── INFO BOX ── */
   .error-info {
     margin-top: 1.75rem;
     padding: .85rem 1rem;
@@ -507,7 +486,6 @@
     letter-spacing: .06em;
   }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 480px) {
     .error-card {
       padding: 1.75rem 1.25rem;
@@ -529,64 +507,44 @@
 {% block content %}
 <section class="error-page">
   <div class="error-content">
-
-    <!-- Büyük 500 numarası -->
     <div class="error-number-wrap">
       <span class="error-number">500</span>
     </div>
-
-    <!-- Dekoratif ayırıcı -->
     <div class="error-divider">
       <span class="error-divider-line"></span>
       <span class="error-divider-dot"></span>
       <span class="error-divider-line right"></span>
     </div>
-
-    <!-- Kart -->
     <div class="error-card">
       <div class="error-scanlines"></div>
-
-      <!-- Terminal badge -->
       <div class="error-terminal">
         <span class="error-terminal-dot"></span>
         <span>error_code: INTERNAL_SERVER_ERROR</span>
       </div>
-
-      <!-- Canlı durum göstergesi -->
       <div class="error-status">
         <span class="error-status-pulse"></span>
-        <span>sistem ekibimiz bilgilendirildi</span>
+        <span>{{ _('sistem ekibimiz bilgilendirildi') }}</span>
       </div>
-
-      <h1 class="error-title">Sunucu Hatası</h1>
-
-      <p class="error-desc">
-        Beklenmedik bir hata oluştu. Endişelenmeyin, ekibimiz konu hakkında bilgilendirildi.
-        Birkaç dakika sonra tekrar deneyin.
-      </p>
-
+      <h1 class="error-title">{{ _('Sunucu Hatası') }}</h1>
+      <p class="error-desc">{{ _('Beklenmedik bir hata oluştu. Endişelenmeyin, ekibimiz konu hakkında bilgilendirildi.
+        Birkaç dakika sonra tekrar deneyin.') }}</p>
       <div class="error-actions">
         <a href="{{ url_for('main.index') }}" class="btn-err-primary">
-          <i class="bi bi-house-door"></i>
-          Ana Sayfaya Dön
+          <i class="bi bi-house-door"></i> {{ _('Ana Sayfaya Dön') }}
         </a>
         <a href="javascript:location.reload()" class="btn-err-ghost">
-          <i class="bi bi-arrow-clockwise"></i>
-          Yeniden Dene
+          <i class="bi bi-arrow-clockwise"></i> {{ _('Yeniden Dene') }}
         </a>
       </div>
-
-      <!-- Bilgi kutusu -->
       <div class="error-info">
         <i class="bi bi-info-circle error-info-icon"></i>
         <div class="error-info-text">
-          <strong>Ne yapmalıyım?</strong>
-          Sayfayı yenilemeyi deneyin. Sorun devam ederse birkaç dakika bekleyip tekrar gelin. Sorun devam ederse bize
-          bildirin.
+          <strong>{{ _('Ne yapmalıyım?') }}</strong>
+          {{ _('Sayfayı yenilemeyi deneyin. Sorun devam ederse birkaç dakika bekleyip tekrar gelin. Sorun devam ederse
+          bize bildirin.') }}
         </div>
       </div>
     </div>
-
   </div>
 </section>
 {% endblock %}

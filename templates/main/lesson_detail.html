@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block title %}{{ lesson.title }} — CyberLearn.io{% endblock %}
-{% block meta_description %}{{ lesson.title }} dersi — {{ lesson.topic.title }}{% endblock %}
+{% block meta_description %}{{ lesson.title }} {{ _('dersi') }} — {{ lesson.topic.title }}{% endblock %}
 
 {% block extra_css %}
 <style>
-  /* ── SAYFA ── */
   .duo-wrap {
     max-width: 700px;
     margin: 0 auto;
@@ -15,7 +14,6 @@
     flex-direction: column;
   }
 
-  /* ── BREADCRUMB ── */
   .breadcrumb-nav {
     display: flex;
     align-items: center;
@@ -41,7 +39,6 @@
     font-size: .6rem;
   }
 
-  /* ── PROGRESS ŞERIDI ── */
   .duo-progress-wrap {
     display: flex;
     align-items: center;
@@ -96,7 +93,6 @@
     text-align: right;
   }
 
-  /* Süre göstergesi */
   .duo-timer {
     font-family: var(--mono);
     font-size: .72rem;
@@ -110,7 +106,6 @@
     text-align: center;
   }
 
-  /* ── EKRANLAR ── */
   .duo-screen {
     flex: 1;
     display: none;
@@ -134,7 +129,6 @@
     }
   }
 
-  /* ════ BAŞLAT ════ */
   .start-center {
     flex: 1;
     display: flex;
@@ -232,7 +226,6 @@
     padding: .35rem 1rem;
   }
 
-  /* ════ YÜKLENIYOR ════ */
   .loading-center {
     flex: 1;
     display: flex;
@@ -289,7 +282,6 @@
     }
   }
 
-  /* ════ SORU EKRANI — ORTAK ════ */
   .q-type-badge {
     display: inline-flex;
     align-items: center;
@@ -306,7 +298,6 @@
     letter-spacing: .1em;
   }
 
-  /* Hint kartı */
   .duo-hint {
     background: rgba(110, 91, 255, .07);
     border: 1px solid rgba(110, 91, 255, .18);
@@ -339,7 +330,6 @@
     flex: 1;
   }
 
-  /* Soru metni */
   .duo-question {
     font-family: var(--display);
     font-size: 1.12rem;
@@ -349,7 +339,6 @@
     margin-bottom: 1.4rem;
   }
 
-  /* Feedback kutusu */
   .duo-feedback {
     display: none;
     border-radius: 14px;
@@ -405,7 +394,6 @@
     line-height: 1.65;
   }
 
-  /* Devam butonu */
   .btn-next-wrap {
     margin-top: 1.4rem;
   }
@@ -414,7 +402,6 @@
     width: 100%;
   }
 
-  /* ════ MCQ & FILLBLANK — şık butonları ════ */
   .duo-options {
     display: flex;
     flex-direction: column;
@@ -538,7 +525,6 @@
     }
   }
 
-  /* ════ TRUEFALSE ════ */
   .tf-statement {
     background: var(--surface);
     border: 1px solid var(--edge);
@@ -617,7 +603,6 @@
     opacity: 1 !important;
   }
 
-  /* ════ FILLBLANK ════ */
   .fill-sentence {
     font-family: var(--display);
     font-size: 1.08rem;
@@ -653,7 +638,6 @@
     color: var(--r);
   }
 
-  /* ════ MATCHING ════ */
   .matching-instruction {
     font-size: .82rem;
     color: var(--txt2);
@@ -748,7 +732,6 @@
     font-weight: 600;
   }
 
-  /* ════ TEKRAR TURU ════ */
   .review-center {
     flex: 1;
     display: flex;
@@ -794,7 +777,6 @@
     padding: .4rem 1.1rem;
   }
 
-  /* ════ TAMAMLANDI ════ */
   .complete-center {
     flex: 1;
     display: flex;
@@ -934,7 +916,6 @@
     max-width: 320px;
   }
 
-  /* ── GİRİŞ YAP ── */
   .login-center {
     flex: 1;
     display: flex;
@@ -962,23 +943,17 @@
     .matching-area {
       grid-template-columns: 1fr;
     }
-
-    .match-col:last-child .match-col-label::before {
-      content: '→ ';
-    }
   }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="duo-wrap">
-  {# Gizli veriler #}
   <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
   <input type="hidden" id="lesson-id" value="{{ lesson.id }}">
   <input type="hidden" id="complete-url" value="{{ url_for('main.lesson_complete', id=lesson.id) }}">
 
-  <!-- Breadcrumb -->
-  <nav class="breadcrumb-nav" aria-label="Konum">
+  <nav class="breadcrumb-nav" aria-label="{{ _('Konum') }}">
     <a href="{{ url_for('main.index') }}"><i class="bi bi-house-door"></i></a>
     <span class="breadcrumb-sep"><i class="bi bi-chevron-right"></i></span>
     <span>{{ lesson.topic.title }}</span>
@@ -986,9 +961,8 @@
     <span>{{ lesson.title }}</span>
   </nav>
 
-  <!-- Progress şeridi -->
   <div class="duo-progress-wrap" id="duo-progress-wrap">
-    <a href="{{ url_for('main.index') }}" class="duo-close" title="Çık">
+    <a href="{{ url_for('main.index') }}" class="duo-close" title="{{ _('Çık') }}">
       <i class="bi bi-x-lg"></i>
     </a>
     <div class="duo-pbar-track">
@@ -1000,64 +974,56 @@
 
   {% if current_user.is_authenticated %}
 
-  <!-- ════ BAŞLAT ════ -->
   <div class="duo-screen active" id="screen-start">
     <div class="start-center">
       <div class="start-icon">{{ lesson.topic.icon or '🛡️' }}</div>
       <h1 class="start-title">{{ lesson.title }}</h1>
       <div class="start-badges">
         {% if lesson.difficulty == 'beginner' %}
-        <span class="sbadge green">🟢 Kolay</span>
+        <span class="sbadge green">🟢 {{ _('Kolay') }}</span>
         {% elif lesson.difficulty == 'intermediate' %}
-        <span class="sbadge amber">🟡 Orta</span>
+        <span class="sbadge amber">🟡 {{ _('Orta') }}</span>
         {% else %}
-        <span class="sbadge red">🔴 Zor</span>
+        <span class="sbadge red">🔴 {{ _('Zor') }}</span>
         {% endif %}
         <span class="sbadge">{{ lesson.topic.title }}</span>
         {% if progress and progress.attempts %}
-        <span class="sbadge">{{ progress.attempts }}. deneme</span>
+        <span class="sbadge">{{ progress.attempts }}. {{ _('deneme') }}</span>
         {% endif %}
       </div>
-      <p class="start-sub">
-        AI tarafından hazırlanan çeşitli sorularla bu konuyu öğreneceksin.
-        Çoktan seçmeli, doğru/yanlış, boşluk doldurma ve eşleştirme soruları seni bekliyor.
-        Yanlış yaptıkların sona eklenir, hepsini doğru yapana kadar devam edersin.
-      </p>
+      <p class="start-sub">{{ _('AI tarafından hazırlanan çeşitli sorularla bu konuyu öğreneceksin. Çoktan seçmeli,
+        doğru/yanlış, boşluk doldurma ve eşleştirme soruları seni bekliyor. Yanlış yaptıkların sona eklenir, hepsini
+        doğru yapana kadar devam edersin.') }}</p>
       {% if progress and progress.is_completed %}
       <div class="start-prev-score">
-        Son puan: {{ progress.score }}/100 · {{ progress.attempts }} deneme
+        {{ _('Son puan:') }} {{ progress.score }}/100 · {{ progress.attempts }} {{ _('deneme') }}
       </div>
       {% endif %}
       <button class="cl-btn-primary" id="btn-start" type="button" style="min-width:220px">
         <i class="bi bi-play-fill"></i>
-        {% if progress and progress.is_completed %}Tekrar Başla{% else %}Başla{% endif %}
+        {% if progress and progress.is_completed %}{{ _('Tekrar Başla') }}{% else %}{{ _('Başla') }}{% endif %}
       </button>
     </div>
   </div>
 
-  <!-- ════ YÜKLENIYOR ════ -->
   <div class="duo-screen" id="screen-loading">
     <div class="loading-center">
       <div class="duo-spinner"></div>
       <div class="loading-text">
-        Gemini sorular hazırlıyor
+        {{ _('Gemini sorular hazırlıyor') }}
         <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
       </div>
     </div>
   </div>
 
-  <!-- ════ SORU EKRANI ════ -->
   <div class="duo-screen" id="screen-question">
-    <!-- Tip rozeti -->
     <div class="q-type-badge" id="q-type-badge">
-      <i class="bi bi-question-circle"></i> <span id="q-type-label">Soru</span>
+      <i class="bi bi-question-circle"></i> <span id="q-type-label">{{ _('Soru') }}</span>
     </div>
-    <!-- Hint -->
     <div class="duo-hint" id="duo-hint">
       <div class="hint-icon"><i class="bi bi-lightbulb-fill"></i></div>
       <div class="hint-text" id="hint-text"></div>
     </div>
-    <!-- Soru içerikleri (tip bazlı) -->
     <div id="q-mcq-area">
       <div class="duo-question" id="mcq-question"></div>
       <div class="duo-options" id="mcq-options"></div>
@@ -1066,10 +1032,10 @@
       <div class="tf-statement" id="tf-statement"></div>
       <div class="tf-options">
         <button class="tf-btn tf-true" id="tf-true" type="button">
-          <span class="tf-emoji">✅</span> Doğru
+          <span class="tf-emoji">✅</span> {{ _('Doğru') }}
         </button>
         <button class="tf-btn tf-false" id="tf-false" type="button">
-          <span class="tf-emoji">❌</span> Yanlış
+          <span class="tf-emoji">❌</span> {{ _('Yanlış') }}
         </button>
       </div>
     </div>
@@ -1082,16 +1048,15 @@
       <div class="match-progress" id="match-progress"></div>
       <div class="matching-area">
         <div class="match-col">
-          <div class="match-col-label">Terimler</div>
+          <div class="match-col-label">{{ _('Terimler') }}</div>
           <div id="match-left"></div>
         </div>
         <div class="match-col">
-          <div class="match-col-label">Tanımlar</div>
+          <div class="match-col-label">{{ _('Tanımlar') }}</div>
           <div id="match-right"></div>
         </div>
       </div>
     </div>
-    <!-- Feedback -->
     <div class="duo-feedback" id="duo-feedback">
       <div class="fb-icon" id="fb-icon"></div>
       <div class="fb-body">
@@ -1099,41 +1064,37 @@
         <div class="fb-explanation" id="fb-expl"></div>
       </div>
     </div>
-    <!-- Devam -->
     <div class="btn-next-wrap" id="btn-next-wrap" style="display:none">
       <button class="cl-btn-primary" id="btn-next" type="button">
-        Devam Et <i class="bi bi-arrow-right"></i>
+        {{ _('Devam Et') }} <i class="bi bi-arrow-right"></i>
       </button>
     </div>
   </div>
 
-  <!-- ════ TEKRAR TURU ════ -->
   <div class="duo-screen" id="screen-review">
     <div class="review-center">
       <div class="review-icon">🔄</div>
-      <h2 class="review-title">Yanlışları tekrar dene!</h2>
-      <p class="review-sub">Harika! Şimdi yanlış yaptığın sorular tekrar önüne gelecek.<br>Hepsini doğru yapana kadar
-        devam edersin.</p>
+      <h2 class="review-title">{{ _('Yanlışları tekrar dene!') }}</h2>
+      <p class="review-sub">{{ _('Harika! Şimdi yanlış yaptığın sorular tekrar önüne gelecek. Hepsini doğru yapana kadar
+        devam edersin.') }}</p>
       <div class="review-badge" id="review-badge"></div>
       <button class="cl-btn-primary" id="btn-review" type="button" style="min-width:220px">
-        <i class="bi bi-arrow-repeat"></i> Devam Et
+        <i class="bi bi-arrow-repeat"></i> {{ _('Devam Et') }}
       </button>
     </div>
   </div>
 
-  <!-- ════ TAMAMLANDI ════ -->
   <div class="duo-screen" id="screen-complete">
     <div class="complete-center">
       <div class="complete-trophy">🏆</div>
-      <h2 class="complete-title">Ders<br><span>Tamamlandı!</span></h2>
+      <h2 class="complete-title">{{ _('Ders') }}<br><span>{{ _('Tamamlandı!') }}</span></h2>
       <div class="complete-stats">
         <div class="cstat"><span class="cstat-n" style="color:var(--w)" id="st-time">0:00</span>
-          <div class="cstat-l">Süre</div>
+          <div class="cstat-l">{{ _('Süre') }}</div>
         </div>
       </div>
-      <!-- Başarı oranı barı -->
       <div class="complete-rate">
-        <div class="complete-rate-label">Başarı Oranı</div>
+        <div class="complete-rate-label">{{ _('Başarı Oranı') }}</div>
         <div class="complete-rate-bar">
           <div class="complete-rate-fill" id="rate-fill" style="width:100%"></div>
         </div>
@@ -1142,10 +1103,10 @@
       <div class="complete-xp" id="complete-xp">+0 XP</div>
       <div class="complete-actions">
         <button class="cl-btn-primary" id="btn-finish" type="button">
-          <i class="bi bi-check-lg"></i> Tamamla ve Kaydet
+          <i class="bi bi-check-lg"></i> {{ _('Tamamla ve Kaydet') }}
         </button>
         <a href="{{ url_for('main.index') }}" class="cl-btn-ghost">
-          <i class="bi bi-house-door"></i> Ana Sayfaya Dön
+          <i class="bi bi-house-door"></i> {{ _('Ana Sayfaya Dön') }}
         </a>
       </div>
     </div>
@@ -1155,9 +1116,9 @@
   <div class="duo-screen active" id="screen-login">
     <div class="login-center">
       <div style="font-size:3rem">🔒</div>
-      <p>Bu dersi tamamlamak için giriş yapmalısın.</p>
+      <p>{{ _('Bu dersi tamamlamak için giriş yapmalısın.') }}</p>
       <a href="{{ url_for('auth.login') }}" class="cl-btn-primary">
-        <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+        <i class="bi bi-box-arrow-in-right"></i> {{ _('Giriş Yap') }}
       </a>
     </div>
   </div>
@@ -1172,7 +1133,6 @@
     'use strict';
 
     const LETTERS = ['A', 'B', 'C', 'D'];
-
     const csrfToken = document.getElementById('csrf-token')?.value;
     const lessonId = document.getElementById('lesson-id')?.value;
     const completeUrl = document.getElementById('complete-url')?.value;
@@ -1186,91 +1146,43 @@
     const pbarLabel = document.getElementById('duo-pbar-label');
     const timerEl = document.getElementById('duo-timer');
 
-    let questions = [];
-    let queue = [];
-    let wrongQueue = [];
-    let currentQ = null;
-    let answered = false;
-    let totalQ = 0;
-    let totalCorrect = 0;
-    let totalWrong = 0;
-    let inReview = false;
-    let accuracyPct = 100; // gerçek zamanlı başarı oranı
+    let questions = [], queue = [], wrongQueue = [], currentQ = null;
+    let answered = false, totalQ = 0, totalCorrect = 0, totalWrong = 0;
+    let inReview = false, accuracyPct = 100;
+    let startTime = null, timerInterval = null;
+    let matchSelected = null, matchPairs = [], matchDone = 0, matchWrong = false;
 
-    // Süre takibi
-    let startTime = null;
-    let timerInterval = null;
-
-    // Eşleştirme
-    let matchSelected = null;
-    let matchPairs = [];
-    let matchDone = 0;
-    let matchWrong = false;
-    let matchPenaltyApplied = false;
-
-    /* ── EKRAN ── */
     function show(id) {
       document.querySelectorAll('.duo-screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
 
-    /* ── PROGRESS ── */
     function updateProgress() {
-      const total = inReview
-        ? (wrongQueue.length + queue.length + (currentQ ? 1 : 0))
-        : totalQ;
-      const done = inReview
-        ? (wrongQueue.length - queue.length - (currentQ ? 1 : 0))
-        : (totalQ - queue.length - (currentQ ? 1 : 0));
+      const total = inReview ? (wrongQueue.length + queue.length + (currentQ ? 1 : 0)) : totalQ;
+      const done = inReview ? (wrongQueue.length - queue.length - (currentQ ? 1 : 0)) : (totalQ - queue.length - (currentQ ? 1 : 0));
       const pct = total > 0 ? Math.round(Math.max(0, done) / total * 100) : 0;
       pbar.style.width = pct + '%';
-      pbarLabel.textContent = inReview
-        ? `🔄 ${queue.length + (currentQ ? 1 : 0)}`
-        : `${Math.max(0, done)}/${total}`;
+      pbarLabel.textContent = inReview ? `🔄 ${queue.length + (currentQ ? 1 : 0)}` : `${Math.max(0, done)}/${total}`;
     }
 
-    /* ── SÜRE ── */
     function startTimer() {
       startTime = Date.now();
       timerInterval = setInterval(() => {
-        const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        const m = Math.floor(elapsed / 60);
-        const s = elapsed % 60;
-        timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+        const e = Math.floor((Date.now() - startTime) / 1000);
+        timerEl.textContent = `${Math.floor(e / 60)}:${(e % 60).toString().padStart(2, '0')}`;
       }, 1000);
     }
 
-    function stopTimer() {
-      clearInterval(timerInterval);
-      return Math.floor((Date.now() - startTime) / 1000);
+    function stopTimer() { clearInterval(timerInterval); return Math.floor((Date.now() - startTime) / 1000); }
+    function formatTime(s) { return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`; }
+
+    function calcScore(correct, total, elapsed) {
+      const acc = total > 0 ? correct / total : 0;
+      const avg = total > 0 ? elapsed / total : 999;
+      let speed = avg <= 20 ? 100 : avg <= 40 ? 70 : avg <= 60 ? 40 : 10;
+      return Math.max(10, Math.min(100, Math.round(acc * 70 + (speed / 100) * 30)));
     }
 
-    function formatTime(secs) {
-      const m = Math.floor(secs / 60);
-      const s = secs % 60;
-      return `${m}:${s.toString().padStart(2, '0')}`;
-    }
-
-    /* ── PUAN FORMÜLÜ ──
-       Başarı oranı %70 ağırlık, hız bonusu %30 ağırlık.
-       Hız bonusu: soru başına ort. süre
-         ≤ 20sn → 100
-         ≤ 40sn → 70
-         ≤ 60sn → 40
-         > 60sn → 10
-    */
-    function calcScore(correct, total, elapsedSecs) {
-      const accuracy = total > 0 ? correct / total : 0;
-      const avgPerQ = total > 0 ? elapsedSecs / total : 999;
-      let speedBonus = 10;
-      if (avgPerQ <= 20) speedBonus = 100;
-      else if (avgPerQ <= 40) speedBonus = 70;
-      else if (avgPerQ <= 60) speedBonus = 40;
-      const score = Math.round(accuracy * 70 + (speedBonus / 100) * 30);
-      return Math.max(10, Math.min(100, score));
-    }
-
-    /* ── BAŞLAT ── */
     btnStart.addEventListener('click', async () => {
       show('screen-loading');
       try {
@@ -1282,72 +1194,41 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (data.error) throw new Error(data.error);
-
         questions = data.questions || [];
-        queue = [...questions];
-        wrongQueue = [];
-        totalQ = questions.length;
-        totalCorrect = 0;
-        totalWrong = 0;
-        inReview = false;
-        answered = false;
-        accuracyPct = 100;
-
-        startTimer();
-        updateProgress();
-        nextQuestion();
+        queue = [...questions]; wrongQueue = [];
+        totalQ = questions.length; totalCorrect = 0; totalWrong = 0;
+        inReview = false; answered = false; accuracyPct = 100;
+        startTimer(); updateProgress(); nextQuestion();
       } catch (err) {
         show('screen-start');
-        btnStart.innerHTML = '<i class="bi bi-exclamation-circle"></i> Tekrar Dene';
+        btnStart.innerHTML = '<i class="bi bi-exclamation-circle"></i> {{ _("Tekrar Dene") }}';
         console.error(err);
       }
     });
 
-    /* ── SONRAKİ SORU ── */
     function nextQuestion() {
-      if (queue.length === 0) {
-        if (wrongQueue.length > 0) {
-          showReview();
-        } else {
-          showComplete();
-        }
-        return;
-      }
-      currentQ = queue.shift();
-      answered = false;
-      updateProgress();
-      renderQuestion(currentQ);
-      show('screen-question');
+      if (queue.length === 0) { wrongQueue.length > 0 ? showReview() : showComplete(); return; }
+      currentQ = queue.shift(); answered = false; updateProgress();
+      renderQuestion(currentQ); show('screen-question');
     }
 
-    /* ── TİP META ── */
     const TYPE_META = {
-      mcq: { label: 'Çoktan Seçmeli', icon: 'bi-list-check' },
-      truefalse: { label: 'Doğru / Yanlış', icon: 'bi-toggles' },
-      fillblank: { label: 'Boşluk Doldurma', icon: 'bi-input-cursor-text' },
-      matching: { label: 'Eşleştirme', icon: 'bi-arrow-left-right' },
+      mcq: { label: '{{ _("Çoktan Seçmeli") }}', icon: 'bi-list-check' },
+      truefalse: { label: '{{ _("Doğru / Yanlış") }}', icon: 'bi-toggles' },
+      fillblank: { label: '{{ _("Boşluk Doldurma") }}', icon: 'bi-input-cursor-text' },
+      matching: { label: '{{ _("Eşleştirme") }}', icon: 'bi-arrow-left-right' },
     };
 
     function renderQuestion(q) {
-      ['q-mcq-area', 'q-tf-area', 'q-fill-area', 'q-match-area'].forEach(id => {
-        document.getElementById(id).style.display = 'none';
-      });
+      ['q-mcq-area', 'q-tf-area', 'q-fill-area', 'q-match-area'].forEach(id => document.getElementById(id).style.display = 'none');
       document.getElementById('duo-feedback').className = 'duo-feedback';
       document.getElementById('btn-next-wrap').style.display = 'none';
-
-      const meta = TYPE_META[q.type] || { label: 'Soru', icon: 'bi-question-circle' };
+      const meta = TYPE_META[q.type] || { label: '{{ _("Soru") }}', icon: 'bi-question-circle' };
       document.getElementById('q-type-label').textContent = meta.label;
       document.querySelector('#q-type-badge i').className = `bi ${meta.icon}`;
-
       const hintEl = document.getElementById('duo-hint');
-      const hintTx = document.getElementById('hint-text');
-      if (q.hint) {
-        hintTx.textContent = q.hint;
-        hintEl.style.display = 'flex';
-      } else {
-        hintEl.style.display = 'none';
-      }
-
+      if (q.hint) { document.getElementById('hint-text').textContent = q.hint; hintEl.style.display = 'flex'; }
+      else { hintEl.style.display = 'none'; }
       if (q.type === 'mcq') renderMCQ(q);
       else if (q.type === 'truefalse') renderTF(q);
       else if (q.type === 'fillblank') renderFill(q);
@@ -1355,16 +1236,13 @@
       else renderMCQ(q);
     }
 
-    /* ── MCQ ── */
     function renderMCQ(q) {
       document.getElementById('q-mcq-area').style.display = 'block';
       document.getElementById('mcq-question').textContent = q.question;
-      const cont = document.getElementById('mcq-options');
-      cont.innerHTML = '';
+      const cont = document.getElementById('mcq-options'); cont.innerHTML = '';
       q.options.forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.type = 'button';
+        btn.className = 'opt-btn'; btn.type = 'button';
         btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span class="opt-text">${opt.replace(/^[A-D]\)\s*/, '')}</span>`;
         btn.addEventListener('click', () => handleMCQ(i, q, cont));
         cont.appendChild(btn);
@@ -1372,60 +1250,40 @@
     }
 
     function handleMCQ(idx, q, cont) {
-      if (answered) return;
-      answered = true;
-      const btns = cont.querySelectorAll('.opt-btn');
-      btns.forEach(b => b.disabled = true);
-      const isRight = idx === q.correct_index;
-      btns[idx].classList.add(isRight ? 'opt-ok' : 'opt-err');
-      if (!isRight) btns[q.correct_index].classList.add('opt-ok');
-      showFeedback(isRight, q.explanation, q);
+      if (answered) return; answered = true;
+      const btns = cont.querySelectorAll('.opt-btn'); btns.forEach(b => b.disabled = true);
+      const ok = idx === q.correct_index;
+      btns[idx].classList.add(ok ? 'opt-ok' : 'opt-err');
+      if (!ok) btns[q.correct_index].classList.add('opt-ok');
+      showFeedback(ok, q.explanation, q);
     }
 
-    /* ── TRUEFALSE ── */
     function renderTF(q) {
       document.getElementById('q-tf-area').style.display = 'block';
       document.getElementById('tf-statement').textContent = q.statement;
-      const trueBtn = document.getElementById('tf-true');
-      const falseBtn = document.getElementById('tf-false');
-      trueBtn.disabled = false;
-      falseBtn.disabled = false;
-      trueBtn.className = 'tf-btn tf-true';
-      falseBtn.className = 'tf-btn tf-false';
-      trueBtn.onclick = () => handleTF(true, q);
-      falseBtn.onclick = () => handleTF(false, q);
+      const t = document.getElementById('tf-true'), f = document.getElementById('tf-false');
+      t.disabled = false; f.disabled = false;
+      t.className = 'tf-btn tf-true'; f.className = 'tf-btn tf-false';
+      t.onclick = () => handleTF(true, q); f.onclick = () => handleTF(false, q);
     }
 
-    function handleTF(selected, q) {
-      if (answered) return;
-      answered = true;
-      const trueBtn = document.getElementById('tf-true');
-      const falseBtn = document.getElementById('tf-false');
-      trueBtn.disabled = true;
-      falseBtn.disabled = true;
-      const isRight = selected === q.correct;
-      if (selected) {
-        trueBtn.classList.add(isRight ? 'opt-ok' : 'opt-err');
-        if (!isRight) falseBtn.classList.add('opt-ok');
-      } else {
-        falseBtn.classList.add(isRight ? 'opt-ok' : 'opt-err');
-        if (!isRight) trueBtn.classList.add('opt-ok');
-      }
-      showFeedback(isRight, q.explanation, q);
+    function handleTF(sel, q) {
+      if (answered) return; answered = true;
+      const t = document.getElementById('tf-true'), f = document.getElementById('tf-false');
+      t.disabled = true; f.disabled = true;
+      const ok = sel === q.correct;
+      if (sel) { t.classList.add(ok ? 'opt-ok' : 'opt-err'); if (!ok) f.classList.add('opt-ok'); }
+      else { f.classList.add(ok ? 'opt-ok' : 'opt-err'); if (!ok) t.classList.add('opt-ok'); }
+      showFeedback(ok, q.explanation, q);
     }
 
-    /* ── FILLBLANK ── */
     function renderFill(q) {
       document.getElementById('q-fill-area').style.display = 'block';
-      const sentEl = document.getElementById('fill-sentence');
-      sentEl.innerHTML = q.sentence.replace(/___/g,
-        '<span class="fill-blank" id="fill-blank-span"></span>');
-      const cont = document.getElementById('fill-options');
-      cont.innerHTML = '';
+      document.getElementById('fill-sentence').innerHTML = q.sentence.replace(/___/g, '<span class="fill-blank" id="fill-blank-span"></span>');
+      const cont = document.getElementById('fill-options'); cont.innerHTML = '';
       q.options.forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.type = 'button';
+        btn.className = 'opt-btn'; btn.type = 'button';
         btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span><span class="opt-text">${opt.replace(/^[A-D]\)\s*/, '')}</span>`;
         btn.addEventListener('click', () => handleFill(i, q, cont));
         cont.appendChild(btn);
@@ -1433,192 +1291,109 @@
     }
 
     function handleFill(idx, q, cont) {
-      if (answered) return;
-      answered = true;
-      const btns = cont.querySelectorAll('.opt-btn');
-      btns.forEach(b => b.disabled = true);
-      const isRight = idx === q.correct_index;
-      btns[idx].classList.add(isRight ? 'opt-ok' : 'opt-err');
-      if (!isRight) btns[q.correct_index].classList.add('opt-ok');
-      const blankEl = document.getElementById('fill-blank-span');
-      if (blankEl) {
-        blankEl.textContent = q.options[q.correct_index].replace(/^[A-D]\)\s*/, '');
-        blankEl.classList.add(isRight ? 'filled' : 'wrong-fill');
-      }
-      showFeedback(isRight, q.explanation, q);
+      if (answered) return; answered = true;
+      const btns = cont.querySelectorAll('.opt-btn'); btns.forEach(b => b.disabled = true);
+      const ok = idx === q.correct_index;
+      btns[idx].classList.add(ok ? 'opt-ok' : 'opt-err');
+      if (!ok) btns[q.correct_index].classList.add('opt-ok');
+      const bl = document.getElementById('fill-blank-span');
+      if (bl) { bl.textContent = q.options[q.correct_index].replace(/^[A-D]\)\s*/, ''); bl.classList.add(ok ? 'filled' : 'wrong-fill'); }
+      showFeedback(ok, q.explanation, q);
     }
 
-    /* ── MATCHING ── */
     function renderMatch(q) {
       document.getElementById('q-match-area').style.display = 'block';
-      document.getElementById('match-instruction').textContent =
-        q.instruction || 'Terimleri tanımlarıyla eşleştir';
-      matchSelected = null;
-      matchPairs = [...q.pairs];
-      matchDone = 0;
-      matchWrong = false;
-      matchPenaltyApplied = false;
+      document.getElementById('match-instruction').textContent = q.instruction || '{{ _("Terimleri tanımlarıyla eşleştir") }}';
+      matchSelected = null; matchPairs = [...q.pairs]; matchDone = 0; matchWrong = false;
       updateMatchProgress(q.pairs.length);
-
-      const leftCont = document.getElementById('match-left');
-      const rightCont = document.getElementById('match-right');
-      leftCont.innerHTML = '';
-      rightCont.innerHTML = '';
-
+      const lc = document.getElementById('match-left'), rc = document.getElementById('match-right');
+      lc.innerHTML = ''; rc.innerHTML = '';
       q.pairs.forEach((pair, i) => {
         const el = document.createElement('div');
-        el.className = 'match-item left-item';
-        el.textContent = pair.left;
-        el.dataset.idx = i;
-        el.addEventListener('click', () => selectLeft(el, i));
-        leftCont.appendChild(el);
+        el.className = 'match-item left-item'; el.textContent = pair.left; el.dataset.idx = i;
+        el.addEventListener('click', () => selectLeft(el, i)); lc.appendChild(el);
       });
-
-      const shuffled = [...q.pairs.map((p, i) => ({ ...p, origIdx: i }))]
-        .sort(() => Math.random() - 0.5);
-      shuffled.forEach(pair => {
+      const sh = [...q.pairs.map((p, i) => ({ ...p, origIdx: i }))].sort(() => Math.random() - .5);
+      sh.forEach(pair => {
         const el = document.createElement('div');
-        el.className = 'match-item right-item';
-        el.textContent = pair.right;
-        el.dataset.origIdx = pair.origIdx;
-        el.addEventListener('click', () => selectRight(el, q));
-        rightCont.appendChild(el);
+        el.className = 'match-item right-item'; el.textContent = pair.right; el.dataset.origIdx = pair.origIdx;
+        el.addEventListener('click', () => selectRight(el, q)); rc.appendChild(el);
       });
     }
 
     function updateMatchProgress(total) {
-      document.getElementById('match-progress').innerHTML =
-        `<span>${matchDone}</span>/${total} eşleşti`;
+      document.getElementById('match-progress').innerHTML = `<span>${matchDone}</span>/${total} {{ _("eşleşti") }}`;
     }
 
     function selectLeft(el, idx) {
       if (el.classList.contains('matched-ok') || el.classList.contains('disabled-match')) return;
       document.querySelectorAll('#match-left .match-item').forEach(e => e.classList.remove('selected-left'));
-      matchSelected = idx;
-      el.classList.add('selected-left');
+      matchSelected = idx; el.classList.add('selected-left');
     }
 
     function selectRight(el, q) {
       if (matchSelected === null) return;
       if (el.classList.contains('matched-ok') || el.classList.contains('disabled-match')) return;
-      const rightIdx = parseInt(el.dataset.origIdx);
-      const isRight = rightIdx === matchSelected;
-      const leftEl = document.querySelectorAll('#match-left .match-item')[matchSelected];
-
-      if (isRight) {
-        leftEl.classList.remove('selected-left');
-        leftEl.classList.add('matched-ok', 'disabled-match');
-        el.classList.add('matched-ok', 'disabled-match');
-        matchDone++;
+      const ri = parseInt(el.dataset.origIdx), ok = ri === matchSelected;
+      const le = document.querySelectorAll('#match-left .match-item')[matchSelected];
+      if (ok) {
+        le.classList.remove('selected-left'); le.classList.add('matched-ok', 'disabled-match');
+        el.classList.add('matched-ok', 'disabled-match'); matchDone++;
         updateMatchProgress(matchPairs.length);
         if (matchDone === matchPairs.length) {
           answered = true;
-          showFeedback(!matchWrong,
-            matchWrong
-              ? 'Bazı eşleştirmeleri yanlış yaptın ama sonunda tamamladın.'
-              : 'Tüm eşleştirmeleri doğru yaptın!',
-            q);
+          showFeedback(!matchWrong, matchWrong ? '{{ _("Bazı eşleştirmeleri yanlış yaptın ama sonunda tamamladın.") }}' : '{{ _("Tüm eşleştirmeleri doğru yaptın!") }}', q);
         }
       } else {
-        leftEl.classList.remove('selected-left');
-        el.classList.add('matched-err');
+        le.classList.remove('selected-left'); el.classList.add('matched-err');
         setTimeout(() => el.classList.remove('matched-err'), 600);
-        matchWrong = true;
-        matchSelected = null;
+        matchWrong = true; matchSelected = null;
       }
     }
 
-    /* ── FEEDBACK ── */
-    function showFeedback(isRight, explanation, q) {
+    function showFeedback(ok, explanation, q) {
       const fb = document.getElementById('duo-feedback');
-      const fbIcon = document.getElementById('fb-icon');
-      const fbTitle = document.getElementById('fb-title');
-      const fbExpl = document.getElementById('fb-expl');
-
-      if (isRight) {
-        fb.className = 'duo-feedback fb-ok show';
-        fbIcon.textContent = '✅';
-        fbTitle.textContent = 'Doğru!';
-        totalCorrect++;
-      } else {
-        fb.className = 'duo-feedback fb-err show';
-        fbIcon.textContent = '❌';
-        fbTitle.textContent = 'Yanlış!';
-        totalWrong++;
-        wrongQueue.push(q);
-        // Her yanlışta başarı oranını düşür (toplam soruya göre dinamik düşüş)
-        const penalty = totalQ > 0 ? Math.round(100 / totalQ) : 10;
-        accuracyPct = Math.max(0, accuracyPct - penalty);
-      }
-
-      fbExpl.textContent = explanation || '';
+      document.getElementById('fb-icon').textContent = ok ? '✅' : '❌';
+      document.getElementById('fb-title').textContent = ok ? '{{ _("Doğru!") }}' : '{{ _("Yanlış!") }}';
+      fb.className = `duo-feedback ${ok ? 'fb-ok' : 'fb-err'} show`;
+      document.getElementById('fb-expl').textContent = explanation || '';
+      if (ok) { totalCorrect++; }
+      else { totalWrong++; wrongQueue.push(q); const p = totalQ > 0 ? Math.round(100 / totalQ) : 10; accuracyPct = Math.max(0, accuracyPct - p); }
       document.getElementById('btn-next-wrap').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('btn-next-wrap')
-          .scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 200);
+      setTimeout(() => document.getElementById('btn-next-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
     }
 
     btnNext.addEventListener('click', nextQuestion);
 
-    /* ── TEKRAR TURU ── */
     function showReview() {
-      inReview = true;
-      queue = [...wrongQueue];
-      wrongQueue = [];
-      document.getElementById('review-badge').textContent =
-        `${queue.length} soru tekrar edilecek`;
+      inReview = true; queue = [...wrongQueue]; wrongQueue = [];
+      document.getElementById('review-badge').textContent = `${queue.length} {{ _("soru tekrar edilecek") }}`;
       show('screen-review');
     }
     btnReview.addEventListener('click', nextQuestion);
 
-    /* ── TAMAMLANDI ── */
     function showComplete() {
-      const elapsedSecs = stopTimer();
-      const score = calcScore(totalCorrect, totalQ, elapsedSecs);
-
-      document.getElementById('st-time').textContent = formatTime(elapsedSecs);
+      const el = stopTimer(), score = calcScore(totalCorrect, totalQ, el);
+      document.getElementById('st-time').textContent = formatTime(el);
       document.getElementById('complete-xp').textContent = `+${score} XP`;
-
-      // Başarı oranı barı — zaten gerçek zamanlı düşmüş değeri göster
       document.getElementById('rate-pct').textContent = `%${accuracyPct}`;
-      // Bar rengi: %80+ yeşil, %50-79 sarı, <%50 kırmızı
-      const fillEl = document.getElementById('rate-fill');
-      fillEl.style.background = accuracyPct >= 80
-        ? 'linear-gradient(90deg,var(--p),var(--a))'
-        : accuracyPct >= 50
-          ? 'linear-gradient(90deg,#ffb84d,#ff8c4b)'
-          : 'linear-gradient(90deg,var(--r),#ff8c4b)';
-      setTimeout(() => { fillEl.style.width = accuracyPct + '%'; }, 300);
-
-      pbar.style.width = '100%';
-      pbarLabel.textContent = `${totalQ}/${totalQ}`;
-      timerEl.textContent = formatTime(elapsedSecs);
-
-      btnFinish.dataset.score = score;
-      btnFinish.dataset.wrong = totalWrong;
-      btnFinish.dataset.elapsed = elapsedSecs;
+      const fill = document.getElementById('rate-fill');
+      fill.style.background = accuracyPct >= 80 ? 'linear-gradient(90deg,var(--p),var(--a))' : accuracyPct >= 50 ? 'linear-gradient(90deg,#ffb84d,#ff8c4b)' : 'linear-gradient(90deg,var(--r),#ff8c4b)';
+      setTimeout(() => { fill.style.width = accuracyPct + '%'; }, 300);
+      pbar.style.width = '100%'; pbarLabel.textContent = `${totalQ}/${totalQ}`; timerEl.textContent = formatTime(el);
+      btnFinish.dataset.score = score; btnFinish.dataset.wrong = totalWrong;
       show('screen-complete');
     }
 
-    /* ── KAYDET ── */
     btnFinish.addEventListener('click', () => {
       btnFinish.disabled = true;
-      btnFinish.innerHTML = '<i class="bi bi-hourglass-split"></i> Kaydediliyor...';
+      btnFinish.innerHTML = '<i class="bi bi-hourglass-split"></i> {{ _("Kaydediliyor...") }}';
       const form = document.createElement('form');
       form.method = 'POST'; form.action = completeUrl; form.style.display = 'none';
-      [['csrf_token', csrfToken],
-      ['ai_score', btnFinish.dataset.score],
-      ['wrong_count', btnFinish.dataset.wrong]]
-        .forEach(([n, v]) => {
-          const inp = document.createElement('input');
-          inp.type = 'hidden'; inp.name = n; inp.value = v;
-          form.appendChild(inp);
-        });
-      document.body.appendChild(form);
-      form.submit();
+      [['csrf_token', csrfToken], ['ai_score', btnFinish.dataset.score], ['wrong_count', btnFinish.dataset.wrong]]
+        .forEach(([n, v]) => { const i = document.createElement('input'); i.type = 'hidden'; i.name = n; i.value = v; form.appendChild(i); });
+      document.body.appendChild(form); form.submit();
     });
-
   })();
 </script>
 {% endblock %}

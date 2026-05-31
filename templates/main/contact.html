@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}İletişim — CyberLearn.io{% endblock %}
+{% block title %}{{ _('İletişim') }} — CyberLearn.io{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -48,7 +48,6 @@
         line-height: 1.8;
     }
 
-    /* İletişim grid */
     .contact-grid {
         display: grid;
         grid-template-columns: 1fr 1.6fr;
@@ -56,7 +55,6 @@
         margin-bottom: 2rem;
     }
 
-    /* Sol panel — kanal kartları */
     .contact-channels {
         display: flex;
         flex-direction: column;
@@ -122,7 +120,6 @@
         line-height: 1.5;
     }
 
-    /* Sağ panel — form */
     .contact-form-card {
         background: var(--surface);
         border: 1px solid var(--edge);
@@ -212,7 +209,6 @@
         margin-bottom: 0;
     }
 
-    /* Gönderildi mesajı */
     .contact-success {
         display: none;
         text-align: center;
@@ -237,7 +233,6 @@
         color: var(--txt2);
     }
 
-    /* GitHub banner */
     .github-banner {
         background: linear-gradient(135deg, rgba(110, 91, 255, .06), rgba(0, 245, 196, .04));
         border: 1px solid rgba(110, 91, 255, .18);
@@ -291,23 +286,20 @@
 {% block content %}
 <div class="static-wrap">
 
-    <!-- Hero -->
     <div class="static-hero cl-reveal">
-        <div class="static-hero-badge"><i class="bi bi-envelope-heart"></i> İletişim</div>
-        <h1>Bir sorun mu var?<br><span class="cl-glow-text">Konuşalım.</span></h1>
-        <p>Geri bildirim, hata bildirimi veya öneri için buradayız. Her mesaj okunur.</p>
+        <div class="static-hero-badge"><i class="bi bi-envelope-heart"></i> {{ _('İletişim') }}</div>
+        <h1>{{ _('Bir sorun mu var?') }}<br><span class="cl-glow-text">{{ _('Konuşalım.') }}</span></h1>
+        <p>{{ _('Geri bildirim, hata bildirimi veya öneri için buradayız. Her mesaj okunur.') }}</p>
     </div>
 
-    <!-- Grid -->
     <div class="contact-grid">
 
-        <!-- Sol: Kanallar -->
         <div class="contact-channels">
             <a href="mailto:support@cyberlearn.io" class="channel-card cl-reveal">
                 <div class="channel-icon p"><i class="bi bi-envelope-fill"></i></div>
                 <div>
-                    <h4>E-posta</h4>
-                    <p>support@cyberlearn.io — Genellikle 24 saat içinde yanıt veririz.</p>
+                    <h4>{{ _('E-posta') }}</h4>
+                    <p>support@cyberlearn.io — {{ _('Genellikle 24 saat içinde yanıt veririz.') }}</p>
                 </div>
             </a>
             <a href="https://github.com/ahmetilterinci/Gazi_BLG106_Final" target="_blank" rel="noopener"
@@ -315,78 +307,76 @@
                 <div class="channel-icon a"><i class="bi bi-github"></i></div>
                 <div>
                     <h4>GitHub</h4>
-                    <p>Bug raporu veya özellik isteği için Issues açabilirsin.</p>
+                    <p>{{ _('Bug raporu veya özellik isteği için Issues açabilirsin.') }}</p>
                 </div>
             </a>
             <div class="channel-card cl-reveal" style="transition-delay:.1s; cursor:default;">
                 <div class="channel-icon w"><i class="bi bi-clock-fill"></i></div>
                 <div>
-                    <h4>Yanıt Süresi</h4>
-                    <p>Hafta içi: 24 saat<br>Hafta sonu: 48 saat</p>
+                    <h4>{{ _('Yanıt Süresi') }}</h4>
+                    <p>{{ _('Hafta içi: 24 saat') }}<br>{{ _('Hafta sonu: 48 saat') }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Sağ: Form -->
         <div class="contact-form-card cl-reveal" style="transition-delay:.05s">
             <div id="contact-form-wrap">
-                <div class="contact-form-title"><i class="bi bi-pencil-square"></i> Mesaj Gönder</div>
+                <div class="contact-form-title"><i class="bi bi-pencil-square"></i> {{ _('Mesaj Gönder') }}</div>
 
                 <div class="field-row">
                     <div class="field-group">
-                        <label class="field-label" for="c-name">Ad Soyad</label>
+                        <label class="field-label" for="c-name">{{ _('Ad Soyad') }}</label>
                         <input type="text" id="c-name" class="field-input" placeholder="Ada Lovelace" />
                     </div>
                     <div class="field-group">
-                        <label class="field-label" for="c-email">E-posta</label>
+                        <label class="field-label" for="c-email">{{ _('E-posta') }}</label>
                         <input type="email" id="c-email" class="field-input" placeholder="ada@example.com"
                             value="{{ current_user.email if current_user.is_authenticated else '' }}" />
                     </div>
                 </div>
 
                 <div class="field-group">
-                    <label class="field-label" for="c-subject">Konu</label>
+                    <label class="field-label" for="c-subject">{{ _('Konu') }}</label>
                     <select id="c-subject" class="field-select">
-                        <option value="">Konu seçin...</option>
-                        <option value="bug">🐛 Hata Bildirimi</option>
-                        <option value="feature">💡 Özellik Önerisi</option>
-                        <option value="content">📚 İçerik Hakkında</option>
-                        <option value="account">👤 Hesap Sorunu</option>
-                        <option value="other">💬 Diğer</option>
+                        <option value="">{{ _('Konu seçin...') }}</option>
+                        <option value="bug">🐛 {{ _('Hata Bildirimi') }}</option>
+                        <option value="feature">💡 {{ _('Özellik Önerisi') }}</option>
+                        <option value="content">📚 {{ _('İçerik Hakkında') }}</option>
+                        <option value="account">👤 {{ _('Hesap Sorunu') }}</option>
+                        <option value="other">💬 {{ _('Diğer') }}</option>
                     </select>
                 </div>
 
                 <div class="field-group">
-                    <label class="field-label" for="c-message">Mesaj</label>
-                    <textarea id="c-message" class="field-textarea" placeholder="Mesajını buraya yaz..."></textarea>
+                    <label class="field-label" for="c-message">{{ _('Mesaj') }}</label>
+                    <textarea id="c-message" class="field-textarea"
+                        placeholder="{{ _('Mesajını buraya yaz...') }}"></textarea>
                 </div>
 
                 <button type="button" class="cl-btn-primary" id="btn-send" style="width:100%;justify-content:center;">
-                    <i class="bi bi-send"></i> Gönder
+                    <i class="bi bi-send"></i> {{ _('Gönder') }}
                 </button>
             </div>
 
-            <!-- Başarı mesajı -->
             <div class="contact-success" id="contact-success">
                 <div class="contact-success-icon">🎉</div>
-                <h3>Mesajın Alındı!</h3>
-                <p>En kısa sürede geri döneceğiz. Teşekkürler!</p>
+                <h3>{{ _('Mesajın Alındı!') }}</h3>
+                <p>{{ _('En kısa sürede geri döneceğiz. Teşekkürler!') }}</p>
             </div>
         </div>
 
     </div>
 
-    <!-- GitHub banner -->
     <div class="github-banner cl-reveal">
         <div class="github-banner-icon">🛠️</div>
         <div class="github-banner-text">
-            <h3>Açık Kaynak</h3>
-            <p>Bu proje açık kaynaktır. Katkıda bulunmak, bug bildirmek veya kodu incelemek için GitHub'ı ziyaret
-                edebilirsin.</p>
+            <h3>{{ _('Açık Kaynak') }}</h3>
+            <p>{{ _('Bu proje açık kaynaktır. Katkıda bulunmak, bug bildirmek veya kodu incelemek için GitHub\'ı ziyaret
+                edebilirsin.') }}</p>
         </div>
         <a href="https://github.com/ahmetilterinci/Gazi_BLG106_Final" target="_blank" rel="noopener"
             class="cl-btn-ghost" style="flex-shrink:0;">
-            <i class="bi bi-github"></i> GitHub'a Git
+            <i class="bi bi-github"></i> {{ _("GitHub'a Git") }}
         </a>
     </div>
 
@@ -399,17 +389,13 @@
         const name = document.getElementById('c-name').value.trim();
         const email = document.getElementById('c-email').value.trim();
         const message = document.getElementById('c-message').value.trim();
-
         if (!name || !email || !message) {
-            // Basit validasyon
             [['c-name', name], ['c-email', email], ['c-message', message]].forEach(([id, val]) => {
                 const el = document.getElementById(id);
                 el.style.borderColor = val ? '' : 'rgba(255,61,107,.5)';
             });
             return;
         }
-
-        // Simüle et — gerçek backend olmadığı için
         document.getElementById('contact-form-wrap').style.display = 'none';
         document.getElementById('contact-success').style.display = 'block';
     });

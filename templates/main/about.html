@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Hakkında — CyberLearn.io{% endblock %}
+{% block title %}{{ _('Hakkında') }} — CyberLearn.io{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -251,88 +251,85 @@
 {% block content %}
 <div class="static-wrap">
 
-    <!-- Hero -->
     <div class="static-hero cl-reveal">
-        <div class="static-hero-badge"><i class="bi bi-shield-shaded"></i> Hakkımızda</div>
-        <h1>Siber güvenliği<br><span class="cl-glow-text">herkes için</span> erişilebilir kılıyoruz.</h1>
-        <p>CyberLearn.io, Duolingo'nun bağımlılık yapıcı öğrenme modelini siber güvenlik eğitimiyle birleştiren AI
-            destekli bir platformdur.</p>
+        <div class="static-hero-badge"><i class="bi bi-shield-shaded"></i> {{ _('Hakkımızda') }}</div>
+        <h1>{{ _('Siber güvenliği') }}<br><span class="cl-glow-text">{{ _('herkes için') }}</span> {{ _('erişilebilir
+            kılıyoruz.') }}</h1>
+        <p>{{ _('CyberLearn.io, Duolingo\'nun bağımlılık yapıcı öğrenme modelini siber güvenlik eğitimiyle birleştiren
+            AI destekli bir platformdur.') }}</p>
     </div>
 
-    <!-- Hikaye -->
     <div class="about-story cl-reveal">
-        <div class="about-story-label"><i class="bi bi-book"></i> Hikayemiz</div>
-        <h2>Neden CyberLearn.io?</h2>
-        <p>Siber güvenlik eğitimi yıllarca erişilmesi zor, pahalı ve sıkıcı materyallerle doluydu. Temel kavramlar bile
-            ezberletme mantığıyla öğretilirken, gerçek dünya saldırıları her geçen gün daha sofistike hale geliyordu.
-        </p>
-        <p>Biz buna farklı bir çözüm bulduk: yapay zekanın kişiselleştirme gücünü, oyunlaştırmanın motivasyon etkisiyle
-            birleştirmek. Her kullanıcı kendi hızında ilerleyebilir, AI zayıf noktaları tespit ederek özel sorular
-            üretir ve her doğru cevap yeni bir dünyayı açar.</p>
-        <p>Hedefimiz, siber güvenlik eğitimini bir oyun kadar eğlenceli, bir bootcamp kadar etkili hale getirmek.</p>
+        <div class="about-story-label"><i class="bi bi-book"></i> {{ _('Hikayemiz') }}</div>
+        <h2>{{ _('Neden CyberLearn.io?') }}</h2>
+        <p>{{ _('Siber güvenlik eğitimi yıllarca erişilmesi zor, pahalı ve sıkıcı materyallerle doluydu. Temel kavramlar
+            bile ezberletme mantığıyla öğretilirken, gerçek dünya saldırıları her geçen gün daha sofistike hale
+            geliyordu.') }}</p>
+        <p>{{ _('Biz buna farklı bir çözüm bulduk: yapay zekanın kişiselleştirme gücünü, oyunlaştırmanın motivasyon
+            etkisiyle birleştirmek. Her kullanıcı kendi hızında ilerleyebilir, AI zayıf noktaları tespit ederek özel
+            sorular üretir ve her doğru cevap yeni bir dünyayı açar.') }}</p>
+        <p>{{ _('Hedefimiz, siber güvenlik eğitimini bir oyun kadar eğlenceli, bir bootcamp kadar etkili hale
+            getirmek.') }}</p>
     </div>
 
-    <!-- Özellik kartları -->
     <div class="about-grid">
         <div class="about-card cl-reveal" style="transition-delay:.05s">
             <div class="about-card-icon p"><i class="bi bi-robot" style="color:var(--p)"></i></div>
-            <h3>AI Destekli Öğrenme</h3>
-            <p>Gemini tabanlı quiz sistemi seviyeni analiz eder, zayıf noktaları tespit eder ve sana özel sorular
-                üretir. Her oturum farklı, her soru anlamlıdır.</p>
+            <h3>{{ _('AI Destekli Öğrenme') }}</h3>
+            <p>{{ _('Gemini tabanlı quiz sistemi seviyeni analiz eder, zayıf noktaları tespit eder ve sana özel sorular
+                üretir. Her oturum farklı, her soru anlamlıdır.') }}</p>
         </div>
         <div class="about-card cl-reveal" style="transition-delay:.1s">
             <div class="about-card-icon a"><i class="bi bi-map" style="color:var(--a)"></i></div>
-            <h3>Dünya Sistemi</h3>
-            <p>Eğlenceli dünya kilit sistemi sayesinde temel kavramları bitirmeden ileri konulara
-                geçemezsin. Sıralı öğrenme, kalıcı bilgi.</p>
+            <h3>{{ _('Dünya Sistemi') }}</h3>
+            <p>{{ _('Eğlenceli dünya kilit sistemi sayesinde temel kavramları bitirmeden ileri konulara geçemezsin.
+                Sıralı öğrenme, kalıcı bilgi.') }}</p>
         </div>
         <div class="about-card cl-reveal" style="transition-delay:.15s">
             <div class="about-card-icon r"><i class="bi bi-shield-lock" style="color:var(--r)"></i></div>
-            <h3>Gerçek Dünya İçeriği</h3>
-            <p>Ağ güvenliği, kriptografi, SQL injection, XSS ve daha fazlası. İçerikler OWASP ve endüstri standartlarına
-                uygun hazırlanmıştır.</p>
+            <h3>{{ _('Gerçek Dünya İçeriği') }}</h3>
+            <p>{{ _('Ağ güvenliği, kriptografi, SQL injection, XSS ve daha fazlası. İçerikler OWASP ve endüstri
+                standartlarına uygun hazırlanmıştır.') }}</p>
         </div>
         <div class="about-card cl-reveal" style="transition-delay:.2s">
             <div class="about-card-icon w"><i class="bi bi-trophy" style="color:var(--w)"></i></div>
-            <h3>İlerleme Takibi</h3>
-            <p>Her tamamlanan ders XP kazandırır, puan tablosunda yükselir ve profilinde birikir. Motivasyonu canlı
-                tutmak için tasarlandı.</p>
+            <h3>{{ _('İlerleme Takibi') }}</h3>
+            <p>{{ _('Her tamamlanan ders XP kazandırır, puan tablosunda yükselir ve profilinde birikir. Motivasyonu
+                canlı tutmak için tasarlandı.') }}</p>
         </div>
     </div>
 
-    <!-- İstatistikler -->
     <div class="stat-band cl-reveal">
         <div class="stat-band-item">
             <span class="stat-band-num">3+</span>
-            <div class="stat-band-lbl">Dünya</div>
+            <div class="stat-band-lbl">{{ _('Dünya') }}</div>
         </div>
         <div class="stat-band-item">
             <span class="stat-band-num">9+</span>
-            <div class="stat-band-lbl">Ders Modülü</div>
+            <div class="stat-band-lbl">{{ _('Ders Modülü') }}</div>
         </div>
         <div class="stat-band-item">
             <span class="stat-band-num">4</span>
-            <div class="stat-band-lbl">Soru Tipi</div>
+            <div class="stat-band-lbl">{{ _('Soru Tipi') }}</div>
         </div>
         <div class="stat-band-item">
             <span class="stat-band-num">GEMINI AI</span>
-            <div class="stat-band-lbl">Destekli Quiz</div>
+            <div class="stat-band-lbl">{{ _('Destekli Quiz') }}</div>
         </div>
     </div>
 
-    <!-- CTA -->
     <div class="cta-band cl-reveal">
-        <h2>Hazır mısın?</h2>
-        <p>Ücretsiz kayıt ol, ilk dersin 5 dakika içinde seni bekliyor.</p>
+        <h2>{{ _('Hazır mısın?') }}</h2>
+        <p>{{ _('Ücretsiz kayıt ol, ilk dersin 5 dakika içinde seni bekliyor.') }}</p>
         <div class="cta-band-actions">
             {% if current_user.is_authenticated %}
-            <a href="{{ url_for('main.index') }}" class="cl-btn-primary"><i class="bi bi-map"></i> Öğrenme Yoluna
-                Dön</a>
+            <a href="{{ url_for('main.index') }}" class="cl-btn-primary"><i class="bi bi-map"></i> {{ _('Öğrenme Yoluna
+                Dön') }}</a>
             {% else %}
-            <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i>
-                Ücretsiz Başla</a>
-            <a href="{{ url_for('main.faq') }}" class="cl-btn-ghost"><i class="bi bi-question-circle"></i> S.S.S.'ye
-                Bak</a>
+            <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i> {{
+                _('Ücretsiz Başla') }}</a>
+            <a href="{{ url_for('main.faq') }}" class="cl-btn-ghost"><i class="bi bi-question-circle"></i> {{
+                _("S.S.S.'ye Bak") }}</a>
             {% endif %}
         </div>
     </div>

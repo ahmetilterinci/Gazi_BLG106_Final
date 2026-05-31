@@ -1,0 +1,1395 @@
+# Turkish translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-06-01 02:37+0300\n"
+"PO-Revision-Date: 2026-06-01 02:37+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: tr\n"
+"Language-Team: tr <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: templates/base.html:8
+msgid "CyberLearn.io — Eğlenceli ve AI destekli siber güvenlik öğrenme platformu."
+msgstr ""
+
+#: templates/base.html:1076
+msgid "Sayfanın başına dön"
+msgstr ""
+
+#: templates/base.html:1076
+msgid "Başa dön"
+msgstr ""
+
+#: templates/base.html:1080
+msgid "Ana menü"
+msgstr ""
+
+#: templates/base.html:1081
+msgid "ana sayfa"
+msgstr ""
+
+#: templates/base.html:1088 templates/base.html:1175
+msgid "Ana Sayfa"
+msgstr ""
+
+#: templates/base.html:1090 templates/base.html:1183
+#: templates/main/about.html:2
+msgid "Hakkında"
+msgstr ""
+
+#: templates/base.html:1092 templates/base.html:1185
+#: templates/main/contact.html:2 templates/main/contact.html:290
+msgid "İletişim"
+msgstr ""
+
+#: templates/base.html:1099
+msgid "Dil değiştir"
+msgstr ""
+
+#: templates/base.html:1107 templates/base.html:1108
+msgid "Tema değiştir"
+msgstr ""
+
+#: templates/base.html:1114 templates/main/profile.html:3
+#: templates/main/profile.html:588
+msgid "Profil"
+msgstr ""
+
+#: templates/base.html:1119
+msgid "Çıkış"
+msgstr ""
+
+#: templates/auth/login.html:3 templates/auth/login.html:345
+#: templates/auth/register.html:393 templates/base.html:1123
+#: templates/errors/404.html:517 templates/main/lesson_detail.html:1121
+msgid "Giriş Yap"
+msgstr ""
+
+#: templates/auth/login.html:351 templates/auth/register.html:3
+#: templates/auth/register.html:387 templates/base.html:1126
+#: templates/errors/404.html:520 templates/main/index.html:1773
+msgid "Kayıt Ol"
+msgstr ""
+
+#: templates/base.html:1130
+msgid "Menüyü aç"
+msgstr ""
+
+#: templates/base.html:1136
+msgid "Bildirimler"
+msgstr ""
+
+#: templates/base.html:1148
+msgid "Bildirimi kapat"
+msgstr ""
+
+#: templates/base.html:1169
+msgid ""
+"CyberLearn'ın eğlenceli öğrenme modeliyle siber güvenliği birleştiren "
+"yapay\n"
+"          zeka destekli öğrenme platformu."
+msgstr ""
+
+#: templates/base.html:1173 templates/main/faq.html:177
+msgid "Platform"
+msgstr ""
+
+#: templates/base.html:1176
+msgid "Senaryolar"
+msgstr ""
+
+#: templates/base.html:1177
+msgid "Rozetler"
+msgstr ""
+
+#: templates/base.html:1181
+msgid "Destek"
+msgstr ""
+
+#: templates/base.html:1184 templates/main/faq.html:2
+#: templates/main/faq.html:171
+msgid "S.S.S."
+msgstr ""
+
+#: templates/base.html:1189
+msgid "Hukuki"
+msgstr ""
+
+#: templates/base.html:1191
+msgid "Gizlilik"
+msgstr ""
+
+#: templates/base.html:1192
+msgid "Kullanım Şartları"
+msgstr ""
+
+#: templates/base.html:1193
+msgid "Çerezler"
+msgstr ""
+
+#: templates/base.html:1198
+msgid "Tüm hakları saklıdır."
+msgstr ""
+
+#: templates/auth/login.html:4
+msgid "CyberLearn.io hesabına giriş yap ve siber güvenlik öğrenimine devam et."
+msgstr ""
+
+#: templates/auth/login.html:297
+msgid "Tekrar Hoş Geldin"
+msgstr ""
+
+#: templates/auth/login.html:298
+msgid "Hesabına giriş yap, öğrenmeye devam et."
+msgstr ""
+
+#: templates/auth/login.html:301
+msgid "Giriş formu"
+msgstr ""
+
+#: templates/auth/login.html:309 templates/auth/register.html:338
+msgid "ornek@eposta.com"
+msgstr ""
+
+#: templates/auth/login.html:323
+msgid "Şifrenizi girin"
+msgstr ""
+
+#: templates/auth/login.html:325 templates/auth/register.html:354
+msgid "Şifreyi göster ya da gizle"
+msgstr ""
+
+#: templates/auth/login.html:343
+msgid "Giriş yap"
+msgstr ""
+
+#: templates/auth/login.html:350
+msgid "Henüz hesabın yok mu?"
+msgstr ""
+
+#: templates/auth/login.html:354 templates/auth/register.html:396
+msgid "Güvenlik bilgisi"
+msgstr ""
+
+#: templates/auth/login.html:356 templates/auth/register.html:398
+msgid "CSRF korumalı"
+msgstr ""
+
+#: templates/auth/login.html:356
+msgid "Şifreler hash'li saklanır"
+msgstr ""
+
+#: templates/auth/login.html:381
+msgid "Giriş yapılıyor…"
+msgstr ""
+
+#: templates/auth/register.html:4
+msgid ""
+"CyberLearn.io'ya kayıt ol, AI destekli siber güvenlik eğitimine ücretsiz "
+"başla."
+msgstr ""
+
+#: templates/auth/register.html:312
+msgid "Hesap Oluştur"
+msgstr ""
+
+#: templates/auth/register.html:313
+msgid "Siber güvenlik yolculuğuna"
+msgstr ""
+
+#: templates/auth/register.html:313
+msgid "ücretsiz"
+msgstr ""
+
+#: templates/auth/register.html:314
+msgid "başla."
+msgstr ""
+
+#: templates/auth/register.html:317
+msgid "Kayıt formu"
+msgstr ""
+
+#: templates/auth/register.html:325
+msgid "kullanici_adi"
+msgstr ""
+
+#: templates/auth/register.html:352
+msgid "En az 8 karakter"
+msgstr ""
+
+#: templates/auth/register.html:376
+msgid "Şifreyi tekrar girin"
+msgstr ""
+
+#: templates/auth/register.html:385
+msgid "Kayıt ol"
+msgstr ""
+
+#: templates/auth/register.html:392
+msgid "Zaten hesabın var mı?"
+msgstr ""
+
+#: templates/auth/register.html:398
+msgid "Ücretsiz"
+msgstr ""
+
+#: templates/auth/register.html:398
+msgid "Kredi kartı yok"
+msgstr ""
+
+#: templates/auth/register.html:433
+msgid "Zayıf"
+msgstr ""
+
+#: templates/auth/register.html:434 templates/main/index.html:1813
+#: templates/main/index.html:1816 templates/main/lesson_detail.html:985
+msgid "Orta"
+msgstr ""
+
+#: templates/auth/register.html:435
+msgid "Güçlü"
+msgstr ""
+
+#: templates/auth/register.html:450
+msgid "Kayıt yapılıyor…"
+msgstr ""
+
+#: templates/errors/404.html:3 templates/errors/404.html:499
+msgid "Sayfa Bulunamadı"
+msgstr ""
+
+#: templates/errors/404.html:4
+msgid "Aradığınız sayfa bulunamadı"
+msgstr ""
+
+#: templates/errors/404.html:500
+msgid ""
+"Aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir. "
+"Endişelenmeyin —\n"
+"        doğru yola döndürelim."
+msgstr ""
+
+#: templates/errors/404.html:504 templates/errors/500.html:533
+#: templates/main/lesson_detail.html:1109
+msgid "Ana Sayfaya Dön"
+msgstr ""
+
+#: templates/errors/404.html:507
+msgid "Geri Git"
+msgstr ""
+
+#: templates/errors/404.html:511
+msgid "Nereye gitmek istiyordunuz?"
+msgstr ""
+
+#: templates/errors/404.html:514
+msgid "Dersler"
+msgstr ""
+
+#: templates/errors/500.html:3 templates/errors/500.html:528
+msgid "Sunucu Hatası"
+msgstr ""
+
+#: templates/errors/500.html:4
+msgid "Beklenmedik bir sunucu hatası oluştu"
+msgstr ""
+
+#: templates/errors/500.html:526
+msgid "sistem ekibimiz bilgilendirildi"
+msgstr ""
+
+#: templates/errors/500.html:529
+msgid ""
+"Beklenmedik bir hata oluştu. Endişelenmeyin, ekibimiz konu hakkında "
+"bilgilendirildi.\n"
+"        Birkaç dakika sonra tekrar deneyin."
+msgstr ""
+
+#: templates/errors/500.html:536
+msgid "Yeniden Dene"
+msgstr ""
+
+#: templates/errors/500.html:542
+msgid "Ne yapmalıyım?"
+msgstr ""
+
+#: templates/errors/500.html:543
+msgid ""
+"Sayfayı yenilemeyi deneyin. Sorun devam ederse birkaç dakika bekleyip "
+"tekrar gelin. Sorun devam ederse\n"
+"          bize bildirin."
+msgstr ""
+
+#: templates/main/about.html:255
+msgid "Hakkımızda"
+msgstr ""
+
+#: templates/main/about.html:256
+msgid "Siber güvenliği"
+msgstr ""
+
+#: templates/main/about.html:256
+msgid "herkes için"
+msgstr ""
+
+#: templates/main/about.html:256
+msgid ""
+"erişilebilir\n"
+"            kılıyoruz."
+msgstr ""
+
+#: templates/main/about.html:258
+msgid ""
+"CyberLearn.io, Duolingo'nun bağımlılık yapıcı öğrenme modelini siber "
+"güvenlik eğitimiyle birleştiren\n"
+"            AI destekli bir platformdur."
+msgstr ""
+
+#: templates/main/about.html:263
+msgid "Hikayemiz"
+msgstr ""
+
+#: templates/main/about.html:264 templates/main/index.html:1702
+msgid "Neden CyberLearn.io?"
+msgstr ""
+
+#: templates/main/about.html:265
+msgid ""
+"Siber güvenlik eğitimi yıllarca erişilmesi zor, pahalı ve sıkıcı "
+"materyallerle doluydu. Temel kavramlar\n"
+"            bile ezberletme mantığıyla öğretilirken, gerçek dünya "
+"saldırıları her geçen gün daha sofistike hale\n"
+"            geliyordu."
+msgstr ""
+
+#: templates/main/about.html:268
+msgid ""
+"Biz buna farklı bir çözüm bulduk: yapay zekanın kişiselleştirme gücünü, "
+"oyunlaştırmanın motivasyon\n"
+"            etkisiyle birleştirmek. Her kullanıcı kendi hızında "
+"ilerleyebilir, AI zayıf noktaları tespit ederek özel\n"
+"            sorular üretir ve her doğru cevap yeni bir dünyayı açar."
+msgstr ""
+
+#: templates/main/about.html:271
+msgid ""
+"Hedefimiz, siber güvenlik eğitimini bir oyun kadar eğlenceli, bir "
+"bootcamp kadar etkili hale\n"
+"            getirmek."
+msgstr ""
+
+#: templates/main/about.html:278
+msgid "AI Destekli Öğrenme"
+msgstr ""
+
+#: templates/main/about.html:279
+msgid ""
+"Gemini tabanlı quiz sistemi seviyeni analiz eder, zayıf noktaları tespit "
+"eder ve sana özel sorular\n"
+"                üretir. Her oturum farklı, her soru anlamlıdır."
+msgstr ""
+
+#: templates/main/about.html:284
+msgid "Dünya Sistemi"
+msgstr ""
+
+#: templates/main/about.html:285
+msgid ""
+"Eğlenceli dünya kilit sistemi sayesinde temel kavramları bitirmeden ileri"
+" konulara geçemezsin.\n"
+"                Sıralı öğrenme, kalıcı bilgi."
+msgstr ""
+
+#: templates/main/about.html:290
+msgid "Gerçek Dünya İçeriği"
+msgstr ""
+
+#: templates/main/about.html:291
+msgid ""
+"Ağ güvenliği, kriptografi, SQL injection, XSS ve daha fazlası. İçerikler "
+"OWASP ve endüstri\n"
+"                standartlarına uygun hazırlanmıştır."
+msgstr ""
+
+#: templates/main/about.html:296
+msgid "İlerleme Takibi"
+msgstr ""
+
+#: templates/main/about.html:297
+msgid ""
+"Her tamamlanan ders XP kazandırır, puan tablosunda yükselir ve profilinde"
+" birikir. Motivasyonu\n"
+"                canlı tutmak için tasarlandı."
+msgstr ""
+
+#: templates/main/about.html:305 templates/main/index.html:1492
+#: templates/main/index.html:1512
+msgid "Dünya"
+msgstr ""
+
+#: templates/main/about.html:309 templates/main/index.html:1679
+#: templates/main/index.html:1845
+msgid "Ders Modülü"
+msgstr ""
+
+#: templates/main/about.html:313
+msgid "Soru Tipi"
+msgstr ""
+
+#: templates/main/about.html:317
+msgid "Destekli Quiz"
+msgstr ""
+
+#: templates/main/about.html:322 templates/main/index.html:1864
+msgid "Hazır mısın?"
+msgstr ""
+
+#: templates/main/about.html:323
+msgid "Ücretsiz kayıt ol, ilk dersin 5 dakika içinde seni bekliyor."
+msgstr ""
+
+#: templates/main/about.html:326
+msgid ""
+"Öğrenme Yoluna\n"
+"                Dön"
+msgstr ""
+
+#: templates/main/about.html:330 templates/main/index.html:1670
+msgid "Ücretsiz Başla"
+msgstr ""
+
+#: templates/main/about.html:332
+msgid "S.S.S.'ye Bak"
+msgstr ""
+
+#: templates/main/confirm_delete.html:3
+msgid "Silinsin mi?"
+msgstr ""
+
+#: templates/main/confirm_delete.html:163
+msgid "Tehlikeli İşlem"
+msgstr ""
+
+#: templates/main/confirm_delete.html:164
+msgid "Emin misiniz?"
+msgstr ""
+
+#: templates/main/confirm_delete.html:167
+msgid "Bu işlem geri alınamaz."
+msgstr ""
+
+#: templates/main/confirm_delete.html:167
+msgid "konusu ve konuya ait"
+msgstr ""
+
+#: templates/main/confirm_delete.html:168
+msgid "ders"
+msgstr ""
+
+#: templates/main/confirm_delete.html:168
+msgid "kalıcı olarak silinecektir."
+msgstr ""
+
+#: templates/main/confirm_delete.html:174
+msgid "Bu işlem geri alınamaz!"
+msgstr ""
+
+#: templates/main/confirm_delete.html:175
+msgid "Konuya ait tüm dersler ve kullanıcı ilerleme kayıtları da silinecektir."
+msgstr ""
+
+#: templates/main/confirm_delete.html:183
+msgid "Evet, Kalıcı Olarak Sil"
+msgstr ""
+
+#: templates/main/confirm_delete.html:187 templates/main/lesson_form.html:230
+#: templates/main/profile.html:744
+msgid "İptal"
+msgstr ""
+
+#: templates/main/contact.html:291
+msgid "Bir sorun mu var?"
+msgstr ""
+
+#: templates/main/contact.html:291
+msgid "Konuşalım."
+msgstr ""
+
+#: templates/main/contact.html:292
+msgid "Geri bildirim, hata bildirimi veya öneri için buradayız. Her mesaj okunur."
+msgstr ""
+
+#: templates/main/contact.html:301 templates/main/contact.html:332
+msgid "E-posta"
+msgstr ""
+
+#: templates/main/contact.html:302
+msgid "Genellikle 24 saat içinde yanıt veririz."
+msgstr ""
+
+#: templates/main/contact.html:310
+msgid "Bug raporu veya özellik isteği için Issues açabilirsin."
+msgstr ""
+
+#: templates/main/contact.html:316
+msgid "Yanıt Süresi"
+msgstr ""
+
+#: templates/main/contact.html:317
+msgid "Hafta içi: 24 saat"
+msgstr ""
+
+#: templates/main/contact.html:317
+msgid "Hafta sonu: 48 saat"
+msgstr ""
+
+#: templates/main/contact.html:324
+msgid "Mesaj Gönder"
+msgstr ""
+
+#: templates/main/contact.html:328
+msgid "Ad Soyad"
+msgstr ""
+
+#: templates/main/contact.html:339
+msgid "Konu"
+msgstr ""
+
+#: templates/main/contact.html:341
+msgid "Konu seçin..."
+msgstr ""
+
+#: templates/main/contact.html:342
+msgid "Hata Bildirimi"
+msgstr ""
+
+#: templates/main/contact.html:343
+msgid "Özellik Önerisi"
+msgstr ""
+
+#: templates/main/contact.html:344
+msgid "İçerik Hakkında"
+msgstr ""
+
+#: templates/main/contact.html:345
+msgid "Hesap Sorunu"
+msgstr ""
+
+#: templates/main/contact.html:346
+msgid "Diğer"
+msgstr ""
+
+#: templates/main/contact.html:351
+msgid "Mesaj"
+msgstr ""
+
+#: templates/main/contact.html:353
+msgid "Mesajını buraya yaz..."
+msgstr ""
+
+#: templates/main/contact.html:357
+msgid "Gönder"
+msgstr ""
+
+#: templates/main/contact.html:363
+msgid "Mesajın Alındı!"
+msgstr ""
+
+#: templates/main/contact.html:364
+msgid "En kısa sürede geri döneceğiz. Teşekkürler!"
+msgstr ""
+
+#: templates/main/contact.html:373
+msgid "Açık Kaynak"
+msgstr ""
+
+#: templates/main/contact.html:374
+msgid ""
+"Bu proje açık kaynaktır. Katkıda bulunmak, bug bildirmek veya kodu "
+"incelemek için GitHub'ı ziyaret\n"
+"                edebilirsin."
+msgstr ""
+
+#: templates/main/contact.html:379
+msgid "GitHub'a Git"
+msgstr ""
+
+#: templates/main/faq.html:172
+msgid "Sık Sorulan"
+msgstr ""
+
+#: templates/main/faq.html:172
+msgid "Sorular"
+msgstr ""
+
+#: templates/main/faq.html:173
+msgid "Merak ettiğin her şeyi burada bulabilirsin. Bulamazsan"
+msgstr ""
+
+#: templates/main/faq.html:174
+msgid "bize yaz"
+msgstr ""
+
+#: templates/main/faq.html:180
+msgid "CyberLearn.io tamamen ücretsiz mi?"
+msgstr ""
+
+#: templates/main/faq.html:183
+msgid ""
+"Evet, şu an tüm içerikler ve özellikler tamamen ücretsizdir. Kayıt ol ve "
+"hemen öğrenmeye başla."
+msgstr ""
+
+#: templates/main/faq.html:189
+msgid "Başlamak için siber güvenlik bilgisi gerekiyor mu?"
+msgstr ""
+
+#: templates/main/faq.html:192
+msgid ""
+"Hayır. Platform sıfırdan başlayanlar için tasarlandı. İlk dünya temel ağ "
+"kavramlarını adım adım\n"
+"                öğretir. Önce kolay dersleri tamamlamadan ileri konulara "
+"geçemezsin — bu sayede sağlam bir temel\n"
+"                kuruyorsun."
+msgstr ""
+
+#: templates/main/faq.html:199
+msgid "Dünya sistemi nasıl çalışıyor?"
+msgstr ""
+
+#: templates/main/faq.html:202
+msgid ""
+"Her \"dünya\" bir konu alanını temsil eder (örn. Ağ Güvenliği, "
+"Kriptografi). Bir dünyanın tüm\n"
+"                derslerini tamamlamadan bir sonraki dünya kilitli kalır. "
+"Bu sıralı yapı kalıcı öğrenmeyi destekler."
+msgstr ""
+
+#: templates/main/faq.html:209
+msgid "Mobil cihazdan kullanabilir miyim?"
+msgstr ""
+
+#: templates/main/faq.html:212
+msgid ""
+"Evet, platform tamamen mobil uyumludur. Telefon veya tabletinden tarayıcı"
+" üzerinden\n"
+"                erişebilirsin."
+msgstr ""
+
+#: templates/main/faq.html:217
+msgid "AI Quiz Sistemi"
+msgstr ""
+
+#: templates/main/faq.html:221
+msgid "Sorular her seferinde farklı mı oluyor?"
+msgstr ""
+
+#: templates/main/faq.html:224
+msgid ""
+"Evet. Her quiz oturumunda Gemini AI ders içeriğini analiz ederek yeni "
+"sorular üretir. Aynı soruyu\n"
+"                iki kez görme ihtimalin çok düşüktür."
+msgstr ""
+
+#: templates/main/faq.html:230
+msgid "Çok yanlış yaparsam ne olur?"
+msgstr ""
+
+#: templates/main/faq.html:233
+msgid ""
+"AI önceki denemelerindeki hata sayısını analiz eder. Çok yanlış yaparsan "
+"bir sonraki quiz daha\n"
+"                kolay tipte sorular içerecek şekilde ayarlanır. Zorluk "
+"seviyesi performansına göre dinamik olarak\n"
+"                değişir."
+msgstr ""
+
+#: templates/main/faq.html:240
+msgid "Hangi soru tipleri var?"
+msgstr ""
+
+#: templates/main/faq.html:243
+msgid ""
+"4 farklı soru tipi var: çoktan seçmeli (MCQ), doğru/yanlış, boşluk "
+"doldurma ve eşleştirme. Her tip\n"
+"                farklı bir öğrenme becerisi hedefler."
+msgstr ""
+
+#: templates/main/faq.html:248
+msgid ""
+"Hesap &\n"
+"        Profil"
+msgstr ""
+
+#: templates/main/faq.html:252
+msgid "Şifremi unutursam ne yapmalıyım?"
+msgstr ""
+
+#: templates/main/faq.html:255
+msgid ""
+"Giriş sayfasındaki \"Şifremi Unuttum\" bağlantısından e-posta adresine "
+"sıfırlama linki\n"
+"                gönderebilirsin."
+msgstr ""
+
+#: templates/main/faq.html:261
+msgid "Avatar nasıl değiştirebilirim?"
+msgstr ""
+
+#: templates/main/faq.html:264
+msgid "Profil sayfandan"
+msgstr ""
+
+#: templates/main/faq.html:264
+msgid "buradan erişebilirsin"
+msgstr ""
+
+#: templates/main/faq.html:265
+msgid ""
+"avatar URL'si girebilir ya da \"Rastgele Üret\" butonuyla otomatik avatar"
+"\n"
+"                oluşturabilirsin."
+msgstr ""
+
+#: templates/main/faq.html:271
+msgid "İlerleme kaydediliyor mu?"
+msgstr ""
+
+#: templates/main/faq.html:274
+msgid ""
+"Evet. Tamamladığın her ders, aldığın puanlar ve deneme sayıların hesabına"
+" bağlı olarak kalıcı\n"
+"                şekilde kaydedilir."
+msgstr ""
+
+#: templates/main/faq.html:280
+msgid "Burada cevabını bulamadın mı?"
+msgstr ""
+
+#: templates/main/faq.html:282
+msgid "Bize Ulaş"
+msgstr ""
+
+#: templates/main/index.html:2
+msgid "Siber Güvenliği Oyun Gibi Öğren"
+msgstr ""
+
+#: templates/main/index.html:3
+msgid ""
+"Duolingo tarzı AI destekli siber güvenlik öğrenme platformu. Ağ "
+"güvenliği,\n"
+"kriptografi, etik hacking ve daha fazlası."
+msgstr ""
+
+#: templates/main/index.html:1471
+msgid "Öğrenme Yolun"
+msgstr ""
+
+#: templates/main/index.html:1472
+msgid "Merhaba,"
+msgstr ""
+
+#: templates/main/index.html:1475
+msgid "ders tamamlandı — devam et!"
+msgstr ""
+
+#: templates/main/index.html:1477
+msgid "Yolculuğuna başlamak için ilk derse gir."
+msgstr ""
+
+#: templates/main/index.html:1484
+msgid "Tamamlanan"
+msgstr ""
+
+#: templates/main/index.html:1523
+msgid "Kilitli"
+msgstr ""
+
+#: templates/main/index.html:1528
+msgid "Tamamlandı"
+msgstr ""
+
+#: templates/main/index.html:1539
+msgid "Bu dünya kilitli"
+msgstr ""
+
+#: templates/main/index.html:1542
+msgid "dünyasını tamamla"
+msgstr ""
+
+#: templates/main/index.html:1637
+msgid "Bu dünya tamamlandı! Bir sonraki dünya seni bekliyor."
+msgstr ""
+
+#: templates/main/index.html:1646
+msgid ""
+"Henüz\n"
+"      içerik yok"
+msgstr ""
+
+#: templates/main/index.html:1648
+msgid "Yönetici henüz ders eklememiş."
+msgstr ""
+
+#: templates/main/index.html:1649
+msgid "Konulara Bak"
+msgstr ""
+
+#: templates/main/index.html:1664
+msgid "Yapay Zeka Destekli Öğrenme Platformu"
+msgstr ""
+
+#: templates/main/index.html:1665
+msgid "Siber Güvenliği"
+msgstr ""
+
+#: templates/main/index.html:1665
+msgid "Oyun Gibi Öğren"
+msgstr ""
+
+#: templates/main/index.html:1666
+msgid ""
+"Duolingo'nun bağımlılık yapıcı öğrenme modeliyle siber güvenliği "
+"birleştiren AI destekli\n"
+"      platform. Ağ güvenliği, kriptografi, etik hacking — adım adım, "
+"sahne sahne."
+msgstr ""
+
+#: templates/main/index.html:1671
+msgid ""
+"Giriş\n"
+"        Yap"
+msgstr ""
+
+#: templates/main/index.html:1676 templates/main/index.html:1841
+msgid "Aktif Kullanıcı"
+msgstr ""
+
+#: templates/main/index.html:1682 templates/main/index.html:1849
+#: templates/main/profile.html:644
+msgid "Tamamlanan Ders"
+msgstr ""
+
+#: templates/main/index.html:1685 templates/main/index.html:1853
+msgid "Memnuniyet"
+msgstr ""
+
+#: templates/main/index.html:1703
+msgid "Her şey bir arada,"
+msgstr ""
+
+#: templates/main/index.html:1703
+msgid "hiçbir şey eksik değil."
+msgstr ""
+
+#: templates/main/index.html:1704
+msgid ""
+"Sıkıcı dersler değil, gerçek sahne simülasyonları. AI'ın sana özel "
+"hazırladığı öğrenme\n"
+"        yolu."
+msgstr ""
+
+#: templates/main/index.html:1711
+msgid "Ana Özellik"
+msgstr ""
+
+#: templates/main/index.html:1712
+msgid "Yapay Zeka Destekli"
+msgstr ""
+
+#: templates/main/index.html:1713
+msgid "Kişisel Öğretmen"
+msgstr ""
+
+#: templates/main/index.html:1714
+msgid ""
+"AI seviyeni analiz eder, zayıf\n"
+"            noktalarını tespit eder ve sana özel bir öğrenme yolu "
+"oluşturur. Her soru, her görev — senin için."
+msgstr ""
+
+#: templates/main/index.html:1717
+msgid "Hemen Dene"
+msgstr ""
+
+#: templates/main/index.html:1740
+msgid "Oyna ve Öğren"
+msgstr ""
+
+#: templates/main/index.html:1741
+msgid ""
+"XP kazan, rozet topla, liderlik tablosunda yüksel. Her tamamlanan ders "
+"bir zafer."
+msgstr ""
+
+#: templates/main/index.html:1746
+msgid "Gerçek Senaryolar"
+msgstr ""
+
+#: templates/main/index.html:1747
+msgid "CTF Tarzı Pratik"
+msgstr ""
+
+#: templates/main/index.html:1748
+msgid ""
+"Gerçek saldırı ve savunma simülasyonları. Sadece teori değil, uygulamalı "
+"öğrenme."
+msgstr ""
+
+#: templates/main/index.html:1753
+msgid "Sertifika"
+msgstr ""
+
+#: templates/main/index.html:1754
+msgid "Kanıtlanmış Yetkinlik"
+msgstr ""
+
+#: templates/main/index.html:1755
+msgid ""
+"OSCP, CISSP, CompTIA uyumlu müfredat. Tamamla, sertifika al, kariyerini "
+"inşa et."
+msgstr ""
+
+#: templates/main/index.html:1767
+msgid "Nasıl Çalışır?"
+msgstr ""
+
+#: templates/main/index.html:1768
+msgid "4 adımda uzman ol."
+msgstr ""
+
+#: templates/main/index.html:1774
+msgid "Ücretsiz hesap oluştur. Kredi kartı yok, taahhüt yok."
+msgstr ""
+
+#: templates/main/index.html:1778
+msgid "Seviyeni Belirle"
+msgstr ""
+
+#: templates/main/index.html:1779
+msgid "AI kısa bir test ile mevcut bilgi seviyeni ölçer."
+msgstr ""
+
+#: templates/main/index.html:1783
+msgid "Öğren & Pratik Yap"
+msgstr ""
+
+#: templates/main/index.html:1784
+msgid "Kişisel yolunu takip et, CTF görevlerini çöz."
+msgstr ""
+
+#: templates/main/index.html:1788
+msgid "Sertifika Al"
+msgstr ""
+
+#: templates/main/index.html:1789
+msgid "Tamamladıkça rozet ve sertifika kazan."
+msgstr ""
+
+#: templates/main/index.html:1802
+msgid "Müfredat"
+msgstr ""
+
+#: templates/main/index.html:1803
+msgid "Neden öğreneceğimi"
+msgstr ""
+
+#: templates/main/index.html:1803
+msgid "bilmeden öğrenmem."
+msgstr ""
+
+#: templates/main/index.html:1805
+msgid "Her konu, gerçek dünya senaryolarıyla destekleniyor."
+msgstr ""
+
+#: templates/main/index.html:1807
+msgid "Tüm Dersler"
+msgstr ""
+
+#: templates/main/index.html:1812
+msgid "Ağ Güvenliği"
+msgstr ""
+
+#: templates/main/index.html:1812 templates/main/index.html:1815
+msgid "Başlangıç"
+msgstr ""
+
+#: templates/main/index.html:1813
+msgid "Kriptografi"
+msgstr ""
+
+#: templates/main/index.html:1814
+msgid "Etik Hacking"
+msgstr ""
+
+#: templates/main/index.html:1814 templates/main/index.html:1817
+msgid "İleri"
+msgstr ""
+
+#: templates/main/index.html:1815
+msgid "Güvenlik Duvarları"
+msgstr ""
+
+#: templates/main/index.html:1817
+msgid "Malware Analizi"
+msgstr ""
+
+#: templates/main/index.html:1824
+msgid "ders modülü"
+msgstr ""
+
+#: templates/main/index.html:1866
+msgid "Siber savunmanın"
+msgstr ""
+
+#: templates/main/index.html:1866
+msgid "bir sonraki nesli"
+msgstr ""
+
+#: templates/main/index.html:1867
+msgid "ol."
+msgstr ""
+
+#: templates/main/index.html:1868
+msgid "Ücretsiz başla. Kredi kartı yok. İlk dersin 5 dakika içinde seni bekliyor."
+msgstr ""
+
+#: templates/main/index.html:1870
+msgid ""
+"Şimdi\n"
+"        Başla — Ücretsiz"
+msgstr ""
+
+#: templates/main/index.html:1872
+msgid "Zaten hesabım var"
+msgstr ""
+
+#: templates/main/lesson_detail.html:4
+msgid "dersi"
+msgstr ""
+
+#: templates/main/lesson_detail.html:956 templates/main/lesson_form.html:169
+#: templates/main/profile.html:585
+msgid "Konum"
+msgstr ""
+
+#: templates/main/lesson_detail.html:965
+msgid "Çık"
+msgstr ""
+
+#: templates/main/lesson_detail.html:983
+msgid "Kolay"
+msgstr ""
+
+#: templates/main/lesson_detail.html:987
+msgid "Zor"
+msgstr ""
+
+#: templates/main/lesson_detail.html:991 templates/main/lesson_detail.html:999
+msgid "deneme"
+msgstr ""
+
+#: templates/main/lesson_detail.html:994
+msgid ""
+"AI tarafından hazırlanan çeşitli sorularla bu konuyu öğreneceksin. Çoktan"
+" seçmeli,\n"
+"        doğru/yanlış, boşluk doldurma ve eşleştirme soruları seni "
+"bekliyor. Yanlış yaptıkların sona eklenir, hepsini\n"
+"        doğru yapana kadar devam edersin."
+msgstr ""
+
+#: templates/main/lesson_detail.html:999
+msgid "Son puan:"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1004
+msgid "Tekrar Başla"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1004
+msgid "Başla"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1013
+msgid "Gemini sorular hazırlıyor"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1021
+#: templates/main/lesson_detail.html:1226
+msgid "Soru"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1035
+msgid "Doğru"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1038
+msgid "Yanlış"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1051
+msgid "Terimler"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1055
+msgid "Tanımlar"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1069
+#: templates/main/lesson_detail.html:1082
+msgid "Devam Et"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1077
+msgid "Yanlışları tekrar dene!"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1078
+msgid ""
+"Harika! Şimdi yanlış yaptığın sorular tekrar önüne gelecek. Hepsini doğru"
+" yapana kadar\n"
+"        devam edersin."
+msgstr ""
+
+#: templates/main/lesson_detail.html:1090
+msgid "Ders"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1090
+msgid "Tamamlandı!"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1093
+msgid "Süre"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1097
+msgid "Başarı Oranı"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1106
+msgid "Tamamla ve Kaydet"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1119
+msgid "Bu dersi tamamlamak için giriş yapmalısın."
+msgstr ""
+
+#: templates/main/lesson_detail.html:1204
+msgid "Tekrar Dene"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1216
+msgid "Çoktan Seçmeli"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1217
+msgid "Doğru / Yanlış"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1218
+msgid "Boşluk Doldurma"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1219
+msgid "Eşleştirme"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1306
+msgid "Terimleri tanımlarıyla eşleştir"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1325
+msgid "eşleşti"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1345
+msgid "Bazı eşleştirmeleri yanlış yaptın ama sonunda tamamladın."
+msgstr ""
+
+#: templates/main/lesson_detail.html:1345
+msgid "Tüm eşleştirmeleri doğru yaptın!"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1357
+msgid "Doğru!"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1357
+msgid "Yanlış!"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1370
+msgid "soru tekrar edilecek"
+msgstr ""
+
+#: templates/main/lesson_detail.html:1390
+msgid "Kaydediliyor..."
+msgstr ""
+
+#: templates/main/lesson_form.html:3 templates/main/lesson_form.html:176
+msgid "Yeni Ders"
+msgstr ""
+
+#: templates/main/lesson_form.html:172
+msgid "Konular"
+msgstr ""
+
+#: templates/main/lesson_form.html:180
+msgid "Ders Ekle"
+msgstr ""
+
+#: templates/main/lesson_form.html:181
+msgid "konusuna yeni ders"
+msgstr ""
+
+#: templates/main/lesson_form.html:190
+msgid "Başlık"
+msgstr ""
+
+#: templates/main/lesson_form.html:200
+msgid "İçerik"
+msgstr ""
+
+#: templates/main/lesson_form.html:204
+msgid "Markdown formatı desteklenir (# Başlık, **kalın**, `kod`)"
+msgstr ""
+
+#: templates/main/lesson_form.html:212
+msgid "Zorluk Seviyesi"
+msgstr ""
+
+#: templates/main/lesson_form.html:216
+msgid "Sıra"
+msgstr ""
+
+#: templates/main/lesson_form.html:218
+msgid "0 = ilk sıra"
+msgstr ""
+
+#: templates/main/lesson_form.html:227
+msgid "Dersi Ekle"
+msgstr ""
+
+#: templates/main/profile.html:4
+msgid "kullanıcısının CyberLearn.io profil sayfası."
+msgstr ""
+
+#: templates/main/profile.html:592
+msgid "Hesabım"
+msgstr ""
+
+#: templates/main/profile.html:593
+msgid "Profil & Avatar"
+msgstr ""
+
+#: templates/main/profile.html:596
+msgid "Profil özeti"
+msgstr ""
+
+#: templates/main/profile.html:605
+msgid "avatarı"
+msgstr ""
+
+#: templates/main/profile.html:612
+msgid "baş harfleri"
+msgstr ""
+
+#: templates/main/profile.html:617
+msgid "Aktif"
+msgstr ""
+
+#: templates/main/profile.html:627
+msgid ""
+"Bio henüz\n"
+"          eklenmedi."
+msgstr ""
+
+#: templates/main/profile.html:632
+msgid "tarihinde katıldı"
+msgstr ""
+
+#: templates/main/profile.html:638
+msgid "Öğrenme istatistikleri"
+msgstr ""
+
+#: templates/main/profile.html:651
+msgid "Toplam Puan"
+msgstr ""
+
+#: templates/main/profile.html:660
+msgid "Ort. Puan"
+msgstr ""
+
+#: templates/main/profile.html:666
+msgid "Avatar Güncelle"
+msgstr ""
+
+#: templates/main/profile.html:673
+msgid "veya"
+msgstr ""
+
+#: templates/main/profile.html:680
+msgid "Önizle"
+msgstr ""
+
+#: templates/main/profile.html:684 templates/main/profile.html:686
+msgid "Önizleme"
+msgstr ""
+
+#: templates/main/profile.html:687
+msgid "Kaydetmek için \"Güncelle\"ye bas"
+msgstr ""
+
+#: templates/main/profile.html:700
+msgid ""
+"Rastgele üret butonları her tıkta farklı avatar\n"
+"          oluşturur."
+msgstr ""
+
+#: templates/main/profile.html:705
+msgid "Avatarı Güncelle"
+msgstr ""
+
+#: templates/main/profile.html:709
+msgid "Temizle"
+msgstr ""
+
+#: templates/main/profile.html:718
+msgid "Profil Bilgileri"
+msgstr ""
+
+#: templates/main/profile.html:724
+msgid "Hakkımda"
+msgstr ""
+
+#: templates/main/profile.html:732
+msgid "Kendini kısaca tanıt..."
+msgstr ""
+
+#: templates/main/profile.html:741
+msgid "Kaydet"
+msgstr ""
+
+#: templates/main/profile.html:752
+msgid "Tehlikeli Alan"
+msgstr ""
+
+#: templates/main/profile.html:753
+msgid "Bu işlemler geri alınamaz."
+msgstr ""
+
+#: templates/main/profile.html:758
+msgid "Avatarı Sıfırla"
+msgstr ""
+
