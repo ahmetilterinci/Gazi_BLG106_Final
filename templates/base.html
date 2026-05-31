@@ -1005,11 +1005,6 @@
     <ul class="cl-nav-links d-none d-lg-flex" role="list">
       <li><a href="{{ url_for('main.index') }}" class="{{ 'active' if request.endpoint == 'main.index' else '' }}">
           <i class="bi bi-house-door" aria-hidden="true"></i> Ana Sayfa</a></li>
-      <li><a href="{{ url_for('main.topics') }}"
-          class="{{ 'active' if request.endpoint and 'topic' in request.endpoint else '' }}">
-          <i class="bi bi-journal-code" aria-hidden="true"></i> Dersler</a></li>
-      <li><a href="{{ url_for('main.topics') }}">
-          <i class="bi bi-trophy" aria-hidden="true"></i> Sıralama</a></li>
     </ul>
 
     <div class="cl-nav-actions">
@@ -1080,8 +1075,7 @@
       <div class="cl-footer-col">
         <div class="cl-footer-col-title">Platform</div>
         <ul>
-          <li><a href="{{ url_for('main.topics') }}">Dersler</a></li>
-          <li><a href="{{ url_for('main.topics') }}">Sıralama</a></li>
+          <li><a href="{{ url_for('main.index') }}">Ana Sayfa</a></li>
           <li><a href="#">Senaryolar</a></li>
           <li><a href="#">Rozetler</a></li>
         </ul>
@@ -1158,9 +1152,7 @@
       addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
 
       const revObs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) { e.target.classList.add('cl-visible'); revObs.unobserve(e.target) }
-        });
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('cl-visible'); revObs.unobserve(e.target) } });
       }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
       document.querySelectorAll('.cl-reveal,.cl-reveal-left,.cl-reveal-right').forEach(el => revObs.observe(el));
 
@@ -1201,7 +1193,6 @@
         const numEl = document.getElementById('cl-scroll-pct-num');
         const btt = document.getElementById('cl-btt');
         const CIRC = 2 * Math.PI * 18;
-
         addEventListener('scroll', () => {
           const scrollable = document.body.scrollHeight - innerHeight;
           if (scrollable <= 0) return;
@@ -1214,7 +1205,6 @@
           ring.style.strokeDashoffset = CIRC * (1 - pct);
           numEl.textContent = Math.round(pct * 100) + '%';
         }, { passive: true });
-
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       })();
     })();
