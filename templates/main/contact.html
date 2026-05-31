@@ -1,0 +1,417 @@
+{% extends "base.html" %}
+{% block title %}İletişim — CyberLearn.io{% endblock %}
+
+{% block extra_css %}
+<style>
+    .static-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+
+    .static-hero {
+        text-align: center;
+        padding: 3rem 0 3.5rem;
+    }
+
+    .static-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        font-family: var(--mono);
+        font-size: .7rem;
+        color: var(--a);
+        background: rgba(0, 245, 196, .06);
+        border: 1px solid rgba(0, 245, 196, .18);
+        border-radius: 20px;
+        padding: .28rem .85rem;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+    }
+
+    .static-hero h1 {
+        font-family: var(--display);
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.1;
+        letter-spacing: -.03em;
+        margin-bottom: 1rem;
+    }
+
+    .static-hero p {
+        font-size: .95rem;
+        color: var(--txt2);
+        max-width: 480px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+
+    /* İletişim grid */
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Sol panel — kanal kartları */
+    .contact-channels {
+        display: flex;
+        flex-direction: column;
+        gap: .75rem;
+    }
+
+    .channel-card {
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 14px;
+        padding: 1.25rem 1.4rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        text-decoration: none;
+        color: inherit;
+        transition: border-color .2s, transform .2s;
+    }
+
+    .channel-card:hover {
+        border-color: var(--edge-h);
+        transform: translateX(4px);
+        color: inherit;
+    }
+
+    .channel-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .channel-icon.p {
+        background: rgba(110, 91, 255, .12);
+        color: var(--p);
+    }
+
+    .channel-icon.a {
+        background: rgba(0, 245, 196, .10);
+        color: var(--a);
+    }
+
+    .channel-icon.w {
+        background: rgba(255, 184, 77, .10);
+        color: var(--w);
+    }
+
+    .channel-card h4 {
+        font-family: var(--sans);
+        font-size: .88rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: .2rem;
+    }
+
+    .channel-card p {
+        font-size: .78rem;
+        color: var(--txt2);
+        line-height: 1.5;
+    }
+
+    /* Sağ panel — form */
+    .contact-form-card {
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 16px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--p), var(--a));
+    }
+
+    .contact-form-title {
+        font-family: var(--mono);
+        font-size: .68rem;
+        color: var(--p);
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--edge);
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: .4rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .field-label {
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--txt2);
+        font-family: var(--mono);
+        letter-spacing: .03em;
+    }
+
+    .field-input,
+    .field-textarea,
+    .field-select {
+        width: 100%;
+        padding: .65rem 1rem;
+        background: var(--surface2);
+        border: 1px solid var(--edge);
+        border-radius: 10px;
+        color: var(--txt);
+        font-family: var(--sans);
+        font-size: .88rem;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .field-input:focus,
+    .field-textarea:focus,
+    .field-select:focus {
+        border-color: var(--p);
+        box-shadow: 0 0 0 3px rgba(110, 91, 255, .12);
+    }
+
+    .field-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .field-select {
+        cursor: pointer;
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .9rem;
+    }
+
+    .field-row .field-group {
+        margin-bottom: 0;
+    }
+
+    /* Gönderildi mesajı */
+    .contact-success {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .contact-success-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact-success h3 {
+        font-family: var(--display);
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: .5rem;
+    }
+
+    .contact-success p {
+        font-size: .85rem;
+        color: var(--txt2);
+    }
+
+    /* GitHub banner */
+    .github-banner {
+        background: linear-gradient(135deg, rgba(110, 91, 255, .06), rgba(0, 245, 196, .04));
+        border: 1px solid rgba(110, 91, 255, .18);
+        border-radius: 16px;
+        padding: 1.75rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .github-banner-icon {
+        font-size: 2.2rem;
+        flex-shrink: 0;
+    }
+
+    .github-banner-text {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .github-banner-text h3 {
+        font-family: var(--display);
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: .3rem;
+    }
+
+    .github-banner-text p {
+        font-size: .82rem;
+        color: var(--txt2);
+    }
+
+    @media(max-width:720px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .field-row {
+            grid-template-columns: 1fr;
+        }
+
+        .static-wrap {
+            padding: 2rem 1rem 4rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="static-wrap">
+
+    <!-- Hero -->
+    <div class="static-hero cl-reveal">
+        <div class="static-hero-badge"><i class="bi bi-envelope-heart"></i> İletişim</div>
+        <h1>Bir sorun mu var?<br><span class="cl-glow-text">Konuşalım.</span></h1>
+        <p>Geri bildirim, hata bildirimi veya öneri için buradayız. Her mesaj okunur.</p>
+    </div>
+
+    <!-- Grid -->
+    <div class="contact-grid">
+
+        <!-- Sol: Kanallar -->
+        <div class="contact-channels">
+            <a href="mailto:hello@cyberlearn.io" class="channel-card cl-reveal">
+                <div class="channel-icon p"><i class="bi bi-envelope-fill"></i></div>
+                <div>
+                    <h4>E-posta</h4>
+                    <p>hello@cyberlearn.io — Genellikle 24 saat içinde yanıt veririz.</p>
+                </div>
+            </a>
+            <a href="https://github.com/ahmetilterinci/Gazi_BLG106_Final" target="_blank" rel="noopener"
+                class="channel-card cl-reveal" style="transition-delay:.05s">
+                <div class="channel-icon a"><i class="bi bi-github"></i></div>
+                <div>
+                    <h4>GitHub</h4>
+                    <p>Bug raporu veya özellik isteği için Issues açabilirsin.</p>
+                </div>
+            </a>
+            <div class="channel-card cl-reveal" style="transition-delay:.1s; cursor:default;">
+                <div class="channel-icon w"><i class="bi bi-clock-fill"></i></div>
+                <div>
+                    <h4>Yanıt Süresi</h4>
+                    <p>Hafta içi: 24 saat<br>Hafta sonu: 48 saat</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ: Form -->
+        <div class="contact-form-card cl-reveal" style="transition-delay:.05s">
+            <div id="contact-form-wrap">
+                <div class="contact-form-title"><i class="bi bi-pencil-square"></i> Mesaj Gönder</div>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="field-label" for="c-name">Ad Soyad</label>
+                        <input type="text" id="c-name" class="field-input" placeholder="Ada Lovelace" />
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="c-email">E-posta</label>
+                        <input type="email" id="c-email" class="field-input" placeholder="ada@example.com"
+                            value="{{ current_user.email if current_user.is_authenticated else '' }}" />
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="c-subject">Konu</label>
+                    <select id="c-subject" class="field-select">
+                        <option value="">Konu seçin...</option>
+                        <option value="bug">🐛 Hata Bildirimi</option>
+                        <option value="feature">💡 Özellik Önerisi</option>
+                        <option value="content">📚 İçerik Hakkında</option>
+                        <option value="account">👤 Hesap Sorunu</option>
+                        <option value="other">💬 Diğer</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="c-message">Mesaj</label>
+                    <textarea id="c-message" class="field-textarea" placeholder="Mesajını buraya yaz..."></textarea>
+                </div>
+
+                <button type="button" class="cl-btn-primary" id="btn-send" style="width:100%;justify-content:center;">
+                    <i class="bi bi-send"></i> Gönder
+                </button>
+            </div>
+
+            <!-- Başarı mesajı -->
+            <div class="contact-success" id="contact-success">
+                <div class="contact-success-icon">🎉</div>
+                <h3>Mesajın Alındı!</h3>
+                <p>En kısa sürede geri döneceğiz. Teşekkürler!</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GitHub banner -->
+    <div class="github-banner cl-reveal">
+        <div class="github-banner-icon">🛠️</div>
+        <div class="github-banner-text">
+            <h3>Açık Kaynak</h3>
+            <p>Bu proje açık kaynaktır. Katkıda bulunmak, bug bildirmek veya kodu incelemek için GitHub'ı ziyaret
+                edebilirsin.</p>
+        </div>
+        <a href="https://github.com/ahmetilterinci/Gazi_BLG106_Final" target="_blank" rel="noopener"
+            class="cl-btn-ghost" style="flex-shrink:0;">
+            <i class="bi bi-github"></i> GitHub'a Git
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('btn-send').addEventListener('click', function () {
+        const name = document.getElementById('c-name').value.trim();
+        const email = document.getElementById('c-email').value.trim();
+        const message = document.getElementById('c-message').value.trim();
+
+        if (!name || !email || !message) {
+            // Basit validasyon
+            [['c-name', name], ['c-email', email], ['c-message', message]].forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                el.style.borderColor = val ? '' : 'rgba(255,61,107,.5)';
+            });
+            return;
+        }
+
+        // Simüle et — gerçek backend olmadığı için
+        document.getElementById('contact-form-wrap').style.display = 'none';
+        document.getElementById('contact-success').style.display = 'block';
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% block title %}Hakkında — CyberLearn.io{% endblock %}
+
+{% block extra_css %}
+<style>
+    .static-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+
+    .static-hero {
+        text-align: center;
+        padding: 3rem 0 4rem;
+        position: relative;
+    }
+
+    .static-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        font-family: var(--mono);
+        font-size: .7rem;
+        color: var(--a);
+        background: rgba(0, 245, 196, .06);
+        border: 1px solid rgba(0, 245, 196, .18);
+        border-radius: 20px;
+        padding: .28rem .85rem;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+    }
+
+    .static-hero h1 {
+        font-family: var(--display);
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.1;
+        letter-spacing: -.03em;
+        margin-bottom: 1rem;
+    }
+
+    .static-hero p {
+        font-size: 1rem;
+        color: var(--txt2);
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-weight: 300;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        margin-bottom: 3rem;
+    }
+
+    .about-card {
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 16px;
+        padding: 1.75rem;
+        position: relative;
+        overflow: hidden;
+        transition: border-color .25s, transform .2s;
+    }
+
+    .about-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--p), var(--a));
+        opacity: 0;
+        transition: opacity .3s;
+    }
+
+    .about-card:hover {
+        border-color: var(--edge-h);
+        transform: translateY(-3px);
+    }
+
+    .about-card:hover::before {
+        opacity: 1;
+    }
+
+    .about-card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    .about-card-icon.p {
+        background: rgba(110, 91, 255, .12);
+    }
+
+    .about-card-icon.a {
+        background: rgba(0, 245, 196, .10);
+    }
+
+    .about-card-icon.r {
+        background: rgba(255, 61, 107, .10);
+    }
+
+    .about-card-icon.w {
+        background: rgba(255, 184, 77, .10);
+    }
+
+    .about-card h3 {
+        font-family: var(--display);
+        font-size: 1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: .5rem;
+    }
+
+    .about-card p {
+        font-size: .85rem;
+        color: var(--txt2);
+        line-height: 1.7;
+    }
+
+    .about-story {
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 18px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .about-story-label {
+        font-family: var(--mono);
+        font-size: .68rem;
+        color: var(--p);
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+    }
+
+    .about-story h2 {
+        font-family: var(--display);
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .about-story p {
+        font-size: .9rem;
+        color: var(--txt2);
+        line-height: 1.85;
+        margin-bottom: .85rem;
+    }
+
+    .about-story p:last-child {
+        margin-bottom: 0;
+    }
+
+    .stat-band {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 16px;
+        padding: 1.75rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-band-item {
+        text-align: center;
+    }
+
+    .stat-band-num {
+        font-family: var(--mono);
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--p), var(--a));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        margin-bottom: .3rem;
+    }
+
+    .stat-band-lbl {
+        font-size: .72rem;
+        color: var(--txt3);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+    }
+
+    .cta-band {
+        background: linear-gradient(135deg, rgba(110, 91, 255, .08), rgba(0, 245, 196, .05));
+        border: 1px solid rgba(110, 91, 255, .2);
+        border-radius: 18px;
+        padding: 2.5rem;
+        text-align: center;
+    }
+
+    .cta-band h2 {
+        font-family: var(--display);
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: .6rem;
+    }
+
+    .cta-band p {
+        font-size: .88rem;
+        color: var(--txt2);
+        margin-bottom: 1.5rem;
+    }
+
+    .cta-band-actions {
+        display: flex;
+        gap: .75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    @media(max-width:640px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-band {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .static-wrap {
+            padding: 2rem 1rem 4rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="static-wrap">
+
+    <!-- Hero -->
+    <div class="static-hero cl-reveal">
+        <div class="static-hero-badge"><i class="bi bi-shield-shaded"></i> Hakkımızda</div>
+        <h1>Siber güvenliği<br><span class="cl-glow-text">herkes için</span> erişilebilir kılıyoruz.</h1>
+        <p>CyberLearn.io, Duolingo'nun bağımlılık yapıcı öğrenme modelini siber güvenlik eğitimiyle birleştiren AI
+            destekli bir platformdur.</p>
+    </div>
+
+    <!-- Hikaye -->
+    <div class="about-story cl-reveal">
+        <div class="about-story-label"><i class="bi bi-book"></i> Hikayemiz</div>
+        <h2>Neden CyberLearn.io?</h2>
+        <p>Siber güvenlik eğitimi yıllarca erişilmesi zor, pahalı ve sıkıcı materyallerle doluydu. Temel kavramlar bile
+            ezberletme mantığıyla öğretilirken, gerçek dünya saldırıları her geçen gün daha sofistike hale geliyordu.
+        </p>
+        <p>Biz buna farklı bir çözüm bulduk: yapay zekanın kişiselleştirme gücünü, oyunlaştırmanın motivasyon etkisiyle
+            birleştirmek. Her kullanıcı kendi hızında ilerleyebilir, AI zayıf noktaları tespit ederek özel sorular
+            üretir ve her doğru cevap yeni bir dünyayı açar.</p>
+        <p>Hedefimiz, siber güvenlik eğitimini bir oyun kadar eğlenceli, bir bootcamp kadar etkili hale getirmek.</p>
+    </div>
+
+    <!-- Özellik kartları -->
+    <div class="about-grid">
+        <div class="about-card cl-reveal" style="transition-delay:.05s">
+            <div class="about-card-icon p"><i class="bi bi-robot" style="color:var(--p)"></i></div>
+            <h3>AI Destekli Öğrenme</h3>
+            <p>Gemini tabanlı quiz sistemi seviyeni analiz eder, zayıf noktaları tespit eder ve sana özel sorular
+                üretir. Her oturum farklı, her soru anlamlıdır.</p>
+        </div>
+        <div class="about-card cl-reveal" style="transition-delay:.1s">
+            <div class="about-card-icon a"><i class="bi bi-map" style="color:var(--a)"></i></div>
+            <h3>Dünya Sistemi</h3>
+            <p>Duolingo'dan ilham alan dünya kilit sistemi sayesinde temel kavramları bitirmeden ileri konulara
+                geçemezsin. Sıralı öğrenme, kalıcı bilgi.</p>
+        </div>
+        <div class="about-card cl-reveal" style="transition-delay:.15s">
+            <div class="about-card-icon r"><i class="bi bi-shield-lock" style="color:var(--r)"></i></div>
+            <h3>Gerçek Dünya İçeriği</h3>
+            <p>Ağ güvenliği, kriptografi, SQL injection, XSS ve daha fazlası. İçerikler OWASP ve endüstri standartlarına
+                uygun hazırlanmıştır.</p>
+        </div>
+        <div class="about-card cl-reveal" style="transition-delay:.2s">
+            <div class="about-card-icon w"><i class="bi bi-trophy" style="color:var(--w)"></i></div>
+            <h3>İlerleme Takibi</h3>
+            <p>Her tamamlanan ders XP kazandırır, puan tablosunda yükselir ve profilinde birikir. Motivasyonu canlı
+                tutmak için tasarlandı.</p>
+        </div>
+    </div>
+
+    <!-- İstatistikler -->
+    <div class="stat-band cl-reveal">
+        <div class="stat-band-item">
+            <span class="stat-band-num">3+</span>
+            <div class="stat-band-lbl">Dünya</div>
+        </div>
+        <div class="stat-band-item">
+            <span class="stat-band-num">9+</span>
+            <div class="stat-band-lbl">Ders Modülü</div>
+        </div>
+        <div class="stat-band-item">
+            <span class="stat-band-num">4</span>
+            <div class="stat-band-lbl">Soru Tipi</div>
+        </div>
+        <div class="stat-band-item">
+            <span class="stat-band-num">AI</span>
+            <div class="stat-band-lbl">Destekli Quiz</div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-band cl-reveal">
+        <h2>Hazır mısın?</h2>
+        <p>Ücretsiz kayıt ol, ilk dersin 5 dakika içinde seni bekliyor.</p>
+        <div class="cta-band-actions">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.index') }}" class="cl-btn-primary"><i class="bi bi-map"></i> Öğrenme Yoluna
+                Dön</a>
+            {% else %}
+            <a href="{{ url_for('auth.register') }}" class="cl-btn-primary"><i class="bi bi-rocket-takeoff"></i>
+                Ücretsiz Başla</a>
+            <a href="{{ url_for('main.faq') }}" class="cl-btn-ghost"><i class="bi bi-question-circle"></i> S.S.S.'ye
+                Bak</a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

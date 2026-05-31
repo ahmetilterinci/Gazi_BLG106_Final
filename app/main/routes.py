@@ -665,6 +665,24 @@ def api_lesson_detail(id: int):
 
 
 # ---------------------------------------------------------------------------
+# Statik Sayfalar
+# ---------------------------------------------------------------------------
+
+@main.route("/about")
+def about():
+    return render_template("main/about.html", title="Hakkında — CyberLearn.io")
+
+
+@main.route("/faq")
+def faq():
+    return render_template("main/faq.html", title="S.S.S. — CyberLearn.io")
+
+
+@main.route("/contact")
+def contact():
+    return render_template("main/contact.html", title="İletişim — CyberLearn.io")
+
+# ---------------------------------------------------------------------------
 # Hata Handler'ları
 # ---------------------------------------------------------------------------
 
@@ -679,3 +697,8 @@ def internal_server_error(error):
     """500 — Sunucu Hatası. Session rollback yapılır."""
     db.session.rollback()
     return render_template("errors/500.html", title="Sunucu Hatası"), 500
+
+
+
+
+

@@ -1005,6 +1005,10 @@
     <ul class="cl-nav-links d-none d-lg-flex" role="list">
       <li><a href="{{ url_for('main.index') }}" class="{{ 'active' if request.endpoint == 'main.index' else '' }}">
           <i class="bi bi-house-door" aria-hidden="true"></i> Ana Sayfa</a></li>
+      <li><a href="{{ url_for('main.about') }}" class="{{ 'active' if request.endpoint == 'main.about' else '' }}">
+          <i class="bi bi-shield-shaded" aria-hidden="true"></i> Hakkında</a></li>
+      <li><a href="{{ url_for('main.contact') }}" class="{{ 'active' if request.endpoint == 'main.contact' else '' }}">
+          <i class="bi bi-envelope" aria-hidden="true"></i> İletişim</a></li>
     </ul>
 
     <div class="cl-nav-actions">
@@ -1083,9 +1087,9 @@
       <div class="cl-footer-col">
         <div class="cl-footer-col-title">Destek</div>
         <ul>
-          <li><a href="#">Hakkında</a></li>
-          <li><a href="#">S.S.S.</a></li>
-          <li><a href="#">İletişim</a></li>
+          <li><a href="{{ url_for('main.about') }}">Hakkında</a></li>
+          <li><a href="{{ url_for('main.faq') }}">S.S.S.</a></li>
+          <li><a href="{{ url_for('main.contact') }}">İletişim</a></li>
         </ul>
       </div>
       <div class="cl-footer-col">
@@ -1147,22 +1151,18 @@
       (function loop() { cx.clearRect(0, 0, W, H); drawLines(); pts.forEach(p => { p.tick(); p.draw() }); requestAnimationFrame(loop) })();
       addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cg.style.left = e.clientX + 'px'; cg.style.top = e.clientY + 'px' });
       addEventListener('touchmove', e => { mx = e.touches[0].clientX; my = e.touches[0].clientY }, { passive: true });
-
       const nav = document.getElementById('cl-nav');
       addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
-
       const revObs = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('cl-visible'); revObs.unobserve(e.target) } });
       }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
       document.querySelectorAll('.cl-reveal,.cl-reveal-left,.cl-reveal-right').forEach(el => revObs.observe(el));
-
       setTimeout(() => {
         document.querySelectorAll('.cl-flash-item').forEach(el => {
           el.style.animation = 'flashIn .3s reverse forwards';
           setTimeout(() => el.remove(), 300);
         });
       }, 5000);
-
       const thBtn = document.getElementById('cl-theme-btn');
       const thIco = document.getElementById('cl-theme-icon');
       let dark = true;
@@ -1171,11 +1171,9 @@
         document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         thIco.className = dark ? 'bi bi-sun' : 'bi bi-moon-stars';
       });
-
       const lBtn = document.getElementById('cl-lang-btn');
       const langs = ['TR', 'EN']; let li = 0;
       lBtn.addEventListener('click', () => { li = (li + 1) % 2; lBtn.textContent = langs[li] });
-
       const mBtn = document.getElementById('cl-mob-btn');
       const mLinks = document.querySelector('.cl-nav-links');
       if (mBtn && mLinks) {
@@ -1185,7 +1183,6 @@
           mBtn.setAttribute('aria-expanded', String(!open));
         });
       }
-
       (function () {
         const fill = document.getElementById('cl-scroll-fill');
         const pctEl = document.getElementById('cl-scroll-pct');

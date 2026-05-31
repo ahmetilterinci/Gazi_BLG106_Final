@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% block title %}S.S.S. — CyberLearn.io{% endblock %}
+
+{% block extra_css %}
+<style>
+    .static-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+    }
+
+    .static-hero {
+        text-align: center;
+        padding: 3rem 0 4rem;
+    }
+
+    .static-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        font-family: var(--mono);
+        font-size: .7rem;
+        color: var(--a);
+        background: rgba(0, 245, 196, .06);
+        border: 1px solid rgba(0, 245, 196, .18);
+        border-radius: 20px;
+        padding: .28rem .85rem;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+    }
+
+    .static-hero h1 {
+        font-family: var(--display);
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.1;
+        letter-spacing: -.03em;
+        margin-bottom: 1rem;
+    }
+
+    .static-hero p {
+        font-size: .95rem;
+        color: var(--txt2);
+        max-width: 480px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+
+    /* Kategori başlığı */
+    .faq-category {
+        font-family: var(--mono);
+        font-size: .68rem;
+        color: var(--p);
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        margin: 2.5rem 0 .9rem;
+        display: flex;
+        align-items: center;
+        gap: .4rem;
+        padding-bottom: .6rem;
+        border-bottom: 1px solid var(--edge);
+    }
+
+    /* Accordion */
+    .faq-item {
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 12px;
+        margin-bottom: .6rem;
+        overflow: hidden;
+        transition: border-color .2s;
+    }
+
+    .faq-item.open {
+        border-color: rgba(110, 91, 255, .3);
+    }
+
+    .faq-q {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.1rem 1.4rem;
+        cursor: pointer;
+        user-select: none;
+        gap: 1rem;
+    }
+
+    .faq-q-text {
+        font-family: var(--sans);
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--txt);
+    }
+
+    .faq-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: rgba(110, 91, 255, .1);
+        border: 1px solid var(--edge);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--p);
+        font-size: .75rem;
+        flex-shrink: 0;
+        transition: transform .25s, background .2s;
+    }
+
+    .faq-item.open .faq-icon {
+        transform: rotate(45deg);
+        background: var(--p);
+        color: #fff;
+        border-color: var(--p);
+    }
+
+    .faq-a {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .35s cubic-bezier(.22, 1, .36, 1), padding .25s;
+        padding: 0 1.4rem;
+    }
+
+    .faq-item.open .faq-a {
+        max-height: 400px;
+        padding: 0 1.4rem 1.2rem;
+    }
+
+    .faq-a p {
+        font-size: .85rem;
+        color: var(--txt2);
+        line-height: 1.8;
+    }
+
+    .faq-a a {
+        color: var(--p);
+        text-decoration: none;
+    }
+
+    .faq-a a:hover {
+        text-decoration: underline;
+    }
+
+    .faq-cta {
+        background: var(--surface);
+        border: 1px solid var(--edge);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        margin-top: 3rem;
+    }
+
+    .faq-cta p {
+        font-size: .88rem;
+        color: var(--txt2);
+        margin-bottom: 1rem;
+    }
+
+    @media(max-width:640px) {
+        .static-wrap {
+            padding: 2rem 1rem 4rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="static-wrap">
+
+    <div class="static-hero cl-reveal">
+        <div class="static-hero-badge"><i class="bi bi-question-circle"></i> S.S.S.</div>
+        <h1>Sık Sorulan <span class="cl-glow-text">Sorular</span></h1>
+        <p>Merak ettiğin her şeyi burada bulabilirsin. Bulamazsan <a href="{{ url_for('main.contact') }}"
+                style="color:var(--p)">bize yaz</a>.</p>
+    </div>
+
+    <!-- Platform -->
+    <div class="faq-category cl-reveal"><i class="bi bi-grid-3x3-gap"></i> Platform</div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">CyberLearn.io tamamen ücretsiz mi?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Evet, şu an tüm içerikler ve özellikler tamamen ücretsizdir. Kayıt ol ve hemen öğrenmeye başla.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Başlamak için siber güvenlik bilgisi gerekiyor mu?</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Hayır. Platform sıfırdan başlayanlar için tasarlandı. İlk dünya temel ağ kavramlarını adım adım öğretir.
+                Önce kolay dersleri tamamlamadan ileri konulara geçemezsin — bu sayede sağlam bir temel kuruyorsun.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Dünya sistemi nasıl çalışıyor?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Her "dünya" bir konu alanını temsil eder (örn. Ağ Güvenliği, Kriptografi). Bir dünyanın tüm derslerini
+                tamamlamadan bir sonraki dünya kilitli kalır. Bu sıralı yapı kalıcı öğrenmeyi destekler.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Mobil cihazdan kullanabilir miyim?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Evet, platform tamamen mobil uyumludur. Telefon veya tabletinden tarayıcı üzerinden erişebilirsin.</p>
+        </div>
+    </div>
+
+    <!-- AI Quiz -->
+    <div class="faq-category cl-reveal" style="margin-top:2rem"><i class="bi bi-robot"></i> AI Quiz Sistemi</div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Sorular her seferinde farklı mı oluyor?</span><span
+                class="faq-icon"><i class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Evet. Her quiz oturumunda Gemini AI ders içeriğini analiz ederek yeni sorular üretir. Aynı soruyu iki kez
+                görme ihtimalin çok düşüktür.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Çok yanlış yaparsam ne olur?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>AI önceki denemelerindeki hata sayısını analiz eder. Çok yanlış yaparsan bir sonraki quiz daha kolay
+                tipte sorular içerecek şekilde ayarlanır. Zorluk seviyesi performansına göre dinamik olarak değişir.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Hangi soru tipleri var?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>4 farklı soru tipi var: çoktan seçmeli (MCQ), doğru/yanlış, boşluk doldurma ve eşleştirme. Her tip farklı
+                bir öğrenme becerisi hedefler.</p>
+        </div>
+    </div>
+
+    <!-- Hesap -->
+    <div class="faq-category cl-reveal" style="margin-top:2rem"><i class="bi bi-person-circle"></i> Hesap & Profil</div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Şifremi unutursam ne yapmalıyım?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Giriş sayfasındaki "Şifremi Unuttum" bağlantısından e-posta adresine sıfırlama linki gönderebilirsin.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">Avatar nasıl değiştirebilirim?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Profil sayfandan (<a href="{{ url_for('main.profile') }}">buradan erişebilirsin</a>) avatar URL'si
+                girebilir ya da "Rastgele Üret" butonuyla otomatik avatar oluşturabilirsin.</p>
+        </div>
+    </div>
+
+    <div class="faq-item cl-reveal">
+        <div class="faq-q"><span class="faq-q-text">İlerleme kaydediliyor mu?</span><span class="faq-icon"><i
+                    class="bi bi-plus"></i></span></div>
+        <div class="faq-a">
+            <p>Evet. Tamamladığın her ders, aldığın puanlar ve deneme sayıların hesabına bağlı olarak kalıcı şekilde
+                kaydedilir.</p>
+        </div>
+    </div>
+
+    <!-- Alt CTA -->
+    <div class="faq-cta cl-reveal">
+        <p>Burada cevabını bulamadın mı?</p>
+        <a href="{{ url_for('main.contact') }}" class="cl-btn-primary">
+            <i class="bi bi-envelope"></i> Bize Ulaş
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        });
+    });
+</script>
+{% endblock %}
