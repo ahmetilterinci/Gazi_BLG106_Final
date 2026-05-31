@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ g.get('lang', 'tr') }}" data-theme="dark">
+<html lang="{{ get_locale() }}" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <meta name="description"
-    content="{% block meta_description %}CyberLearn.io — Duolingo tarzı AI destekli siber güvenlik öğrenme platformu.{% endblock %}" />
+    content="{% block meta_description %}{{ _('CyberLearn.io — Eğlenceli ve AI destekli siber güvenlik öğrenme platformu.') }}{% endblock %}" />
   <title>{% block title %}CyberLearn.io{% endblock %}</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -142,6 +142,7 @@
       z-index: 1
     }
 
+    /* ── NAVBAR ── */
     #cl-nav {
       position: fixed;
       top: 0;
@@ -276,18 +277,94 @@
       color: #fff
     }
 
-    .cl-lang-btn {
-      font-family: var(--mono);
-      font-size: .68rem;
-      font-weight: 600;
-      width: 44px;
-      color: var(--a) !important;
-      border-color: rgba(0, 245, 196, .18) !important
+    /* ── DİL DEĞİŞTİRME BUTONU — ÖZEL TASARIM ── */
+    .cl-lang-switcher {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      background: rgba(4, 4, 13, .8);
+      border: 1px solid rgba(0, 245, 196, .25);
+      border-radius: 20px;
+      padding: 2px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color .3s, box-shadow .3s;
     }
 
-    .cl-lang-btn:hover {
-      border-color: var(--a) !important;
-      background: rgba(0, 245, 196, .07) !important
+    .cl-lang-switcher:hover {
+      border-color: var(--a);
+      box-shadow: 0 0 16px rgba(0, 245, 196, .2);
+    }
+
+    .cl-lang-track {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 64px;
+      height: 100%;
+    }
+
+    .cl-lang-option {
+      flex: 1;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: var(--txt3);
+      z-index: 1;
+      transition: color .25s;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .cl-lang-option.active {
+      color: #000;
+    }
+
+    .cl-lang-pill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--a), #00c9a7);
+      border-radius: 16px;
+      transition: left .3s cubic-bezier(.34, 1.56, .64, 1), background .3s;
+      box-shadow: 0 0 10px rgba(0, 245, 196, .4);
+    }
+
+    .cl-lang-switcher.en .cl-lang-pill {
+      left: 50%;
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      box-shadow: 0 0 10px rgba(110, 91, 255, .4);
+    }
+
+    .cl-lang-switcher.en .cl-lang-option:first-child {
+      color: var(--txt3);
+    }
+
+    .cl-lang-switcher.en .cl-lang-option:last-child {
+      color: #fff;
+    }
+
+    /* Parıltı efekti */
+    .cl-lang-switcher::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
+      transform: skewX(-20deg);
+      transition: left .5s;
+      pointer-events: none;
+    }
+
+    .cl-lang-switcher:hover::after {
+      left: 120%;
     }
 
     .cl-btn-login {
@@ -400,6 +477,7 @@
       cursor: pointer
     }
 
+    /* ── FLASH ── */
     #cl-flash {
       position: fixed;
       top: calc(var(--nav-h) + 10px);
@@ -546,6 +624,7 @@
       min-height: 100vh
     }
 
+    /* ── FOOTER ── */
     #cl-footer {
       position: relative;
       z-index: 2;
@@ -652,6 +731,7 @@
       background: rgba(110, 91, 255, .1)
     }
 
+    /* ── UTILITIES ── */
     .cl-reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -802,6 +882,7 @@
       color: #fff
     }
 
+    /* ── SCROLL INDICATOR ── */
     #cl-scroll-track {
       position: fixed;
       top: 0;
@@ -992,56 +1073,67 @@
     </svg>
     <div id="cl-scroll-pct-num">0%</div>
   </div>
-  <button id="cl-btt" aria-label="Sayfanın başına dön" title="Başa dön">
+  <button id="cl-btt" aria-label="{{ _('Sayfanın başına dön') }}" title="{{ _('Başa dön') }}">
     <i class="bi bi-chevron-up" aria-hidden="true"></i>
   </button>
 
-  <nav id="cl-nav" role="navigation" aria-label="Ana menü">
-    <a class="cl-brand" href="{{ url_for('main.index') }}" aria-label="CyberLearn.io ana sayfa">
+  <nav id="cl-nav" role="navigation" aria-label="{{ _('Ana menü') }}">
+    <a class="cl-brand" href="{{ url_for('main.index') }}" aria-label="CyberLearn.io {{ _('ana sayfa') }}">
       <div class="cl-brand-icon" aria-hidden="true">🛡</div>
       <span class="cl-brand-name">CyberLearn<span class="tld">.io</span></span>
     </a>
 
     <ul class="cl-nav-links d-none d-lg-flex" role="list">
       <li><a href="{{ url_for('main.index') }}" class="{{ 'active' if request.endpoint == 'main.index' else '' }}">
-          <i class="bi bi-house-door" aria-hidden="true"></i> Ana Sayfa</a></li>
+          <i class="bi bi-house-door" aria-hidden="true"></i> {{ _('Ana Sayfa') }}</a></li>
       <li><a href="{{ url_for('main.about') }}" class="{{ 'active' if request.endpoint == 'main.about' else '' }}">
-          <i class="bi bi-shield-shaded" aria-hidden="true"></i> Hakkında</a></li>
+          <i class="bi bi-shield-shaded" aria-hidden="true"></i> {{ _('Hakkında') }}</a></li>
       <li><a href="{{ url_for('main.contact') }}" class="{{ 'active' if request.endpoint == 'main.contact' else '' }}">
-          <i class="bi bi-envelope" aria-hidden="true"></i> İletişim</a></li>
+          <i class="bi bi-envelope" aria-hidden="true"></i> {{ _('İletişim') }}</a></li>
     </ul>
 
     <div class="cl-nav-actions">
-      <button class="cl-icon-btn cl-lang-btn" id="cl-lang-btn" title="Dil değiştir"
-        aria-label="Dil değiştir">TR</button>
-      <button class="cl-icon-btn" id="cl-theme-btn" title="Tema değiştir" aria-label="Tema değiştir">
+
+      <!-- Dil değiştirici -->
+      <div class="cl-lang-switcher {{ 'en' if get_locale() == 'en' else 'tr' }}" id="cl-lang-switcher" role="button"
+        tabindex="0" aria-label="{{ _('Dil değiştir') }}" title="{{ _('Dil değiştir') }}">
+        <div class="cl-lang-track">
+          <div class="cl-lang-pill"></div>
+          <span class="cl-lang-option {{ 'active' if get_locale() == 'tr' else '' }}">TR</span>
+          <span class="cl-lang-option {{ 'active' if get_locale() == 'en' else '' }}">EN</span>
+        </div>
+      </div>
+
+      <button class="cl-icon-btn" id="cl-theme-btn" title="{{ _('Tema değiştir') }}"
+        aria-label="{{ _('Tema değiştir') }}">
         <i class="bi bi-sun" id="cl-theme-icon"></i>
       </button>
 
       {% if current_user.is_authenticated %}
-      <a href="{{ url_for('main.profile') }}" class="cl-user-badge" aria-label="Profil: {{ current_user.username }}">
+      <a href="{{ url_for('main.profile') }}" class="cl-user-badge"
+        aria-label="{{ _('Profil') }}: {{ current_user.username }}">
         <div class="cl-user-avatar" aria-hidden="true">{{ current_user.username[0].upper() }}</div>
         {{ current_user.username }}
       </a>
       <a href="{{ url_for('auth.logout') }}" class="cl-btn-login">
-        <i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>Çıkış</span>
+        <i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>{{ _('Çıkış') }}</span>
       </a>
       {% else %}
       <a href="{{ url_for('auth.login') }}" class="cl-btn-login">
-        <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i><span>Giriş Yap</span>
+        <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i><span>{{ _('Giriş Yap') }}</span>
       </a>
       <a href="{{ url_for('auth.register') }}" class="cl-btn-register">
-        <i class="bi bi-person-plus" aria-hidden="true"></i><span>Kayıt Ol</span>
+        <i class="bi bi-person-plus" aria-hidden="true"></i><span>{{ _('Kayıt Ol') }}</span>
       </a>
       {% endif %}
 
-      <button class="cl-mob-toggle" id="cl-mob-btn" aria-label="Menüyü aç" aria-expanded="false">
+      <button class="cl-mob-toggle" id="cl-mob-btn" aria-label="{{ _('Menüyü aç') }}" aria-expanded="false">
         <i class="bi bi-list" aria-hidden="true"></i>
       </button>
     </div>
   </nav>
 
-  <div id="cl-flash" role="region" aria-live="polite" aria-label="Bildirimler">
+  <div id="cl-flash" role="region" aria-live="polite" aria-label="{{ _('Bildirimler') }}">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
@@ -1052,7 +1144,8 @@
     <div class="cl-flash-item flash-{{ cat }}" role="alert">
       <i class="bi {{ icons[cat] }} cl-flash-icon" aria-hidden="true"></i>
       <span class="cl-flash-msg">{{ message }}</span>
-      <button class="cl-flash-close" onclick="this.closest('.cl-flash-item').remove()" aria-label="Bildirimi kapat">
+      <button class="cl-flash-close" onclick="this.closest('.cl-flash-item').remove()"
+        aria-label="{{ _('Bildirimi kapat') }}">
         <i class="bi bi-x" aria-hidden="true"></i>
       </button>
       <div class="cl-flash-progress"></div>
@@ -1073,36 +1166,36 @@
           <div class="cl-brand-icon" style="width:26px;height:26px;font-size:.8rem" aria-hidden="true">🛡</div>
           CyberLearn<span style="color:var(--a)">.io</span>
         </div>
-        <p class="cl-footer-desc">Duolingo'nun eğlenceli öğrenme modeliyle siber güvenliği birleştiren yapay zeka
-          destekli öğrenme platformu.</p>
+        <p class="cl-footer-desc">{{ _('CyberLearn\'ın eğlenceli öğrenme modeliyle siber güvenliği birleştiren yapay
+          zeka destekli öğrenme platformu.') }}</p>
       </div>
       <div class="cl-footer-col">
-        <div class="cl-footer-col-title">Platform</div>
+        <div class="cl-footer-col-title">{{ _('Platform') }}</div>
         <ul>
-          <li><a href="{{ url_for('main.index') }}">Ana Sayfa</a></li>
-          <li><a href="#">Senaryolar</a></li>
-          <li><a href="#">Rozetler</a></li>
+          <li><a href="{{ url_for('main.index') }}">{{ _('Ana Sayfa') }}</a></li>
+          <li><a href="/404">{{ _('Senaryolar') }}</a></li>
+          <li><a href="/404">{{ _('Rozetler') }}</a></li>
         </ul>
       </div>
       <div class="cl-footer-col">
-        <div class="cl-footer-col-title">Destek</div>
+        <div class="cl-footer-col-title">{{ _('Destek') }}</div>
         <ul>
-          <li><a href="{{ url_for('main.about') }}">Hakkında</a></li>
-          <li><a href="{{ url_for('main.faq') }}">S.S.S.</a></li>
-          <li><a href="{{ url_for('main.contact') }}">İletişim</a></li>
+          <li><a href="{{ url_for('main.about') }}">{{ _('Hakkında') }}</a></li>
+          <li><a href="{{ url_for('main.faq') }}">{{ _('S.S.S.') }}</a></li>
+          <li><a href="{{ url_for('main.contact') }}">{{ _('İletişim') }}</a></li>
         </ul>
       </div>
       <div class="cl-footer-col">
-        <div class="cl-footer-col-title">Hukuki</div>
+        <div class="cl-footer-col-title">{{ _('Hukuki') }}</div>
         <ul>
-          <li><a href="#">Gizlilik</a></li>
-          <li><a href="#">Kullanım Şartları</a></li>
-          <li><a href="#">Çerezler</a></li>
+          <li><a href="#">{{ _('Gizlilik') }}</a></li>
+          <li><a href="#">{{ _('Kullanım Şartları') }}</a></li>
+          <li><a href="#">{{ _('Çerezler') }}</a></li>
         </ul>
       </div>
     </div>
     <div class="cl-footer-bottom">
-      <span class="cl-footer-copy">© 2026 CyberLearn.io — Tüm hakları saklıdır.</span>
+      <span class="cl-footer-copy">© 2026 CyberLearn.io — {{ _('Tüm hakları saklıdır.') }}</span>
       <div class="cl-footer-socials">
         <a href="#" class="cl-social-btn" aria-label="GitHub"><i class="bi bi-github" aria-hidden="true"></i></a>
         <a href="#" class="cl-social-btn" aria-label="Twitter/X"><i class="bi bi-twitter-x" aria-hidden="true"></i></a>
@@ -1115,6 +1208,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jyor3NNAuXySv1ItxabuXovcY/V" crossorigin="anonymous"></script>
   <script>
     (function () {
+      /* PARTICLE CANVAS */
       const cv = document.getElementById('cl-canvas');
       const cx = cv.getContext('2d');
       const cg = document.getElementById('cl-cursor');
@@ -1151,18 +1245,26 @@
       (function loop() { cx.clearRect(0, 0, W, H); drawLines(); pts.forEach(p => { p.tick(); p.draw() }); requestAnimationFrame(loop) })();
       addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cg.style.left = e.clientX + 'px'; cg.style.top = e.clientY + 'px' });
       addEventListener('touchmove', e => { mx = e.touches[0].clientX; my = e.touches[0].clientY }, { passive: true });
+
+      /* NAVBAR SCROLL */
       const nav = document.getElementById('cl-nav');
       addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+      /* SCROLL REVEAL */
       const revObs = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('cl-visible'); revObs.unobserve(e.target) } });
       }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
       document.querySelectorAll('.cl-reveal,.cl-reveal-left,.cl-reveal-right').forEach(el => revObs.observe(el));
+
+      /* FLASH AUTO-CLOSE */
       setTimeout(() => {
         document.querySelectorAll('.cl-flash-item').forEach(el => {
           el.style.animation = 'flashIn .3s reverse forwards';
           setTimeout(() => el.remove(), 300);
         });
       }, 5000);
+
+      /* THEME TOGGLE */
       const thBtn = document.getElementById('cl-theme-btn');
       const thIco = document.getElementById('cl-theme-icon');
       let dark = true;
@@ -1171,9 +1273,24 @@
         document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         thIco.className = dark ? 'bi bi-sun' : 'bi bi-moon-stars';
       });
-      const lBtn = document.getElementById('cl-lang-btn');
-      const langs = ['TR', 'EN']; let li = 0;
-      lBtn.addEventListener('click', () => { li = (li + 1) % 2; lBtn.textContent = langs[li] });
+
+      /* DİL DEĞİŞTİRİCİ — Flask set-lang rotasına yönlendir */
+      const langSwitcher = document.getElementById('cl-lang-switcher');
+      if (langSwitcher) {
+        const currentLang = langSwitcher.classList.contains('en') ? 'en' : 'tr';
+        langSwitcher.addEventListener('click', () => {
+          const newLang = currentLang === 'tr' ? 'en' : 'tr';
+          window.location.href = `/set-lang/${newLang}`;
+        });
+        langSwitcher.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            langSwitcher.click();
+          }
+        });
+      }
+
+      /* MOBILE MENU */
       const mBtn = document.getElementById('cl-mob-btn');
       const mLinks = document.querySelector('.cl-nav-links');
       if (mBtn && mLinks) {
@@ -1183,6 +1300,8 @@
           mBtn.setAttribute('aria-expanded', String(!open));
         });
       }
+
+      /* SCROLL INDICATOR */
       (function () {
         const fill = document.getElementById('cl-scroll-fill');
         const pctEl = document.getElementById('cl-scroll-pct');
