@@ -80,7 +80,6 @@
       color: #fff
     }
 
-    /* ── CUSTOM SCROLLBAR ── */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px
@@ -143,7 +142,6 @@
       z-index: 1
     }
 
-    /* ── NAVBAR ── */
     #cl-nav {
       position: fixed;
       top: 0;
@@ -402,7 +400,6 @@
       cursor: pointer
     }
 
-    /* ── FLASH ── */
     #cl-flash {
       position: fixed;
       top: calc(var(--nav-h) + 10px);
@@ -542,7 +539,6 @@
       background: var(--p)
     }
 
-    /* ── MAIN ── */
     #cl-main {
       position: relative;
       z-index: 2;
@@ -550,7 +546,6 @@
       min-height: 100vh
     }
 
-    /* ── FOOTER ── */
     #cl-footer {
       position: relative;
       z-index: 2;
@@ -657,7 +652,6 @@
       background: rgba(110, 91, 255, .1)
     }
 
-    /* ── UTILITIES ── */
     .cl-reveal {
       opacity: 0;
       transform: translateY(24px);
@@ -785,7 +779,29 @@
       box-shadow: 0 0 20px var(--pg)
     }
 
-    /* ── SCROLL INDICATOR ── */
+    .cl-btn-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .7rem 1.6rem;
+      background: transparent;
+      border: 1px solid rgba(255, 61, 107, .35);
+      border-radius: 10px;
+      color: var(--r);
+      font-size: .875rem;
+      font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .25s
+    }
+
+    .cl-btn-danger:hover {
+      background: rgba(255, 61, 107, .1);
+      border-color: var(--r);
+      color: #fff
+    }
+
     #cl-scroll-track {
       position: fixed;
       top: 0;
@@ -966,7 +982,6 @@
   <canvas id="cl-canvas"></canvas>
   <div id="cl-cursor"></div>
 
-  <!-- ── SCROLL INDICATOR ── -->
   <div id="cl-scroll-track">
     <div id="cl-scroll-fill"></div>
   </div>
@@ -988,21 +1003,24 @@
     </a>
 
     <ul class="cl-nav-links d-none d-lg-flex" role="list">
-      <li><a href="{{ url_for('main.index') }}" class="{{ 'active' if request.endpoint == 'main.index' else '' }}"><i
-            class="bi bi-house-door" aria-hidden="true"></i> Ana Sayfa</a></li>
-      <li><a href="#" class="{{ 'active' if request.endpoint and 'topic' in request.endpoint else '' }}"><i
-            class="bi bi-journal-code" aria-hidden="true"></i> Dersler</a></li>
-      <li><a href="#"><i class="bi bi-trophy" aria-hidden="true"></i> Sıralama</a></li>
+      <li><a href="{{ url_for('main.index') }}" class="{{ 'active' if request.endpoint == 'main.index' else '' }}">
+          <i class="bi bi-house-door" aria-hidden="true"></i> Ana Sayfa</a></li>
+      <li><a href="{{ url_for('main.topics') }}"
+          class="{{ 'active' if request.endpoint and 'topic' in request.endpoint else '' }}">
+          <i class="bi bi-journal-code" aria-hidden="true"></i> Dersler</a></li>
+      <li><a href="{{ url_for('main.topics') }}">
+          <i class="bi bi-trophy" aria-hidden="true"></i> Sıralama</a></li>
     </ul>
 
     <div class="cl-nav-actions">
       <button class="cl-icon-btn cl-lang-btn" id="cl-lang-btn" title="Dil değiştir"
         aria-label="Dil değiştir">TR</button>
-      <button class="cl-icon-btn" id="cl-theme-btn" title="Tema değiştir" aria-label="Tema değiştir"><i
-          class="bi bi-sun" id="cl-theme-icon"></i></button>
+      <button class="cl-icon-btn" id="cl-theme-btn" title="Tema değiştir" aria-label="Tema değiştir">
+        <i class="bi bi-sun" id="cl-theme-icon"></i>
+      </button>
 
       {% if current_user.is_authenticated %}
-      <a href="#" class="cl-user-badge" aria-label="Profil: {{ current_user.username }}">
+      <a href="{{ url_for('main.profile') }}" class="cl-user-badge" aria-label="Profil: {{ current_user.username }}">
         <div class="cl-user-avatar" aria-hidden="true">{{ current_user.username[0].upper() }}</div>
         {{ current_user.username }}
       </a>
@@ -1035,8 +1053,9 @@
     <div class="cl-flash-item flash-{{ cat }}" role="alert">
       <i class="bi {{ icons[cat] }} cl-flash-icon" aria-hidden="true"></i>
       <span class="cl-flash-msg">{{ message }}</span>
-      <button class="cl-flash-close" onclick="this.closest('.cl-flash-item').remove()" aria-label="Bildirimi kapat"><i
-          class="bi bi-x" aria-hidden="true"></i></button>
+      <button class="cl-flash-close" onclick="this.closest('.cl-flash-item').remove()" aria-label="Bildirimi kapat">
+        <i class="bi bi-x" aria-hidden="true"></i>
+      </button>
       <div class="cl-flash-progress"></div>
     </div>
     {% endfor %}
@@ -1061,8 +1080,8 @@
       <div class="cl-footer-col">
         <div class="cl-footer-col-title">Platform</div>
         <ul>
-          <li><a href="#">Dersler</a></li>
-          <li><a href="#">Sıralama</a></li>
+          <li><a href="{{ url_for('main.topics') }}">Dersler</a></li>
+          <li><a href="{{ url_for('main.topics') }}">Sıralama</a></li>
           <li><a href="#">Senaryolar</a></li>
           <li><a href="#">Rozetler</a></li>
         </ul>
@@ -1098,7 +1117,6 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jyor3NNAuXySv1ItxabuXovcY/V" crossorigin="anonymous"></script>
   <script>
     (function () {
-      /* PARTICLE CANVAS */
       const cv = document.getElementById('cl-canvas');
       const cx = cv.getContext('2d');
       const cg = document.getElementById('cl-cursor');
@@ -1125,9 +1143,9 @@
         cx.beginPath(); cx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         cx.fillStyle = `rgba(${this.c},${this.a * p})`; cx.fill();
       };
-      for (let i = 0; i < 90; i++)pts.push(new Pt());
+      for (let i = 0; i < 90; i++) pts.push(new Pt());
       function drawLines() {
-        for (let i = 0; i < pts.length; i++)for (let j = i + 1; j < pts.length; j++) {
+        for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
           const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy);
           if (d < 90) { cx.beginPath(); cx.moveTo(pts[i].x, pts[i].y); cx.lineTo(pts[j].x, pts[j].y); cx.strokeStyle = `rgba(110,91,255,${.06 * (1 - d / 90)})`; cx.lineWidth = .5; cx.stroke() }
         }
@@ -1136,11 +1154,9 @@
       addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cg.style.left = e.clientX + 'px'; cg.style.top = e.clientY + 'px' });
       addEventListener('touchmove', e => { mx = e.touches[0].clientX; my = e.touches[0].clientY }, { passive: true });
 
-      /* NAVBAR SCROLL */
       const nav = document.getElementById('cl-nav');
       addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
 
-      /* SCROLL REVEAL */
       const revObs = new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (e.isIntersecting) { e.target.classList.add('cl-visible'); revObs.unobserve(e.target) }
@@ -1148,7 +1164,6 @@
       }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
       document.querySelectorAll('.cl-reveal,.cl-reveal-left,.cl-reveal-right').forEach(el => revObs.observe(el));
 
-      /* FLASH AUTO-CLOSE */
       setTimeout(() => {
         document.querySelectorAll('.cl-flash-item').forEach(el => {
           el.style.animation = 'flashIn .3s reverse forwards';
@@ -1156,7 +1171,6 @@
         });
       }, 5000);
 
-      /* THEME TOGGLE */
       const thBtn = document.getElementById('cl-theme-btn');
       const thIco = document.getElementById('cl-theme-icon');
       let dark = true;
@@ -1166,12 +1180,10 @@
         thIco.className = dark ? 'bi bi-sun' : 'bi bi-moon-stars';
       });
 
-      /* LANG TOGGLE */
       const lBtn = document.getElementById('cl-lang-btn');
       const langs = ['TR', 'EN']; let li = 0;
       lBtn.addEventListener('click', () => { li = (li + 1) % 2; lBtn.textContent = langs[li] });
 
-      /* MOBILE MENU */
       const mBtn = document.getElementById('cl-mob-btn');
       const mLinks = document.querySelector('.cl-nav-links');
       if (mBtn && mLinks) {
@@ -1182,7 +1194,6 @@
         });
       }
 
-      /* ── SCROLL INDICATOR ── */
       (function () {
         const fill = document.getElementById('cl-scroll-fill');
         const pctEl = document.getElementById('cl-scroll-pct');
@@ -1195,10 +1206,8 @@
           const scrollable = document.body.scrollHeight - innerHeight;
           if (scrollable <= 0) return;
           const pct = Math.min(scrollY / scrollable, 1);
-
           fill.style.width = (pct * 100) + '%';
           fill.classList.toggle('active', pct > 0.01 && pct < 0.99);
-
           const show = pct > 0.05 && pct < 0.98;
           pctEl.classList.toggle('visible', show);
           btt.classList.toggle('visible', show);
@@ -1208,7 +1217,6 @@
 
         btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       })();
-
     })();
   </script>
 
