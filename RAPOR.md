@@ -4,7 +4,7 @@
 **Kurum:** Gazi Üniversitesi — TUSAŞ Kazan Meslek Yüksek Okulu   
 **Canlı URL:** https://gazi-blg106-final.onrender.com  
 **GitHub:** https://github.com/ahmetilterinci/Gazi_BLG106_Final
-**Tanıtım Videosu:** 
+**Tanıtım Videosu:** https://youtu.be/zDzQFSN9Yks
 
 ### NOT: AI-Günlük docs dosyasının içerisindedir.
 
