@@ -1446,6 +1446,282 @@ kriptografi, etik hacking ve daha fazlası.') }}{% endblock %}
       padding: 4rem 1rem;
     }
   }
+
+
+
+  /* ══════════════════════════════════════════════════════
+     LIGHT TEMA — INDEX.HTML TAM OVERRIDE
+     ══════════════════════════════════════════════════════ */
+
+  /* ── Genel başlıklar & metinler ── */
+  [data-theme="light"] .sec-title,
+  [data-theme="light"] .hero-h1,
+  [data-theme="light"] .cta-h2,
+  [data-theme="light"] .feat-title,
+  [data-theme="light"] .how-step-title,
+  [data-theme="light"] .topic-name,
+  [data-theme="light"] .path-title,
+  [data-theme="light"] .world-name,
+  [data-theme="light"] .lock-bubble-text strong {
+    color: var(--txt);
+  }
+
+  /* ── Hero ── */
+  [data-theme="light"] #s-hero {
+    background: transparent;
+  }
+
+  [data-theme="light"] .hero-h1 .line2 {
+    background: linear-gradient(135deg, var(--p) 0%, #7c5cff 55%, #18143a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  [data-theme="light"] .hero-grid {
+    background-image:
+      linear-gradient(rgba(91, 72, 240, .06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(91, 72, 240, .06) 1px, transparent 1px);
+  }
+
+  [data-theme="light"] .orb-a {
+    background: radial-gradient(circle, rgba(91, 72, 240, .07) 0%, transparent 65%);
+  }
+
+  [data-theme="light"] .orb-b {
+    background: radial-gradient(circle, rgba(0, 201, 167, .06) 0%, transparent 65%);
+  }
+
+  [data-theme="light"] .orb-c {
+    background: radial-gradient(circle, rgba(232, 40, 79, .04) 0%, transparent 65%);
+  }
+
+  [data-theme="light"] .hero-badge {
+    background: rgba(0, 201, 167, .08);
+    border-color: rgba(0, 201, 167, .25);
+  }
+
+  [data-theme="light"] .scene-div {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(91, 72, 240, .15) 25%,
+        rgba(0, 201, 167, .15) 50%,
+        rgba(91, 72, 240, .15) 75%,
+        transparent 100%);
+  }
+
+  [data-theme="light"] .scene-div::after {
+    background: radial-gradient(circle, rgba(0, 201, 167, .1), transparent 70%);
+  }
+
+  /* ── Features bölümü ── */
+  [data-theme="light"] #s-features {
+    background: linear-gradient(180deg, transparent 0%, rgba(91, 72, 240, .02) 50%, transparent 100%);
+  }
+
+  [data-theme="light"] .feat-hero,
+  [data-theme="light"] .feat-sm {
+    background: var(--surface);
+    box-shadow: 0 2px 16px rgba(91, 72, 240, .07);
+  }
+
+  [data-theme="light"] .feat-hero:hover {
+    box-shadow: 0 24px 64px rgba(91, 72, 240, .14);
+  }
+
+  [data-theme="light"] .feat-sm:hover {
+    box-shadow: 0 20px 48px rgba(91, 72, 240, .13);
+  }
+
+  [data-theme="light"] .feat-hero-orb {
+    background: radial-gradient(circle, rgba(91, 72, 240, .06), transparent 65%);
+  }
+
+  [data-theme="light"] .feat-tag {
+    background: rgba(0, 201, 167, .07);
+    border-color: rgba(0, 201, 167, .2);
+  }
+
+  [data-theme="light"] .sec-badge {
+    background: rgba(0, 201, 167, .07);
+    border-color: rgba(0, 201, 167, .2);
+  }
+
+  /* Terminal kasıtlı koyu kalıyor — terminaller dark olmalı */
+  [data-theme="light"] .terminal {
+    background: #141222;
+    border-color: rgba(91, 72, 240, .3);
+  }
+
+  [data-theme="light"] .terminal .tl {
+    color: #8884aa;
+  }
+
+  [data-theme="light"] .terminal .tl.tg {
+    color: #00c9a7;
+  }
+
+  [data-theme="light"] .terminal .tl.tp {
+    color: #9d6fff;
+  }
+
+  [data-theme="light"] .terminal .tl.tr {
+    color: #ff6b8a;
+  }
+
+  [data-theme="light"] .terminal .tl.tw {
+    color: #c8c4e8;
+  }
+
+  /* ── Nasıl Çalışır ── */
+  [data-theme="light"] .how-grid::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(91, 72, 240, .2) 20%,
+        rgba(0, 201, 167, .2) 50%,
+        rgba(91, 72, 240, .2) 80%,
+        transparent);
+  }
+
+  [data-theme="light"] .how-num {
+    background: var(--surface);
+    box-shadow: 0 2px 12px rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .how-step.step-active .how-num {
+    color: #fff;
+  }
+
+  /* ── Konu kartları ── */
+  [data-theme="light"] .topic-card {
+    box-shadow: 0 2px 12px rgba(91, 72, 240, .06);
+  }
+
+  [data-theme="light"] .topic-card:hover {
+    box-shadow: 0 20px 48px rgba(91, 72, 240, .14);
+  }
+
+  [data-theme="light"] .topic-track {
+    background: rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .topic-card::after {
+    background: linear-gradient(135deg, transparent 55%, rgba(91, 72, 240, .04));
+  }
+
+  [data-theme="light"] .d-easy {
+    background: rgba(0, 201, 167, .1);
+    border-color: rgba(0, 201, 167, .22);
+  }
+
+  [data-theme="light"] .d-med {
+    background: rgba(224, 122, 0, .08);
+    border-color: rgba(224, 122, 0, .2);
+  }
+
+  [data-theme="light"] .d-hard {
+    background: rgba(232, 40, 79, .08);
+    border-color: rgba(232, 40, 79, .2);
+  }
+
+  /* ── Stats bandı ── */
+  [data-theme="light"] .stats-inner {
+    background: var(--surface);
+    box-shadow: 0 1px 0 var(--edge), 0 -1px 0 var(--edge);
+  }
+
+  [data-theme="light"] .stats-inner::before {
+    background: linear-gradient(90deg, transparent, rgba(91, 72, 240, .03) 50%, transparent);
+  }
+
+  /* ── CTA bölümü ── */
+  [data-theme="light"] .cta-orb {
+    background: radial-gradient(ellipse, rgba(91, 72, 240, .07) 0%, transparent 65%);
+  }
+
+  /* ── Öğrenme yolu (giriş yapmış kullanıcı) ── */
+  [data-theme="light"] .world-header {
+    box-shadow: 0 2px 12px rgba(91, 72, 240, .07);
+  }
+
+  [data-theme="light"] .world-prog-bar {
+    background: rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .pstat {
+    box-shadow: 0 2px 10px rgba(91, 72, 240, .08);
+  }
+
+  [data-theme="light"] .world-lock-badge {
+    background: rgba(91, 72, 240, .05);
+  }
+
+  /* ── Ders düğümleri ── */
+  [data-theme="light"] .lesson-node {
+    box-shadow: 0 2px 8px rgba(91, 72, 240, .08);
+  }
+
+  [data-theme="light"] a.lesson-node:hover {
+    box-shadow: 0 0 0 6px rgba(91, 72, 240, .12), 0 8px 24px rgba(91, 72, 240, .2);
+  }
+
+  [data-theme="light"] .lesson-node.done {
+    background: rgba(91, 72, 240, .08);
+  }
+
+  [data-theme="light"] .lesson-node.active {
+    background: rgba(91, 72, 240, .1);
+    box-shadow: 0 0 0 6px rgba(91, 72, 240, .1), 0 0 24px rgba(91, 72, 240, .18);
+  }
+
+  @keyframes activeGlowLight {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 6px rgba(91, 72, 240, .1), 0 0 24px rgba(91, 72, 240, .15);
+    }
+
+    50% {
+      box-shadow: 0 0 0 10px rgba(91, 72, 240, .16), 0 0 36px rgba(91, 72, 240, .28);
+    }
+  }
+
+  [data-theme="light"] .lesson-node.active {
+    animation: activeGlowLight 3s ease-in-out infinite;
+  }
+
+  [data-theme="light"] .node-check {
+    color: #fff;
+  }
+
+  [data-theme="light"] .conn-line {
+    background: rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .conn-line.done {
+    box-shadow: 0 0 6px rgba(91, 72, 240, .2);
+  }
+
+  /* ── SVG turn connector stroke ── */
+  [data-theme="light"] .turn-svg path {
+    stroke: rgba(91, 72, 240, .18);
+  }
+
+  /* ── Kilit balonu ── */
+  [data-theme="light"] .lock-bubble {
+    box-shadow: 0 8px 32px rgba(91, 72, 240, .12);
+    border-color: rgba(91, 72, 240, .2);
+  }
+
+  [data-theme="light"] .world-complete-banner {
+    background: rgba(0, 201, 167, .07);
+    border-color: rgba(0, 201, 167, .2);
+  }
+
+  /* ── Scroll hint ── */
+  [data-theme="light"] .scroll-mouse {
+    border-color: var(--txt3);
+  }
 </style>
 {% endblock %}
 

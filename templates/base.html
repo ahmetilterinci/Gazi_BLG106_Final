@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ get_locale() }}" data-theme="dark">
+<html lang="{{ get_locale() }}">
 
 <head>
   <meta charset="UTF-8" />
@@ -8,6 +8,12 @@
     content="{% block meta_description %}{{ _('CyberLearn.io — Eğlenceli ve AI destekli siber güvenlik öğrenme platformu.') }}{% endblock %}" />
   <title>{% block title %}CyberLearn.io{% endblock %}</title>
 
+  <script>
+    (function () {
+      var t = localStorage.getItem('cl-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -41,16 +47,32 @@
       --nav-h: 60px;
     }
 
+    :root {
+      --nav-bg: rgba(4, 4, 13, 0.6);
+      --nav-bg-scrolled: rgba(4, 4, 13, 0.88);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
     [data-theme="light"] {
-      --bg: #f5f4ff;
-      --bg2: #edeaff;
+      --bg: #f7f6ff;
+      --bg2: #eeecff;
       --surface: #ffffff;
-      --surface2: #f0eeff;
-      --edge: rgba(110, 91, 255, 0.18);
-      --edge-h: rgba(110, 91, 255, 0.45);
-      --txt: #1a1640;
-      --txt2: #5a5480;
-      --txt3: #9a96c0;
+      --surface2: #f2f0ff;
+      --edge: rgba(110, 91, 255, 0.16);
+      --edge-h: rgba(110, 91, 255, 0.42);
+      --p: #5b48f0;
+      --p2: #8b6fff;
+      --pg: rgba(91, 72, 240, 0.18);
+      --a: #00c9a7;
+      --ag: rgba(0, 201, 167, 0.15);
+      --r: #e8284f;
+      --w: #e07a00;
+      --txt: #18143a;
+      --txt2: #4a4470;
+      --txt3: #8e8ab8;
+      --nav-bg: rgba(247, 246, 255, 0.88);
+      --nav-bg-scrolled: rgba(247, 246, 255, 0.97);
+      --card-shadow: 0 4px 24px rgba(91, 72, 240, 0.08);
     }
 
     *,
@@ -139,7 +161,12 @@
       background-size: 200px 200px;
       opacity: .018;
       pointer-events: none;
-      z-index: 1
+      z-index: 1;
+      transition: opacity .4s;
+    }
+
+    [data-theme="light"] body::before {
+      opacity: .008;
     }
 
     /* ── NAVBAR ── */
@@ -153,7 +180,7 @@
       display: flex;
       align-items: center;
       padding: 0 2.5rem;
-      background: rgba(4, 4, 13, .6);
+      background: var(--nav-bg);
       backdrop-filter: blur(32px) saturate(200%);
       -webkit-backdrop-filter: blur(32px) saturate(200%);
       border-bottom: 1px solid var(--edge);
@@ -161,8 +188,8 @@
     }
 
     #cl-nav.scrolled {
-      background: rgba(4, 4, 13, .88);
-      box-shadow: 0 2px 40px rgba(0, 0, 0, .6)
+      background: var(--nav-bg-scrolled);
+      box-shadow: 0 2px 40px rgba(0, 0, 0, .3)
     }
 
     .cl-brand {
@@ -201,7 +228,7 @@
       font-family: var(--display);
       font-size: 1rem;
       font-weight: 800;
-      color: #fff;
+      color: var(--txt);
       letter-spacing: -.02em
     }
 
@@ -274,7 +301,301 @@
     .cl-icon-btn:hover {
       background: rgba(110, 91, 255, .14);
       border-color: var(--p);
-      color: #fff
+      color: var(--txt)
+    }
+
+    /* ── TEMA TOGGLE — AY/GÜNEŞ TASARIMI ── */
+    .cl-theme-toggle {
+      position: relative;
+      width: 54px;
+      height: 28px;
+      background: linear-gradient(135deg, #0a0820, #1a1040);
+      border: 1px solid rgba(110, 91, 255, .35);
+      border-radius: 20px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color .4s, box-shadow .4s;
+      flex-shrink: 0;
+    }
+
+    .cl-theme-toggle:hover {
+      border-color: var(--p);
+      box-shadow: 0 0 18px rgba(110, 91, 255, .3);
+    }
+
+    .cl-theme-toggle-sky {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #0a0820 0%, #16083a 50%, #0d0d22 100%);
+      transition: background .5s;
+    }
+
+    [data-theme="light"] .cl-theme-toggle-sky {
+      background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 50%, #f0f9ff 100%);
+    }
+
+    [data-theme="light"] .cl-theme-toggle {
+      background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+      border-color: rgba(251, 191, 36, .5);
+      box-shadow: 0 0 12px rgba(251, 191, 36, .2);
+    }
+
+    [data-theme="light"] .cl-theme-toggle:hover {
+      border-color: #fbbf24;
+      box-shadow: 0 0 20px rgba(251, 191, 36, .4);
+    }
+
+    .cl-theme-stars {
+      position: absolute;
+      inset: 0;
+      transition: opacity .4s;
+    }
+
+    .cl-theme-stars span {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 2s ease-in-out infinite;
+    }
+
+    .cl-theme-stars span:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+      width: 1.5px;
+      height: 1.5px;
+    }
+
+    .cl-theme-stars span:nth-child(2) {
+      top: 40%;
+      left: 22%;
+      animation-delay: .5s;
+      width: 1px;
+      height: 1px;
+      opacity: .6;
+    }
+
+    .cl-theme-stars span:nth-child(3) {
+      top: 65%;
+      left: 15%;
+      animation-delay: 1s;
+    }
+
+    .cl-theme-stars span:nth-child(4) {
+      top: 25%;
+      left: 35%;
+      animation-delay: .3s;
+      width: 1px;
+      height: 1px;
+      opacity: .5;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .2;
+        transform: scale(.5);
+      }
+    }
+
+    [data-theme="light"] .cl-theme-stars {
+      opacity: 0;
+    }
+
+    .cl-theme-clouds {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .5s;
+      pointer-events: none;
+    }
+
+    .cl-theme-cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, .75);
+      border-radius: 20px;
+    }
+
+    .cl-theme-cloud:nth-child(1) {
+      width: 14px;
+      height: 5px;
+      top: 28%;
+      left: 6%;
+    }
+
+    .cl-theme-cloud:nth-child(2) {
+      width: 10px;
+      height: 4px;
+      top: 56%;
+      left: 16%;
+    }
+
+    [data-theme="light"] .cl-theme-clouds {
+      opacity: 1;
+    }
+
+    .cl-theme-orb {
+      position: absolute;
+      top: 50%;
+      left: 4px;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      transition: left .45s cubic-bezier(.34, 1.56, .64, 1), background .4s, box-shadow .4s;
+      z-index: 3;
+      background: radial-gradient(circle at 35% 35%, #e8e4ff, #b8b0d8);
+      box-shadow: 0 0 8px rgba(180, 160, 255, .5), inset -3px -2px 0 rgba(0, 0, 0, .25);
+    }
+
+    .cl-theme-orb::before {
+      content: '';
+      position: absolute;
+      top: 25%;
+      right: 18%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, .15);
+      transition: opacity .4s;
+    }
+
+    .cl-theme-orb::after {
+      content: '';
+      position: absolute;
+      bottom: 22%;
+      left: 22%;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, .12);
+      transition: opacity .4s;
+    }
+
+    [data-theme="light"] .cl-theme-orb {
+      left: calc(100% - 24px);
+      background: radial-gradient(circle at 35% 35%, #fff7a0, #fbbf24 60%, #f59e0b);
+      box-shadow: 0 0 12px rgba(251, 191, 36, .7), 0 0 24px rgba(251, 191, 36, .35);
+    }
+
+    [data-theme="light"] .cl-theme-orb::before,
+    [data-theme="light"] .cl-theme-orb::after {
+      opacity: 0;
+    }
+
+    .cl-theme-rays {
+      position: absolute;
+      top: 50%;
+      left: calc(100% - 24px);
+      width: 20px;
+      height: 20px;
+      transform: translate(-50%, -50%) translateX(10px);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity .4s;
+    }
+
+    [data-theme="light"] .cl-theme-rays {
+      opacity: 1;
+    }
+
+    .cl-theme-ray {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 1.5px;
+      background: rgba(251, 191, 36, .6);
+      border-radius: 2px;
+      transform-origin: left center;
+      animation: rayPulse 2s ease-in-out infinite;
+    }
+
+    .cl-theme-ray:nth-child(1) {
+      transform: rotate(0deg) translateX(12px);
+      animation-delay: 0s;
+    }
+
+    .cl-theme-ray:nth-child(2) {
+      transform: rotate(45deg) translateX(12px);
+      animation-delay: .15s;
+    }
+
+    .cl-theme-ray:nth-child(3) {
+      transform: rotate(90deg) translateX(12px);
+      animation-delay: .3s;
+    }
+
+    .cl-theme-ray:nth-child(4) {
+      transform: rotate(135deg) translateX(12px);
+      animation-delay: .45s;
+    }
+
+    .cl-theme-ray:nth-child(5) {
+      transform: rotate(180deg) translateX(12px);
+      animation-delay: .6s;
+    }
+
+    .cl-theme-ray:nth-child(6) {
+      transform: rotate(225deg) translateX(12px);
+      animation-delay: .75s;
+    }
+
+    .cl-theme-ray:nth-child(7) {
+      transform: rotate(270deg) translateX(12px);
+      animation-delay: .9s;
+    }
+
+    .cl-theme-ray:nth-child(8) {
+      transform: rotate(315deg) translateX(12px);
+      animation-delay: 1.05s;
+    }
+
+    @keyframes rayPulse {
+
+      0%,
+      100% {
+        opacity: .6;
+        width: 6px;
+      }
+
+      50% {
+        opacity: 1;
+        width: 8px;
+      }
+    }
+
+    /* ── DİL DEĞİŞTİRİCİ LIGHT TEMA ── */
+    [data-theme="light"] .cl-lang-switcher {
+      background: rgba(247, 246, 255, .9);
+      border-color: rgba(0, 201, 167, .35);
+    }
+
+    [data-theme="light"] .cl-lang-switcher:hover {
+      border-color: var(--a);
+      box-shadow: 0 0 12px rgba(0, 201, 167, .15);
+    }
+
+    [data-theme="light"] .cl-lang-option {
+      color: var(--txt2);
+    }
+
+    [data-theme="light"] .cl-lang-option.active {
+      color: #18143a;
+    }
+
+    [data-theme="light"] .cl-lang-switcher.en .cl-lang-option:last-child {
+      color: #fff;
     }
 
     /* ── DİL DEĞİŞTİRME BUTONU — ÖZEL TASARIM ── */
@@ -386,7 +707,7 @@
 
     .cl-btn-login:hover {
       border-color: var(--p);
-      color: #fff
+      color: var(--txt)
     }
 
     .cl-btn-register {
@@ -439,7 +760,7 @@
       border-radius: 20px;
       padding: .3rem .85rem .3rem .5rem;
       font-size: .8rem;
-      color: #c4b5fd;
+      color: var(--p2);
       text-decoration: none;
       transition: all .2s
     }
@@ -447,7 +768,7 @@
     .cl-user-badge:hover {
       border-color: var(--p);
       background: rgba(110, 91, 255, .18);
-      color: #fff
+      color: var(--txt)
     }
 
     .cl-user-avatar {
@@ -646,7 +967,7 @@
       font-family: var(--display);
       font-size: 1rem;
       font-weight: 800;
-      color: #fff;
+      color: var(--txt);
       margin-bottom: .5rem;
       display: flex;
       align-items: center;
@@ -727,7 +1048,7 @@
 
     .cl-social-btn:hover {
       border-color: var(--p);
-      color: #fff;
+      color: var(--txt);
       background: rgba(110, 91, 255, .1)
     }
 
@@ -791,8 +1112,16 @@
 
     .cl-card:hover {
       border-color: var(--edge-h);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, .4);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, .3);
       transform: translateY(-4px)
+    }
+
+    [data-theme="light"] .cl-card {
+      box-shadow: var(--card-shadow);
+    }
+
+    [data-theme="light"] .cl-card:hover {
+      box-shadow: 0 16px 40px rgba(91, 72, 240, .15);
     }
 
     .cl-btn-primary {
@@ -855,7 +1184,7 @@
 
     .cl-btn-ghost:hover {
       border-color: var(--p);
-      color: #fff;
+      color: var(--txt);
       box-shadow: 0 0 20px var(--pg)
     }
 
@@ -879,7 +1208,7 @@
     .cl-btn-danger:hover {
       background: rgba(255, 61, 107, .1);
       border-color: var(--r);
-      color: #fff
+      color: var(--r)
     }
 
     /* ── SCROLL INDICATOR ── */
@@ -1104,9 +1433,27 @@
         </div>
       </div>
 
-      <button class="cl-icon-btn" id="cl-theme-btn" title="{{ _('Tema değiştir') }}"
+      <button class="cl-theme-toggle" id="cl-theme-btn" title="{{ _('Tema değiştir') }}"
         aria-label="{{ _('Tema değiştir') }}">
-        <i class="bi bi-sun" id="cl-theme-icon"></i>
+        <div class="cl-theme-toggle-sky"></div>
+        <div class="cl-theme-stars">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="cl-theme-clouds">
+          <div class="cl-theme-cloud"></div>
+          <div class="cl-theme-cloud"></div>
+        </div>
+        <div class="cl-theme-rays">
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+          <div class="cl-theme-ray"></div>
+        </div>
+        <div class="cl-theme-orb"></div>
       </button>
 
       {% if current_user.is_authenticated %}
@@ -1264,15 +1611,19 @@
         });
       }, 5000);
 
-      /* THEME TOGGLE */
+      /* THEME TOGGLE — localStorage kalıcı */
       const thBtn = document.getElementById('cl-theme-btn');
-      const thIco = document.getElementById('cl-theme-icon');
-      let dark = true;
-      thBtn.addEventListener('click', () => {
-        dark = !dark;
-        document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-        thIco.className = dark ? 'bi bi-sun' : 'bi bi-moon-stars';
-      });
+      let dark = localStorage.getItem('cl-theme') !== 'light';
+      function applyTheme(isDark) {
+        dark = isDark;
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('cl-theme', isDark ? 'dark' : 'light');
+        /* Partikülleri light modda soluklaştır */
+        const cv = document.getElementById('cl-canvas');
+        if (cv) cv.style.opacity = isDark ? '1' : '0.18';
+      }
+      applyTheme(dark);
+      thBtn.addEventListener('click', () => applyTheme(!dark));
 
       /* DİL DEĞİŞTİRİCİ — Flask set-lang rotasına yönlendir */
       const langSwitcher = document.getElementById('cl-lang-switcher');
@@ -1296,7 +1647,7 @@
       if (mBtn && mLinks) {
         mBtn.addEventListener('click', () => {
           const open = mLinks.style.display === 'flex';
-          mLinks.style.cssText = open ? 'display:none' : 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:rgba(4,4,13,.97);border-bottom:1px solid var(--edge);padding:1rem';
+          mLinks.style.cssText = open ? 'display:none' : 'display:flex;flex-direction:column;position:absolute;top:var(--nav-h);left:0;right:0;background:var(--nav-bg-scrolled);backdrop-filter:blur(32px);border-bottom:1px solid var(--edge);padding:1rem';
           mBtn.setAttribute('aria-expanded', String(!open));
         });
       }

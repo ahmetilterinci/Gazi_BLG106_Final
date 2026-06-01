@@ -576,6 +576,61 @@ endblock %}
       grid-template-columns: 1fr;
     }
   }
+
+
+
+  /* ── LIGHT TEMA ── */
+  [data-theme="light"] .form-page-header h1,
+  [data-theme="light"] .avatar-username,
+  [data-theme="light"] .stat-val {
+    color: var(--txt);
+  }
+
+  [data-theme="light"] .avatar-hero-banner {
+    background: linear-gradient(135deg, #ede9ff 0%, #dbeafe 40%, #d1faf0 100%);
+  }
+
+  [data-theme="light"] .avatar-hero-banner::before {
+    background: radial-gradient(ellipse at 20% 50%, rgba(91, 72, 240, .15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(0, 201, 167, .1) 0%, transparent 60%);
+  }
+
+  [data-theme="light"] .banner-grid {
+    background-image:
+      linear-gradient(rgba(91, 72, 240, .07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(91, 72, 240, .07) 1px, transparent 1px);
+  }
+
+  [data-theme="light"] .avatar-hero {
+    box-shadow: 0 4px 24px rgba(91, 72, 240, .08);
+  }
+
+  [data-theme="light"] .stat-card {
+    box-shadow: 0 2px 12px rgba(91, 72, 240, .06);
+  }
+
+  [data-theme="light"] .stat-card:hover {
+    box-shadow: 0 8px 24px rgba(91, 72, 240, .12);
+  }
+
+  [data-theme="light"] .form-card {
+    box-shadow: 0 2px 12px rgba(91, 72, 240, .06);
+  }
+
+  [data-theme="light"] .field-input,
+  [data-theme="light"] .field-textarea {
+    background: #fff;
+    border-color: rgba(91, 72, 240, .18);
+  }
+
+  [data-theme="light"] .field-input:focus,
+  [data-theme="light"] .field-textarea:focus {
+    box-shadow: 0 0 0 3px rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .danger-zone {
+    background: rgba(232, 40, 79, .03);
+  }
 </style>
 {% endblock %}
 

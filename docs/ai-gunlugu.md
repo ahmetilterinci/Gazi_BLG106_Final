@@ -437,7 +437,7 @@ https://gazi-blg106-final.onrender.com
 
 
 
-## Oturum 5 — 30.05.2026 — 16:33-devam ediyor
+## Oturum 5 — 30.05.2026 — 16:33-???
 
 ### Hedef
 PostgreSQL ile kalıcı veri depolama sağlamak ve bonus özellikleri eklemek.
@@ -499,3 +499,111 @@ otomatik çalışır — ayrı oluşturulan instance'lar manuel bağlanmalı.
 | 18 | PostgreSQL desteği eklendi - Oturum 5 |
 | 19 | PostgreSQL db.create_all fix - Oturum 5 |
 | 20 | API endpoint /api/v1/ eklendi - bonus +5 |
+
+
+
+
+
+
+## Oturum 6 — 31.05.2026
+
+### Hedef
+Flask-Babel ile TR/EN dil desteği eklemek, kullanıcı profili + avatar sayfasını
+tamamlamak, statik sayfaları (Hakkında, S.S.S., İletişim) oluşturmak ve tüm
+şablonları Babel ile güncellemek.
+
+### Kullandığım Mod ve Model
+- Mod: Danışman Claude (claude.ai) — Antigravity kullanılmadı
+- Model: Claude Sonnet 4.6
+- Görünüm: Doğrudan Claude sohbeti
+
+### Verdiğim Promptlar
+1. Tüm şablonları Babel `{{ _('...') }}` ile güncelle — base.html, index.html,
+   about.html, faq.html, contact.html, profile.html, login.html, register.html,
+   lesson_detail.html, lesson_form.html, confirm_delete.html, 404.html, 500.html
+2. Navbar'a Hakkında ve İletişim linklerini ekle, footer linkleri bağla
+3. app/__init__.py'e Babel entegrasyonu: get_locale(), context_processor,
+   /set-lang/<lang> rotası
+4. Dil değiştirme butonuna animasyonlu TR/EN pill switcher tasarımı
+5. render.yaml buildCommand güncelleme
+6. EN çeviri dosyası (messages.po) tamamlama
+
+### Ajanın Önerdiği Plan
+- Tüm şablon metinlerini `{{ _('...') }}` ile sarmak
+- `get_locale()` fonksiyonunu `context_processor` ile Jinja2'ye inject etmek
+- `babel.init_app(app, locale_selector=get_locale)` ile Babel'i bağlamak
+- `/set-lang/<lang>` rotasını create_app içine eklemek
+- render.yaml buildCommand'ına `pybabel compile -d app/translations` eklemek
+
+### Plan'da Sorguladıklarım
+- E-posta şifre sıfırlama (+5) ve tam metin arama (+3) bonus puanları
+  değerlendirildi. Süre kısıtı nedeniyle önce Flask-Babel (+3) yapılmasına
+  karar verildi.
+- JS tabanlı dil değiştirme önerildi ancak Flask-Babel gerçek backend
+  çözümü olduğu için Babel'de ısrar edildi.
+
+### ⚠️ Sorunlar ve Çözümler
+
+**Sorun 1:** base.html'de eski routes.py değiştirilerek 600 satırdan 400 satıra
+düşürüldü — orijinal rotalar kayboldu.
+**Çözüm:** Sadece 3 yeni rota eklenmesi (about, faq, contact) kararlaştırıldı,
+eski dosyaya dokunulmadı.
+
+**Sorun 2:** `pybabel extract` komutu `jinja2.ext.autoescape` ve `jinja2.ext.with_`
+extension'larını tanımadı — AttributeError verdi.
+**Neden:** Yeni Jinja2 sürümlerinde bu extension'lar kaldırıldı.
+**Çözüm:** babel.cfg'den `extensions=` satırı tamamen silindi.
+
+**Sorun 3:** `flask run` sonrası `'get_locale' is undefined` hatası.
+**Neden:** `get_locale` fonksiyonu Babel'e locale_selector olarak verilmişti
+ama Jinja2 context'ine inject edilmemişti.
+**Çözüm:** `app/__init__.py`'e `@app.context_processor` eklendi:
+```python
+@app.context_processor
+def inject_get_locale():
+    return dict(get_locale=get_locale)
+```
+
+### Karşılaştığım Hatalar ve Çözümler
+- **Hata 1:** `AttributeError: module 'jinja2.ext' has no attribute 'autoescape'`
+  **Neden:** Eski Babel dökümantasyonundan kalan extension adları
+  **Çözüm:** babel.cfg'den extensions satırı kaldırıldı
+
+- **Hata 2:** `UndefinedError: 'get_locale' is undefined`
+  **Neden:** Babel locale_selector ≠ Jinja2 context
+  **Çözüm:** context_processor ile get_locale şablonlara inject edildi
+
+- **Hata 3:** EN dil seçilince yazılar Türkçe kalıyor
+  **Neden:** messages.po dosyasındaki tüm msgstr alanları boştu
+  **Çözüm:** Tüm EN çevirileri messages.po'ya yazıldı, pybabel compile tekrar çalıştırıldı
+
+### Bu Oturumdan Öğrendiğim
+Flask-Babel'de `locale_selector` sadece Babel'in dil seçimini belirler —
+bu fonksiyon Jinja2 şablonlarına otomatik inject edilmez. `{{ get_locale() }}`
+kullanmak için ayrıca `@app.context_processor` gerekir.
+
+`pybabel extract` modern Jinja2 ile kullanılırken `babel.cfg`'de
+`jinja2.ext.autoescape` veya `jinja2.ext.with_` yazmak hata verir,
+bu satırı tamamen kaldırmak yeterli.
+
+### Tamamlanan Bonus Puanlar
+| Bonus | Puan | Durum |
+|-------|------|-------|
+| API endpoint /api/v1/ | +5 | ✅ Oturum 5'te tamamlandı |
+| Kullanıcı profili + avatar | +4 | ✅ Bu oturumda tamamlandı |
+| Flask-Babel TR/EN | +3 | ✅ Bu oturumda tamamlandı |
+| Tam metin arama | +3 | ⏳ Yapılmadı |
+| E-posta şifre sıfırlama | +5 | ⏳ Yapılmadı |
+
+### Sonraki Oturum İçin Notlar
+- Demo video çekimi
+- rapor.md hazırlanması
+- Son kontrol: tüm rotalar, formlar, Babel çevirisi
+- Teslim: 01/06/2026 saat 13:00
+
+### Commit Geçmişi (Oturum 6)
+| #  | Mesaj |
+|----|-------|
+| 21 | Navbar ve footer: Hakkinda, SSS, Iletisim linkleri eklendi |
+| 22 | Flask-Babel TR/EN dil destegi eklendi |
+| 23 | Flask-Babel EN ceviri dosyasi tamamlandi |

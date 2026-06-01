@@ -161,6 +161,38 @@
             padding: 2rem 1rem 4rem;
         }
     }
+
+    /* ── LIGHT TEMA ── */
+    [data-theme="light"] .static-hero h1 {
+        color: var(--txt);
+    }
+
+    [data-theme="light"] .static-hero-badge {
+        background: rgba(0, 201, 167, .07);
+        border-color: rgba(0, 201, 167, .22);
+    }
+
+    [data-theme="light"] .faq-item {
+        box-shadow: 0 2px 10px rgba(91, 72, 240, .06);
+    }
+
+    [data-theme="light"] .faq-item.open {
+        border-color: rgba(91, 72, 240, .3);
+        box-shadow: 0 4px 20px rgba(91, 72, 240, .1);
+    }
+
+    [data-theme="light"] .faq-icon {
+        background: rgba(91, 72, 240, .08);
+    }
+
+    [data-theme="light"] .faq-item.open .faq-icon {
+        background: var(--p);
+        color: #fff;
+    }
+
+    [data-theme="light"] .faq-cta {
+        box-shadow: 0 2px 14px rgba(91, 72, 240, .07);
+    }
 </style>
 {% endblock %}
 

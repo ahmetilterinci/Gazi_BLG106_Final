@@ -161,6 +161,58 @@
       grid-template-columns: 1fr;
     }
   }
+
+
+
+  /* ── LIGHT TEMA ── */
+  [data-theme="light"] .form-page-header h1 {
+    color: var(--txt);
+  }
+
+  [data-theme="light"] .form-card {
+    box-shadow: 0 2px 16px rgba(91, 72, 240, .07);
+  }
+
+  [data-theme="light"] .field-input,
+  [data-theme="light"] .field-textarea,
+  [data-theme="light"] .field-select {
+    background: #fff;
+    border-color: rgba(91, 72, 240, .18);
+    color: var(--txt);
+  }
+
+  [data-theme="light"] .field-input:focus,
+  [data-theme="light"] .field-textarea:focus,
+  [data-theme="light"] .field-select:focus {
+    box-shadow: 0 0 0 3px rgba(91, 72, 240, .1);
+  }
+
+  /* Gemini badge */
+  .gemini-info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: var(--mono);
+    font-size: .68rem;
+    color: var(--txt3);
+    background: rgba(110, 91, 255, .05);
+    border: 1px solid var(--edge);
+    border-radius: 8px;
+    padding: .3rem .7rem;
+    margin-top: .6rem;
+  }
+
+  .gemini-info-badge img {
+    width: 13px;
+    height: 13px;
+    object-fit: contain;
+    opacity: .75;
+  }
+
+  [data-theme="light"] .gemini-info-badge {
+    background: rgba(91, 72, 240, .04);
+    border-color: rgba(91, 72, 240, .14);
+  }
 </style>
 {% endblock %}
 
@@ -220,6 +272,13 @@
           <span class="field-error" role="alert">{{ err }}</span>
           {% endfor %}
         </div>
+      </div>
+
+      <div class="gemini-info-badge">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Google_Gemini_icon_2025.svg/500px-Google_Gemini_icon_2025.svg.png"
+          alt="Gemini" />
+        {{ _('Quiz soruları Gemini AI tarafından otomatik üretilecektir.') }}
       </div>
 
       <div class="form-actions">

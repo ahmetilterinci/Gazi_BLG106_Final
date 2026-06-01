@@ -106,6 +106,41 @@
     text-align: center;
   }
 
+  .gemini-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-family: var(--mono);
+    font-size: .6rem;
+    color: var(--txt3);
+    background: transparent;
+    border: 1px solid var(--edge);
+    border-radius: 6px;
+    padding: .2rem .5rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: border-color .2s, color .2s;
+  }
+
+  .gemini-badge:hover {
+    border-color: rgba(110, 91, 255, .35);
+    color: var(--txt2);
+  }
+
+  .gemini-badge img {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+    opacity: .7;
+  }
+
+  [data-theme="light"] .gemini-badge {
+    border-color: rgba(91, 72, 240, .15);
+  }
+
+
+
   .duo-screen {
     flex: 1;
     display: none;
@@ -232,54 +267,177 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 1.75rem;
+    padding: 2rem;
   }
 
-  .duo-spinner {
-    width: 44px;
-    height: 44px;
-    border: 3px solid rgba(110, 91, 255, .15);
-    border-top-color: var(--p);
+  /* Gemini logo + spin ring */
+  .gemini-loader {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gemini-loader-ring {
+    position: absolute;
+    inset: 0;
     border-radius: 50%;
-    animation: spin .7s linear infinite;
+    border: 2.5px solid transparent;
+    border-top-color: var(--p);
+    border-right-color: var(--a);
+    animation: geminiSpin 1.2s cubic-bezier(.6, .2, .4, .8) infinite;
   }
 
-  @keyframes spin {
+  .gemini-loader-ring-2 {
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-bottom-color: rgba(110, 91, 255, .4);
+    border-left-color: rgba(0, 245, 196, .3);
+    animation: geminiSpin 1.8s cubic-bezier(.6, .2, .4, .8) infinite reverse;
+  }
+
+  .gemini-loader-logo {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    animation: geminiPulse 1.8s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes geminiSpin {
     to {
       transform: rotate(360deg);
     }
   }
 
-  .loading-text {
-    font-family: var(--mono);
-    font-size: .82rem;
-    color: var(--txt2);
-  }
-
-  .loading-dots span {
-    animation: dotBlink 1.2s ease-in-out infinite;
-    display: inline-block;
-  }
-
-  .loading-dots span:nth-child(2) {
-    animation-delay: .2s;
-  }
-
-  .loading-dots span:nth-child(3) {
-    animation-delay: .4s;
-  }
-
-  @keyframes dotBlink {
+  @keyframes geminiPulse {
 
     0%,
-    80%,
     100% {
-      opacity: .2
+      opacity: .85;
+      transform: scale(1);
     }
 
-    40% {
-      opacity: 1
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
     }
+  }
+
+  /* Progress bar */
+  .gemini-progress-wrap {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .65rem;
+  }
+
+  .gemini-progress-label {
+    font-family: var(--display);
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--txt);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .gemini-progress-sub {
+    font-family: var(--mono);
+    font-size: .68rem;
+    color: var(--txt3);
+    text-align: center;
+  }
+
+  .gemini-pbar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(110, 91, 255, .12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .gemini-pbar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--p), var(--a));
+    width: 0%;
+    animation: geminiLoad 2.8s cubic-bezier(.4, 0, .2, 1) infinite;
+    box-shadow: 0 0 8px rgba(110, 91, 255, .4);
+  }
+
+  @keyframes geminiLoad {
+    0% {
+      width: 0%;
+      margin-left: 0%;
+    }
+
+    50% {
+      width: 70%;
+      margin-left: 15%;
+    }
+
+    100% {
+      width: 0%;
+      margin-left: 100%;
+    }
+  }
+
+  .gemini-steps {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gemini-step-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(110, 91, 255, .25);
+    animation: stepActive 2.1s ease-in-out infinite;
+  }
+
+  .gemini-step-dot:nth-child(2) {
+    animation-delay: .35s;
+  }
+
+  .gemini-step-dot:nth-child(3) {
+    animation-delay: .7s;
+  }
+
+  .gemini-step-dot:nth-child(4) {
+    animation-delay: 1.05s;
+  }
+
+  .gemini-step-dot:nth-child(5) {
+    animation-delay: 1.4s;
+  }
+
+  @keyframes stepActive {
+
+    0%,
+    100% {
+      background: rgba(110, 91, 255, .2);
+      transform: scale(1);
+    }
+
+    50% {
+      background: var(--p);
+      transform: scale(1.4);
+      box-shadow: 0 0 6px rgba(110, 91, 255, .5);
+    }
+  }
+
+  [data-theme="light"] .gemini-pbar-track {
+    background: rgba(91, 72, 240, .1);
   }
 
   .q-type-badge {
@@ -944,6 +1102,146 @@
       grid-template-columns: 1fr;
     }
   }
+
+
+
+  /* ── LIGHT TEMA ── */
+
+  /* Genel başlıklar */
+  [data-theme="light"] .start-title,
+  [data-theme="light"] .review-title,
+  [data-theme="light"] .complete-title {
+    color: var(--txt);
+  }
+
+  /* Progress bar track */
+  [data-theme="light"] .duo-pbar-track {
+    background: rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .duo-timer {
+    background: rgba(91, 72, 240, .06);
+    border-color: rgba(91, 72, 240, .15);
+  }
+
+  /* Hint kutusu */
+  [data-theme="light"] .duo-hint {
+    background: rgba(91, 72, 240, .05);
+    border-color: rgba(91, 72, 240, .15);
+  }
+
+  /* Soru metni */
+  [data-theme="light"] .duo-question,
+  [data-theme="light"] .fill-sentence {
+    color: var(--txt);
+  }
+
+  /* MCQ & Fill seçenekleri */
+  [data-theme="light"] .opt-btn {
+    background: var(--surface);
+    color: var(--txt);
+    box-shadow: 0 1px 6px rgba(91, 72, 240, .06);
+  }
+
+  [data-theme="light"] .opt-btn:not(:disabled):hover {
+    background: rgba(91, 72, 240, .05);
+  }
+
+  [data-theme="light"] .opt-letter {
+    background: rgba(91, 72, 240, .08);
+    border-color: rgba(91, 72, 240, .18);
+  }
+
+  [data-theme="light"] .opt-btn.opt-ok .opt-letter {
+    color: #18143a;
+  }
+
+  /* True/False butonları */
+  [data-theme="light"] .tf-btn {
+    background: var(--surface);
+    color: var(--txt2);
+    box-shadow: 0 1px 6px rgba(91, 72, 240, .06);
+  }
+
+  /* True/False ifade kutusu */
+  [data-theme="light"] .tf-statement {
+    background: var(--surface);
+    border-color: rgba(91, 72, 240, .2);
+    border-left-color: var(--p);
+    color: var(--txt);
+  }
+
+  /* Eşleştirme öğeleri */
+  [data-theme="light"] .match-item {
+    background: var(--surface);
+    color: var(--txt);
+    box-shadow: 0 1px 6px rgba(91, 72, 240, .06);
+  }
+
+  /* Feedback kutuları */
+  [data-theme="light"] .duo-feedback.fb-ok {
+    background: rgba(0, 201, 167, .06);
+    border-color: rgba(0, 201, 167, .2);
+  }
+
+  [data-theme="light"] .duo-feedback.fb-err {
+    background: rgba(232, 40, 79, .05);
+    border-color: rgba(232, 40, 79, .18);
+  }
+
+  /* Complete stats */
+  [data-theme="light"] .cstat {
+    box-shadow: 0 2px 10px rgba(91, 72, 240, .07);
+  }
+
+  [data-theme="light"] .complete-rate {
+    box-shadow: 0 2px 10px rgba(91, 72, 240, .07);
+  }
+
+  [data-theme="light"] .complete-rate-bar {
+    background: rgba(91, 72, 240, .1);
+  }
+
+  [data-theme="light"] .complete-xp {
+    background: rgba(0, 201, 167, .07);
+    border-color: rgba(0, 201, 167, .2);
+  }
+
+  /* Start ekranı */
+  [data-theme="light"] .start-icon {
+    background: linear-gradient(135deg, rgba(91, 72, 240, .1), rgba(0, 201, 167, .07));
+    border-color: rgba(91, 72, 240, .18);
+  }
+
+  [data-theme="light"] .start-prev-score {
+    background: rgba(0, 201, 167, .06);
+    border-color: rgba(0, 201, 167, .18);
+  }
+
+  /* Review ekranı */
+  [data-theme="light"] .review-icon {
+    background: rgba(224, 122, 0, .08);
+    border-color: rgba(224, 122, 0, .2);
+  }
+
+  [data-theme="light"] .review-badge {
+    background: rgba(224, 122, 0, .07);
+    border-color: rgba(224, 122, 0, .2);
+  }
+
+  /* Boşluk doldurma blank */
+  [data-theme="light"] .fill-blank {
+    background: rgba(91, 72, 240, .08);
+    border-bottom-color: var(--p);
+  }
+
+  [data-theme="light"] .fill-blank.filled {
+    background: rgba(0, 201, 167, .1);
+  }
+
+  [data-theme="light"] .fill-blank.wrong-fill {
+    background: rgba(232, 40, 79, .08);
+  }
 </style>
 {% endblock %}
 
@@ -970,6 +1268,13 @@
     </div>
     <span class="duo-pbar-label" id="duo-pbar-label">–</span>
     <span class="duo-timer" id="duo-timer">0:00</span>
+    <a class="gemini-badge" href="https://gemini.google.com" target="_blank" rel="noopener"
+      title="Sorular Gemini AI tarafından hazırlanmıştır">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Google_Gemini_icon_2025.svg/500px-Google_Gemini_icon_2025.svg.png"
+        alt="Gemini" />
+      Gemini
+    </a>
   </div>
 
   {% if current_user.is_authenticated %}
@@ -1008,10 +1313,26 @@
 
   <div class="duo-screen" id="screen-loading">
     <div class="loading-center">
-      <div class="duo-spinner"></div>
-      <div class="loading-text">
-        {{ _('Gemini sorular hazırlıyor') }}
-        <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+      <div class="gemini-loader">
+        <div class="gemini-loader-ring"></div>
+        <div class="gemini-loader-ring-2"></div>
+        <img class="gemini-loader-logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Google_Gemini_icon_2025.svg/500px-Google_Gemini_icon_2025.svg.png"
+          alt="Gemini" />
+      </div>
+      <div class="gemini-progress-wrap">
+        <div class="gemini-progress-label">{{ _('Gemini Senin İçin') }}<br>{{ _('Sorular Hazırlıyor') }}</div>
+        <div class="gemini-pbar-track">
+          <div class="gemini-pbar-fill"></div>
+        </div>
+        <div class="gemini-steps">
+          <div class="gemini-step-dot"></div>
+          <div class="gemini-step-dot"></div>
+          <div class="gemini-step-dot"></div>
+          <div class="gemini-step-dot"></div>
+          <div class="gemini-step-dot"></div>
+        </div>
+        <div class="gemini-progress-sub">{{ _('Bu birkaç saniye sürebilir') }}</div>
       </div>
     </div>
   </div>

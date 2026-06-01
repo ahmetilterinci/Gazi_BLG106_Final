@@ -129,58 +129,7 @@ Sonraki oturumda PostgreSQL eklenecek.
 
 ---
 
-## YAPILACAKLAR — Sonraki Oturum
-
-### Öncelik Sırası
-1. **PostgreSQL ekle** — kayıtlar kalıcı olsun, e-posta bonusu anlamlı hale gelir
-2. **API endpoint /api/v1/** — +5 puan
-3. **Kullanıcı profili + avatar** — +4 puan
-4. **Tam metin arama** — +3 puan
-5. **E-posta şifre sıfırlama** — +5 puan (PostgreSQL sonrası)
-6. **Flask-Babel TR/EN** — +3 puan, riskli, en sona
-
-### Teslim: 01/06/2026 saat 13:00
-- Demo video
-- rapor.md (7 madde)
-- AI günlüğü son güncelleme
-- Son commit + push
-
----
-
-## Zorunlu Gereksinim Durumu
-| # | Gereksinim | Durum |
-|---|-----------|-------|
-| 1 | Application factory + blueprint | ✅ |
-| 2 | En az 4 sayfa, base template, template inheritance | ✅ |
-| 3 | Flask-WTF, 2 form, CSRF koruması | ✅ |
-| 4 | SQLAlchemy, 3 model, ilişkiler | ✅ |
-| 5 | Flask-Migrate, migration dosyaları | ✅ |
-| 6 | Flask-Login, kayıt/giriş/çıkış, şifre hash | ✅ |
-| 7 | 404/500 hata sayfaları | ✅ |
-| 8 | Pagination | ✅ |
-| 9 | Bootstrap/Tailwind, mobil uyumlu | ✅ |
-| 10 | Docker veya canlı deploy | ✅ Render |
-
-## Bonus Durum
-| Bonus | Puan | Durum |
-|-------|------|-------|
-| API endpoint /api/v1/ | +5 | ❌ YAPILACAK |
-| Kullanıcı profili + avatar | +4 | ❌ YAPILACAK |
-| Tam metin arama | +3 | ❌ YAPILACAK |
-| E-posta şifre sıfırlama | +5 | ❌ PostgreSQL sonrası |
-| Flask-Babel TR/EN | +3 | ❌ riskli, en sona |
-
-## Mevcut Dosya Durumu
-- `app/models.py`: User, Topic, Lesson, UserProgress (wrong_count + attempts)
-- `app/main/routes.py`: tüm rotalar + lesson_quiz (Gemini) + hata handler'ları
-- `app/commands.py`: flask seed-db (admin otomatik oluşturma dahil)
-- `run.py`: db.create_all() + FLASK_CONFIG env desteği
-- `render.yaml`: canlı deploy yapılandırması
-- `templates/main/index.html`: izometrik öğrenme yolu
-- `templates/main/lesson_detail.html`: Duolingo quiz v5
-
-
-## Oturum 5 — 30.05.2026 ✅ DEVAM EDİYOR
+## Oturum 5 — 30.05.2026 ✅ TAMAMLANDI
 
 **PostgreSQL Geçişi**
 - requirements.txt'e psycopg2-binary eklendi
@@ -203,3 +152,89 @@ Sonraki oturumda PostgreSQL eklenecek.
 | 18 | PostgreSQL desteği eklendi - Oturum 5 |
 | 19 | PostgreSQL db.create_all fix - Oturum 5 |
 | 20 | API endpoint /api/v1/ eklendi - bonus +5 |
+
+---
+
+## Oturum 6 — 31.05.2026 ✅ TAMAMLANDI
+
+**Statik Sayfalar + Navbar/Footer Güncellemesi (Danışman Claude)**
+- Hakkında, S.S.S., İletişim sayfaları oluşturuldu
+- Navbar'a Hakkında + İletişim linkleri eklendi
+- Footer'daki Hakkında, S.S.S., İletişim linkleri bağlandı
+- routes.py'e /about, /faq, /contact rotaları eklendi
+
+**Kullanıcı Profili + Avatar (+4 puan) (Danışman Claude)**
+- User modeline avatar_url + bio alanları eklendi + migration
+- ProfileForm (Flask-WTF) oluşturuldu
+- /profile + /profile/avatar rotaları eklendi
+- profile.html: avatar hero, istatistik kartları, DiceBear entegrasyonu
+
+**Flask-Babel TR/EN (+3 puan) (Danışman Claude)**
+- flask-babel requirements.txt'e eklendi
+- app/__init__.py: Babel entegrasyonu, get_locale(), context_processor, /set-lang/<lang>
+- babel.cfg oluşturuldu
+- Tüm şablonlar `{{ _('...') }}` ile güncellendi:
+  base.html, index.html, about.html, faq.html, contact.html, profile.html,
+  login.html, register.html, lesson_detail.html, lesson_form.html,
+  confirm_delete.html, 404.html, 500.html
+- pybabel extract → init (tr + en) → compile
+- app/translations/en/LC_MESSAGES/messages.po tüm çevirilerle dolduruldu
+- render.yaml buildCommand güncellendi: `pip install -r requirements.txt && pybabel compile -d app/translations`
+- Animasyonlu TR/EN pill switcher tasarımı base.html'e eklendi
+
+**Çözülen Kritik Sorunlar**
+- babel.cfg'den jinja2.ext.autoescape + jinja2.ext.with_ kaldırıldı (yeni Jinja2'de yok)
+- get_locale() context_processor ile Jinja2'ye inject edildi
+- EN messages.po'daki tüm boş msgstr alanları çeviriyle dolduruldu
+
+### Commit Geçmişi
+| #  | Mesaj |
+|----|-------|
+| 21 | Navbar ve footer: Hakkinda, SSS, Iletisim linkleri eklendi |
+| 22 | Flask-Babel TR/EN dil destegi eklendi |
+| 23 | Flask-Babel EN ceviri dosyasi tamamlandi |
+
+---
+
+## Zorunlu Gereksinim Durumu
+| # | Gereksinim | Durum |
+|---|-----------|-------|
+| 1 | Application factory + blueprint | ✅ |
+| 2 | En az 4 sayfa, base template, template inheritance | ✅ |
+| 3 | Flask-WTF, 2 form, CSRF koruması | ✅ |
+| 4 | SQLAlchemy, 3 model, ilişkiler | ✅ |
+| 5 | Flask-Migrate, migration dosyaları | ✅ |
+| 6 | Flask-Login, kayıt/giriş/çıkış, şifre hash | ✅ |
+| 7 | 404/500 hata sayfaları | ✅ |
+| 8 | Pagination | ✅ |
+| 9 | Bootstrap/Tailwind, mobil uyumlu | ✅ |
+| 10 | Docker veya canlı deploy | ✅ Render |
+
+## Bonus Durum
+| Bonus | Puan | Durum |
+|-------|------|-------|
+| API endpoint /api/v1/ | +5 | ✅ Oturum 5 |
+| Kullanıcı profili + avatar | +4 | ✅ Oturum 6 |
+| Flask-Babel TR/EN | +3 | ✅ Oturum 6 |
+| Tam metin arama | +3 | ❌ Yapılmadı |
+| E-posta şifre sıfırlama | +5 | ❌ Yapılmadı |
+
+## Mevcut Dosya Durumu
+- `app/__init__.py`: Babel entegrasyonu, context_processor, /set-lang rotası
+- `app/models.py`: User (avatar_url, bio), Topic, Lesson, UserProgress
+- `app/main/routes.py`: tüm rotalar + about/faq/contact + profile/avatar
+- `app/main/forms.py`: ProfileForm dahil tüm formlar
+- `app/commands.py`: flask seed-db
+- `app/translations/tr/LC_MESSAGES/messages.po` + messages.mo
+- `app/translations/en/LC_MESSAGES/messages.po` + messages.mo
+- `babel.cfg`: jinja2 şablon tarayıcı
+- `render.yaml`: pybabel compile buildCommand'a eklendi
+- `requirements.txt`: flask-babel eklendi
+- `templates/base.html`: Babel + animasyonlu TR/EN switcher
+- `templates/main/`: index, about, faq, contact, profile, lesson_detail, lesson_form, confirm_delete
+- `templates/auth/`: login, register
+- `templates/errors/`: 404, 500
+
+## Canlı URL
+https://gazi-blg106-final.onrender.com
+

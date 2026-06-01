@@ -245,6 +245,42 @@
             padding: 2rem 1rem 4rem;
         }
     }
+
+
+
+    /* ── LIGHT TEMA ── */
+    [data-theme="light"] .static-hero h1,
+    [data-theme="light"] .about-card h3,
+    [data-theme="light"] .about-story h2,
+    [data-theme="light"] .cta-band h2 {
+        color: var(--txt);
+    }
+
+    [data-theme="light"] .static-hero-badge {
+        background: rgba(0, 201, 167, .07);
+        border-color: rgba(0, 201, 167, .22);
+    }
+
+    [data-theme="light"] .about-card {
+        box-shadow: 0 2px 14px rgba(91, 72, 240, .07);
+    }
+
+    [data-theme="light"] .about-card:hover {
+        box-shadow: 0 12px 36px rgba(91, 72, 240, .13);
+    }
+
+    [data-theme="light"] .about-story {
+        box-shadow: 0 2px 14px rgba(91, 72, 240, .07);
+    }
+
+    [data-theme="light"] .stat-band {
+        box-shadow: 0 2px 14px rgba(91, 72, 240, .07);
+    }
+
+    [data-theme="light"] .cta-band {
+        background: linear-gradient(135deg, rgba(91, 72, 240, .06), rgba(0, 201, 167, .04));
+        border-color: rgba(91, 72, 240, .18);
+    }
 </style>
 {% endblock %}
 
